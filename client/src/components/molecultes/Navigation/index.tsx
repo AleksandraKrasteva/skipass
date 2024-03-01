@@ -1,0 +1,47 @@
+import * as React from 'react';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import Avatar from '@mui/material/Avatar';
+import Tooltip from '@mui/material/Tooltip';
+import { Terrain } from '@mui/icons-material';
+
+const Navigation = ()=> {
+
+	return (
+		<AppBar position="fixed" sx={{bgcolor:'#0097a7'}}>
+			<Container maxWidth="xl">
+				<Toolbar disableGutters  sx={{ justifyContent: 'space-between' }}>
+					<Box sx ={{display: 'inline-flex', alignItems: 'center'}}>
+						<Terrain />
+						<Typography
+							variant="h6"
+							noWrap
+							sx={{
+								ml: 4,
+								fontFamily: 'monospace',
+								fontWeight: 700,
+								letterSpacing: '.3rem',
+								color: 'inherit',
+							}}
+						>
+            SkiPass
+						</Typography>	
+					</Box>	
+
+					<Box sx={{ display: { md: 'flex' }, mr: 1 }} >
+						<Tooltip title="Log in or sign up">
+							<IconButton  sx={{ p: 0 }}>
+								<Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+							</IconButton>
+						</Tooltip>
+					</Box>
+				</Toolbar>
+			</Container>
+		</AppBar>
+	);
+};
+export default Navigation;
