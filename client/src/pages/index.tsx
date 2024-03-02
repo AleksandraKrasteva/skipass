@@ -1,9 +1,33 @@
+import { sendRequest } from '@/api/test';
 import Navigation from '@/components/molecultes/Navigation';
-import React from 'react';
+import { Button, Typography } from '@mui/material';
+import React, { useState } from 'react';
 
 const index = () => {
+
+	const [response, setResponse] = useState(''); 
+
+	const displaySomething = async() => {
+		const res = await sendRequest();
+		setResponse(res);
+	};
+	
 	return (
-		<Navigation/>
+		<>
+			<Navigation/>
+			<Button sx={{mt: 40}} onClick={()=>displaySomething()}>Click me</Button>
+			<Typography
+				variant="h6"
+				noWrap
+				sx={{
+					ml: 4,
+					fontFamily: 'monospace',
+					fontWeight: 700,
+					letterSpacing: '.3rem',
+					color: 'inherit',
+				}}
+			>{response}</Typography>
+		</>
 	);
 };
 
