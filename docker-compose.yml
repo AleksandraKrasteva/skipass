@@ -9,10 +9,26 @@ services:
     ports:
       - 3000:3000
 
+  rabbitmq:
+   image: rabbitmq:management
+   ports:
+     - 5672:5672
+     - 15672:15672
+
   usermanagement:
     image: userservice:latest
     build:
       context: ./UserManagement
     ports:
       - 8080:8080
-   
+    depends_on:
+      - rabbitmq
+
+  postmanagement:
+    image: postmanagement:latest
+    build:
+      context: ./PostManagement
+    ports:
+      - 8090:8080
+    depends_on:
+      - usermanagement

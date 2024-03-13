@@ -1,4 +1,4 @@
-package com.skipass.usermanagement.controllers;
+package com.skipass.postmanagement.controllers;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class testController {
     @GetMapping("/")
     public String test() {
-        return "Hi, im a test controller";
+        return "Hi, im a post controller";
     }
 
 }
