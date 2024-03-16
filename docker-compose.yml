@@ -10,12 +10,12 @@ services:
       - 3000:3000
 
   rabbitmq:
-   image: rabbitmq:management
-   ports:
+    image: rabbitmq:management
+    ports:
      - 5672:5672
      - 15672:15672
 
-  usermanagement:
+  userService:
     image: userservice:latest
     build:
       context: ./UserManagement
@@ -24,11 +24,38 @@ services:
     depends_on:
       - rabbitmq
 
-  postmanagement:
-    image: postmanagement:latest
+  postService:
+    image: postservice:latest
     build:
       context: ./PostManagement
     ports:
       - 8090:8080
     depends_on:
-      - usermanagement
+      - userService
+
+  statisticService:
+    image: statisticservice:latest
+    build:
+      context: ./StatisticsService
+    ports:
+      - 8030:8080
+    depends_on:
+      - userService
+
+  reactionsService:
+    image: reactionssservice:latest
+    build:
+      context: ./ReactionService
+    ports:
+      - 8040:8080
+    depends_on:
+      - userService
+
+  journeySservice:
+    image: jouurneyservice:latest
+    build:
+      context: ./JourneyService
+    ports:
+      - 8020:8080
+    depends_on:
+      - userService

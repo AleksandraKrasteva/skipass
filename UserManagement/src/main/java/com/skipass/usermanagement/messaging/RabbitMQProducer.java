@@ -1,4 +1,5 @@
-package com.skipass.usermanagement.business;
+package com.skipass.usermanagement.messaging;
+import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -7,9 +8,12 @@ import org.springframework.stereotype.Component;
 public class RabbitMQProducer {
     @Autowired private RabbitTemplate rabbitTemplate;
 
-    public void sendMessage(String message)
+    @Autowired
+    private FanoutExchange exchange;
+
+    public void sendDeleteProfileForUserMessage(String message)
     {
         rabbitTemplate.convertAndSend(
-                "exchange-name", "routing-key", message);
+                exchange.getName(), "", message);
     }
 }
