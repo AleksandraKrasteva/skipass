@@ -9,7 +9,7 @@ const index = () => {
 
 	const displaySomething = async() => {
 		const res = await sendRequest();
-		setResponse(res);
+		setResponse(res.data.content);
 	};
 	
 	return (

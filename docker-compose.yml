@@ -15,47 +15,62 @@ services:
      - 5672:5672
      - 15672:15672
 
-  userService:
+  userservice:
     image: userservice:latest
     build:
       context: ./UserManagement
     ports:
-      - 8080:8080
+      - 8081:8080
     depends_on:
       - rabbitmq
 
-  postService:
+  postservice:
     image: postservice:latest
     build:
       context: ./PostManagement
     ports:
-      - 8090:8080
+      - 8082:8080
     depends_on:
-      - userService
+      - userservice
 
-  statisticService:
+  statisticservice:
     image: statisticservice:latest
     build:
       context: ./StatisticsService
     ports:
-      - 8030:8080
+      - 8083:8080
     depends_on:
-      - userService
+      - userservice
 
-  reactionsService:
-    image: reactionssservice:latest
+  reactionservice:
+    image: reactionservice:latest
     build:
       context: ./ReactionService
     ports:
-      - 8040:8080
+      - 8084:8080
     depends_on:
-      - userService
+      - userservice
 
-  journeySservice:
-    image: jouurneyservice:latest
+  journeyservice:
+    image: journeyservice:latest
     build:
       context: ./JourneyService
     ports:
-      - 8020:8080
+      - 8085:8080
     depends_on:
-      - userService
+      - userservice
+  
+  krakend:
+    image: devopsfaith/krakend
+    volumes:
+      - ./config/krakend:/etc/krakend
+    ports:
+      - "1234:1234"
+      - "8080:8080"
+      - "8090:8090"
+    command: ["run", "-d", "-c", "/etc/krakend/krakend.json"]
+    depends_on:
+      - userservice
+      - postservice
+      - journeyservice
+      - statisticservice

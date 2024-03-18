@@ -5,16 +5,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000/", allowCredentials = "true")
+@CrossOrigin(origins = "*")
 
 public class UserProfileController {
     @Autowired
     private RabbitMQProducer rabbitMQProducer;
 
-    @GetMapping("/")
-    public void test() {
+    @GetMapping("/get")
+    public String test() {
         rabbitMQProducer.sendDeleteProfileForUserMessage("please delete my profile - im a user :)");
+        return "success";
     }
+
 }

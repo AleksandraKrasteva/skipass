@@ -1,0 +1,48 @@
+{
+  "version": 3,
+  "name": "API gateaway",
+  "timeout": "3000ms",
+  "cache_ttl": "300s",
+  "host": "localhost:8080",
+  "extra_config": {
+    "router":{
+      "return_error_msg":true
+    },
+    "security/cors": {
+      "allow_origins": [
+        "http://localhost:3000"
+      ],
+      "allow_methods": [
+        "GET",
+        "HEAD",
+        "POST"
+      ],
+      "expose_headers": [
+        "Content-Length",
+        "Content-Type"
+      ],
+      "allow_headers": [
+        "Accept-Language"
+      ],
+      "allow_credentials": false,
+      "debug": false
+    }
+  },
+  "endpoints": [
+     {
+      "endpoint": "/",
+      "method": "GET",
+      "backend": [
+        {
+          "url_pattern": "/get",
+          "method": "GET",
+          "encoding": "string",
+          "host": [
+            "http://userservice:8080"
+          ]
+         
+         }
+      ]
+    }
+  ]  
+}

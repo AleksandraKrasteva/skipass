@@ -6,13 +6,13 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 
-public class RabbitMQQueueConfig {
+public class RabbitMQConfig {
 
     static final String fanoutExchangeName = "delete-profile";
-    static final String statisticsQueueName = "delete-statistics";
-    static final String postsQueueName = "delete-posts";
-    static final String reactionsQueueName = "delete-reactions";
-    static final String journeyQueueName = "delete-journey";
+    static final String statisticsQueueName = "delete-profile-statistics";
+    static final String postsQueueName = "delete-profile-posts";
+//    static final String reactionsQueueName = "delete-profile-reactions";
+    static final String journeyQueueName = "delete-profile-journey";
 
     @Bean public Queue statisticsQueue()
     {
@@ -22,10 +22,10 @@ public class RabbitMQQueueConfig {
     {
         return new Queue(postsQueueName);
     }
-    @Bean public Queue reactionsQueue()
-    {
-        return new Queue(reactionsQueueName);
-    }
+//    @Bean public Queue reactionsQueue()
+//    {
+//        return new Queue(reactionsQueueName);
+//    }
     @Bean public Queue journeyQueue()
     {
         return new Queue(journeyQueueName);
@@ -41,11 +41,11 @@ public class RabbitMQQueueConfig {
     {
         return BindingBuilder.bind(statisticsQueue()).to(exchange());
     }
-    @Bean
-    public Binding reactionsBinding()
-    {
-        return BindingBuilder.bind(reactionsQueue()).to(exchange());
-    }
+//    @Bean
+//    public Binding reactionsBinding()
+//    {
+//        return BindingBuilder.bind(reactionsQueue()).to(exchange());
+//    }
     @Bean
     public Binding postsBinding()
     {
