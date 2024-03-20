@@ -1,15 +1,11 @@
-import { Post, createPost, createUser, deletePost, deleteUserProfile, viewPostsForUser, viewUsers } from '@/api/userProfile';
+import { createPost, createUser, deletePost, deleteUserProfile, viewPostsForUser, viewUsers } from '@/api/requests';
+import { Post, User } from '@/api/types';
 import Navigation from '@/components/molecultes/Navigation';
 import { Box, Button, List, ListItem, ListItemText, MenuItem, Select, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react';
-export type User = {
-	id: number;
-	username:string;
-	email:string;
-	type:string;
-}
 
-const index = () => {
+
+const HomePage = () => {
 
 	const [username, setUsername] = useState('');
 	const [users, setUsers] = useState<User[]>([]);
@@ -17,11 +13,8 @@ const index = () => {
 	const [postText, setPostText] = useState<string>(''); 
 	const [postsForUser, setPostsForUser] = useState<Post[]>([]);
 
-
-
 	const createUserProfile = async() =>{
-		const res = await createUser(username);
-		console.log(res);
+		await createUser(username);
 	};
 
 	const getUsers = async()=>{
@@ -42,82 +35,80 @@ const index = () => {
 			userId: selectedUser,
 			text: postText,
 		};
-		const res = await createPost(post); 
-		console.log(res);
+		await createPost(post); 
 	};
 
 	const viewPosts = async()=>{
 		if(!selectedUser) return;
 		const res = await viewPostsForUser(selectedUser);
-		console.log(res);
 		setPostsForUser(res.data.collection);
 	};
 
 	const deleteUser = async()=>{
 		if(!selectedUser) return;
-		const res = await deleteUserProfile(selectedUser);
+		await deleteUserProfile(selectedUser);
 		setSelectedUser(null);
-		console.log(res);
 	};
 	
 	const deletePostById = async(id:number)=>{
-		const res = await deletePost(id);
-		console.log(res);		
+		await deletePost(id);
 	};
 
 	return (
 		<>
 			<Navigation/>
-			<Box sx={{mt: 40}} >
-				<TextField id="outlined-basic" label="Username" variant="outlined" required
+			<Box sx={{mt: 10, border: 1, borderColor: 'black'}} >
+				<TextField  label="Username" variant="outlined" required
 					onChange={(e)=>setUsername(e.target.value)} />
-				<Button onClick={()=>createUserProfile()}>Create user</Button>
+				<Button variant="contained" onClick={()=>createUserProfile()}>Create user</Button>
 			</Box>
-			<Button onClick={()=>getUsers()}>View all users</Button>
-			<Select
-				labelId="demo-simple-select-label"
-				id="demo-simple-select"
-				onChange={(e)=>handleUserChange(e.target.value)}
-			>				
-				{users.map((user)=>{
-					return (
-						<MenuItem value={user.id}>{user.username}</MenuItem>
-					);})}			
-			</Select>
-			<Box sx={{mt: 4}} >
+			<Box sx={{mt: 4, border: 1, borderColor: 'black'}} >
+				<Button variant="contained" onClick={()=>getUsers()}>View all users</Button>
+				<Select
+					label='Users list'
+					onChange={(e)=>handleUserChange(e.target.value)}
+				>				
+					{users.map((user)=>{
+						return (
+							<MenuItem value={user.id}>{user.username}</MenuItem>
+						);})}			
+				</Select>
+			</Box>
+			<Button sx={{backgroundColor:'pink', mt:4}} variant="contained" onClick={()=>deleteUser()}>Delete selected user profile</Button>
+
+			<Box sx={{mt: 4, border: 1, borderColor: 'black'}}  >
 				<TextField id="outlined-basic" label="Post" variant="outlined" required
 					onChange={(e)=>setPostText(e.target.value)} />
-				<Button onClick={()=>createPostForUser()}>Create post for selected user</Button>
+				<Button variant="contained" onClick={()=>createPostForUser()}>Create post for selected user</Button>
 			</Box>
 
-			<Button onClick={()=>deleteUser()}>DELETE SELECTED USER PROFILE</Button>
-			<Button onClick={()=>viewPosts()}>Get Posts For Selected User</Button>
-			<List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-				{postsForUser.map((post)=>{
-					return (
-						<ListItem alignItems="flex-start">
-							<ListItemText
-								primary={post.userId}
-								secondary={
-									<Typography
-										sx={{ display: 'inline' }}
-										component="span"
-										variant="body2"
-										color="text.primary"
-									>
-										{post.text}
-									</Typography>
-								}
-							/>
-							<Button onClick={()=>deletePostById(post.id!)}>Delete</Button>
-						</ListItem>
-					);
-				})}
-			</List>
-
-
+			<Box sx={{mt: 4, border: 1, borderColor: 'black'}}  >
+				<Button variant="contained" onClick={()=>viewPosts()}>Get Posts For Selected User</Button>
+				<List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+					{postsForUser.map((post)=>{
+						return (
+							<ListItem alignItems="flex-start">
+								<ListItemText
+									primary={post.userId}
+									secondary={
+										<Typography
+											sx={{ display: 'inline' }}
+											component="span"
+											variant="body2"
+											color="text.primary"
+										>
+											{post.text}
+										</Typography>
+									}
+								/>
+								<Button  sx={{backgroundColor:'pink'}} size="small" variant="contained" onClick={()=>deletePostById(post.id!)}>Delete</Button>
+							</ListItem>
+						);
+					})}
+				</List>
+			</Box>
 		</>
 	);
 };
 
-export default index;
+export default HomePage;
