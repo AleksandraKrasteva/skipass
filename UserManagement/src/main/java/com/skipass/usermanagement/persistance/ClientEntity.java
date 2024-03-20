@@ -1,9 +1,10 @@
 package com.skipass.usermanagement.persistance;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.*;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
@@ -13,9 +14,7 @@ import lombok.*;
 @NoArgsConstructor
 public class ClientEntity {
     @Id
-    @Generated
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private Enum type;
-
 }

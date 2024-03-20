@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 
-public interface PostRepository  extends JpaRepository<PostEntity, Long> {
+public interface PostRepository extends JpaRepository<PostEntity, Long> {
     List<PostEntity> getPostEntitiesByUserIdIs(long userId);
 
     @Transactional

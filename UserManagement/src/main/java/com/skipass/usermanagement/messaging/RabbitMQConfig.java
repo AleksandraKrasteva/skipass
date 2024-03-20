@@ -1,6 +1,9 @@
 package com.skipass.usermanagement.messaging;
-import com.rabbitmq.client.impl.AMQImpl;
-import org.springframework.amqp.core.*;
+
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.FanoutExchange;
+import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,51 +14,41 @@ public class RabbitMQConfig {
     static final String fanoutExchangeName = "delete-profile";
     static final String statisticsQueueName = "delete-profile-statistics";
     static final String postsQueueName = "delete-profile-posts";
-//    static final String reactionsQueueName = "delete-profile-reactions";
     static final String journeyQueueName = "delete-profile-journey";
 
-    @Bean public Queue statisticsQueue()
-    {
-        return new Queue(statisticsQueueName);
-    }
-    @Bean public Queue postsQueue()
-    {
-        return new Queue(postsQueueName);
-    }
-//    @Bean public Queue reactionsQueue()
-//    {
-//        return new Queue(reactionsQueueName);
-//    }
-    @Bean public Queue journeyQueue()
-    {
-        return new Queue(journeyQueueName);
-    }
-
-    @Bean public FanoutExchange exchange()
-    {
+    @Bean
+    public FanoutExchange deleteProfileExchange() {
         return new FanoutExchange(fanoutExchangeName);
     }
 
     @Bean
-    public Binding statisticsBinding()
-    {
-        return BindingBuilder.bind(statisticsQueue()).to(exchange());
-    }
-//    @Bean
-//    public Binding reactionsBinding()
-//    {
-//        return BindingBuilder.bind(reactionsQueue()).to(exchange());
-//    }
-    @Bean
-    public Binding postsBinding()
-    {
-        return BindingBuilder.bind(postsQueue()).to(exchange());
+    public Queue statisticsQueue() {
+        return new Queue(statisticsQueueName);
     }
 
     @Bean
-    public Binding journeyBinding()
-    {
-        return BindingBuilder.bind(journeyQueue()).to(exchange());
+    public Queue postsQueue() {
+        return new Queue(postsQueueName);
+    }
+
+    @Bean
+    public Queue journeyQueue() {
+        return new Queue(journeyQueueName);
+    }
+
+    @Bean
+    public Binding statisticsBinding() {
+        return BindingBuilder.bind(statisticsQueue()).to(deleteProfileExchange());
+    }
+
+    @Bean
+    public Binding postsBinding() {
+        return BindingBuilder.bind(postsQueue()).to(deleteProfileExchange());
+    }
+
+    @Bean
+    public Binding journeyBinding() {
+        return BindingBuilder.bind(journeyQueue()).to(deleteProfileExchange());
     }
 }
 

@@ -5,22 +5,19 @@ import com.skipass.postmanagement.persistance.PostEntity;
 import com.skipass.postmanagement.persistance.PostRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://krakend:8080")
 @AllArgsConstructor
-@Service
 public class PostController {
 
     private final PostRepository postRepository;
 
-    @PostMapping("/createpost")
+    @PostMapping("/create-post")
     public ResponseEntity createPost(@RequestBody CreatePostRequest request) {
-        System.out.println("INPOST");
         PostEntity post = PostEntity.builder().text(request.getText()).userId(request.getUserId()).build();
         postRepository.save(post);
         return ResponseEntity.ok().build();
