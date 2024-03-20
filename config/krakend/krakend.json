@@ -48,11 +48,11 @@
       ]
     },
     {
-      "endpoint": "/createuser",
+      "endpoint": "/create-user",
       "method": "POST",
       "backend": [
         {
-          "url_pattern": "/createuser",
+          "url_pattern": "/create-user",
           "method": "POST",
           "encoding": "string",
           "host": [
@@ -62,7 +62,7 @@
       ]
     },
     {
-      "endpoint": "/createpost",
+      "endpoint": "/create-post",
       "method": "POST",
       "input_headers": [ 
         "Content-Length",
@@ -70,7 +70,7 @@
       ],
       "backend": [
         {
-          "url_pattern": "/createpost",
+          "url_pattern": "/create-post",
           "method":"POST",
           "encoding": "string",
           "host": [
@@ -80,11 +80,11 @@
       ]
     },
     {
-      "endpoint": "/getusers",
+      "endpoint": "/get-users",
       "method": "GET",
       "backend": [
         {
-          "url_pattern": "/getusers",
+          "url_pattern": "/get-users",
           "method": "GET",
           "encoding": "json",
           "is_collection": true,
@@ -110,7 +110,7 @@
       ]
     },
     {
-      "endpoint": "/deleteprofile/{userId}",
+      "endpoint": "/delete-profile/{userId}",
       "method": "DELETE",
       "backend": [
         {
@@ -124,7 +124,7 @@
       ]
     },
     {
-      "endpoint": "/deletepost/{postId}",
+      "endpoint": "/delete-post/{postId}",
       "method": "DELETE",
       "backend": [
         {
