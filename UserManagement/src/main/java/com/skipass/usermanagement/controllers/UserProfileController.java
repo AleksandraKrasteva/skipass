@@ -1,14 +1,13 @@
 package com.skipass.usermanagement.controllers;
 
 import com.skipass.usermanagement.messaging.RabbitMQProducer;
-import com.skipass.usermanagement.repository.UserEntity;
-import com.skipass.usermanagement.repository.UserRepository;
+import com.skipass.usermanagement.persistance.UserEntity;
+import com.skipass.usermanagement.persistance.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
 
@@ -42,8 +41,8 @@ public class UserProfileController {
         return ResponseEntity.ok().body(users);
     }
 
-    @DeleteMapping("/deleteprofile/{userId}")
-    public ResponseEntity deleteProfile(@PathVariable(value = "useerId") long userId) {
+    @DeleteMapping("/delete/{userId}")
+    public ResponseEntity deleteProfile(@PathVariable(value = "userId") long userId) {
         rabbitMQProducer.sendDeleteProfileForUserMessage(userId);
         userRepository.deleteById(userId);
         return ResponseEntity.ok().build();

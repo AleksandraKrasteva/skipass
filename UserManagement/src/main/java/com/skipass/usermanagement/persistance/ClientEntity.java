@@ -1,4 +1,4 @@
-package com.skipass.usermanagement.repository;
+package com.skipass.usermanagement.persistance;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

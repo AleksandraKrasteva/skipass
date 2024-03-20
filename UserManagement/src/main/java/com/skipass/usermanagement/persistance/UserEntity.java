@@ -1,4 +1,4 @@
-package com.skipass.usermanagement.repository;
+package com.skipass.usermanagement.persistance;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -16,7 +16,5 @@ public class UserEntity {
 
     private String username;
     private String email;
-
-//    private Enum type;
 
 }
