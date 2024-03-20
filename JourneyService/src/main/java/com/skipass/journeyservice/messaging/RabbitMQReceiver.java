@@ -6,8 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class RabbitMQReceiver {
     @RabbitListener(queues = "delete-profile-journey")
-    public void receiveMessage(String message)
-    {
-        System.out.println("Received message in Journey service: " + message);
+    public void receiveMessage(String message) {
+        System.out.println("Received journeys for user:: " + message);
     }
 }
