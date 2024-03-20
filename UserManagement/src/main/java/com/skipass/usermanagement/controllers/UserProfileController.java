@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin(origins = "*")
 @AllArgsConstructor
@@ -22,16 +24,28 @@ public class UserProfileController {
 
     @GetMapping("/get")
     public String test() {
-        rabbitMQProducer.sendDeleteProfileForUserMessage("please delete my profile - im a user :)");
+//        rabbitMQProducer.sendDeleteProfileForUserMessage("please delete my profile - im a user :)");
         return "success on reaching the controller";
     }
 
     @PostMapping("/createuser")
-    public ResponseEntity createUser(@RequestBody String username){
-        System.out.println("IN");
+    public ResponseEntity<Long> createUser(@RequestBody String username){
         UserEntity newUser = UserEntity.builder().email(username.concat("email.com")).username(username).build();
         var response = userRepository.save(newUser);
         System.out.println(response);
+        return ResponseEntity.ok().body(response.getId());
+    }
+
+    @GetMapping("/getusers")
+    public ResponseEntity<List<UserEntity>> getUsers(){
+        List<UserEntity> users = userRepository.findAll();
+        return ResponseEntity.ok().body(users);
+    }
+
+    @DeleteMapping("/deleteprofile/{userId}")
+    public ResponseEntity deleteProfile(@PathVariable(value = "useerId") long userId) {
+        rabbitMQProducer.sendDeleteProfileForUserMessage(userId);
+        userRepository.deleteById(userId);
         return ResponseEntity.ok().build();
     }
 

@@ -11,9 +11,9 @@ public class RabbitMQProducer {
     @Autowired
     private FanoutExchange exchange;
 
-    public void sendDeleteProfileForUserMessage(String message)
+    public void sendDeleteProfileForUserMessage(long userId)
     {
         rabbitTemplate.convertAndSend(
-                exchange.getName(), "", message);
+                exchange.getName(), "", userId);
     }
 }
