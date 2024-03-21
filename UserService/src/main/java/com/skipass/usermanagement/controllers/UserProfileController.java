@@ -4,6 +4,7 @@ import com.skipass.usermanagement.messaging.RabbitMQProducer;
 import com.skipass.usermanagement.persistance.UserEntity;
 import com.skipass.usermanagement.persistance.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +18,9 @@ public class UserProfileController {
     private final RabbitMQProducer rabbitMQProducer;
     private final UserRepository userRepository;
 
-    @PostMapping("/create-user")
+    @PostMapping(
+            path = "/create-user",
+            consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
     public ResponseEntity<Long> createUser(@RequestBody String username) {
         UserEntity newUser = UserEntity.builder().email(username.concat("email.com")).username(username).build();
         var response = userRepository.save(newUser);

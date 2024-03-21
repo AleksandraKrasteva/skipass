@@ -19,8 +19,8 @@ public class PostController {
     @PostMapping("/create-post")
     public ResponseEntity createPost(@RequestBody CreatePostRequest request) {
         PostEntity post = PostEntity.builder().text(request.getText()).userId(request.getUserId()).build();
-        postRepository.save(post);
-        return ResponseEntity.ok().build();
+        var response = postRepository.save(post);
+        return ResponseEntity.ok().body(response.getId());
     }
 
     @GetMapping("/view/{userId}")

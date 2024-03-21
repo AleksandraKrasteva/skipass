@@ -25,17 +25,40 @@
 #ENTRYPOINT ["java -jar home/gradle/src/build/libs/*.jar"]
 #
 
+#FROM gradle:latest AS build
+#COPY . /home/gradle/src
+#WORKDIR /home/gradle/src
+#RUN gradle build --no-daemon
+#
+#FROM amazoncorretto:17-al2023-jdk
+#
+#EXPOSE 8080
+#
+#RUN mkdir /app
+#
+#COPY --from=build /home/gradle/src/build/libs/*.jar /app/spring-boot-application.jar
+#
+#ENTRYPOINT ["java","-jar","/app/spring-boot-application.jar"]
+
+
 FROM gradle:latest AS build
-COPY . /home/gradle/src
-WORKDIR /home/gradle/src
+COPY . /home
+WORKDIR /home
 RUN gradle build --no-daemon
 
-FROM amazoncorretto:17-al2023-jdk
+FROM eclipse-temurin:17-jre-alpine as builder
+WORKDIR application
+COPY --from=build home/build/libs/*.jar application.jar
+RUN java -Djarmode=layertools -jar application.jar extract
 
-EXPOSE 8080
+FROM eclipse-temurin:17-jre-alpine
+WORKDIR application
+COPY --from=builder application/dependencies/ ./
+COPY --from=builder application/spring-boot-loader/ ./
+COPY --from=builder application/snapshot-dependencies/ ./
+COPY --from=builder application/application/ ./
 
-RUN mkdir /app
+ENTRYPOINT ["java", "org.springframework.boot.loader.launch.JarLauncher"]
 
-COPY --from=build /home/gradle/src/build/libs/*.jar /app/spring-boot-application.jar
 
-ENTRYPOINT ["java","-jar","/app/spring-boot-application.jar"]
+
