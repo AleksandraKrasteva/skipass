@@ -15,9 +15,9 @@ jobs:
     strategy: 
       matrix:
         include: 
-        - dockerfile: ./UserManagement/Dockerfile
+        - dockerfile: ./UserService/Dockerfile
           image: ghcr.io/AleksandraKrasteva/user-service
-          working-directory: ./UserManagement
+          working-directory: ./UserService
 
         - dockerfile: ./JourneyService/Dockerfile
           image: ghcr.io/AleksandraKrasteva/journey-service
