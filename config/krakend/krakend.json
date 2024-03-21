@@ -1,0 +1,141 @@
+{
+  "version": 3,
+  "name": "API gateaway",
+  "timeout": "3000ms",
+  "host": "localhost:8080",
+  "extra_config": {
+    "router":{
+      "return_error_msg":true,
+      "auto_options": true
+    },
+    "security/cors": {
+      "allow_origins": [
+        "http://localhost:3000"
+      ],
+      "allow_methods": [
+        "GET",
+        "HEAD",
+        "POST",
+        "DELETE",
+        "OPTIONS"
+      ],
+      "expose_headers": [
+        "Content-Length",
+        "Content-Type"
+      ],
+      "allow_headers": [
+        "Accept-Language",
+        "Content-Length",
+         "Content-Type"
+      ],
+      "allow_credentials": false,
+      "debug": true
+    }
+  },
+  "endpoints": [
+     {
+      "endpoint": "/",
+      "method": "GET",
+      "backend": [
+        {
+          "url_pattern": "/get",
+          "method": "GET",
+          "encoding": "string",
+          "host": [
+            "http://userservice:8080"
+          ]         
+         }
+      ]
+    },
+    {
+      "endpoint": "/create-user",
+      "method": "POST",
+      "backend": [
+        {
+          "url_pattern": "/create-user",
+          "method": "POST",
+          "encoding": "string",
+          "host": [
+            "http://userservice:8080"
+          ]         
+         }
+      ]
+    },
+    {
+      "endpoint": "/create-post",
+      "method": "POST",
+      "input_headers": [ 
+        "Content-Length",
+        "Content-Type"
+      ],
+      "backend": [
+        {
+          "url_pattern": "/create-post",
+          "method":"POST",
+          "encoding": "string",
+          "host": [
+            "http://postservice:8080"
+          ]         
+         }
+      ]
+    },
+    {
+      "endpoint": "/get-users",
+      "method": "GET",
+      "backend": [
+        {
+          "url_pattern": "/get-users",
+          "method": "GET",
+          "encoding": "json",
+          "is_collection": true,
+          "host": [
+            "http://userservice:8080"
+          ]         
+         }
+      ]
+    },
+    {
+      "endpoint": "/view/posts/{userId}",
+      "method": "GET",
+      "backend": [
+        {
+          "url_pattern": "/view/{userId}",
+          "method": "GET",
+          "encoding": "json",
+          "is_collection": true,
+          "host": [
+            "http://postservice:8080"
+          ]         
+         }
+      ]
+    },
+    {
+      "endpoint": "/delete-profile/{userId}",
+      "method": "DELETE",
+      "backend": [
+        {
+          "url_pattern": "/delete/{userId}",
+          "method": "DELETE",
+          "encoding": "no-op",
+          "host": [
+            "http://userservice:8080"
+          ]         
+         }
+      ]
+    },
+    {
+      "endpoint": "/delete-post/{postId}",
+      "method": "DELETE",
+      "backend": [
+        {
+          "url_pattern": "/delete/{postId}",
+          "method": "DELETE",
+          "encoding": "no-op",
+          "host": [
+            "http://postservice:8080"
+          ]         
+         }
+      ]
+    }
+  ]  
+}

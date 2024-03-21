@@ -1,61 +1,92 @@
-services:
-  client:
-    image: client:latest
-    build:
-      context: ./client
-      # target: dev
-    # environment:
-    #   NODE_ENV: prod
-    ports:
-      - 3000:3000
+volumes:
+  user_database:
+  post_database:
 
+services:
   rabbitmq:
     image: rabbitmq:management
     ports:
      - 5672:5672
      - 15672:15672
 
-  userService:
-    image: userservice:latest
+  userservice:
+    image: user-service:latest
     build:
-      context: ./UserManagement
+      context: ./UserService
     ports:
-      - 8080:8080
+      - 8081:8080
     depends_on:
       - rabbitmq
+      - user_database
 
-  postService:
-    image: postservice:latest
+  postservice:
+    image: post-service:latest
     build:
       context: ./PostManagement
     ports:
-      - 8090:8080
+      - 8082:8080
     depends_on:
-      - userService
+      - userservice
+      - post_database
 
-  statisticService:
-    image: statisticservice:latest
+  statisticservice:
+    image: statistic-service:latest
     build:
       context: ./StatisticsService
     ports:
-      - 8030:8080
+      - 8083:8080
     depends_on:
-      - userService
+      - userservice
 
-  reactionsService:
-    image: reactionssservice:latest
-    build:
-      context: ./ReactionService
-    ports:
-      - 8040:8080
-    depends_on:
-      - userService
-
-  journeySservice:
-    image: jouurneyservice:latest
+  journeyservice:
+    image: journey-service:latest
     build:
       context: ./JourneyService
     ports:
-      - 8020:8080
+      - 8085:8080
     depends_on:
-      - userService
+      - userservice
+  
+  krakend:
+    image: devopsfaith/krakend
+    volumes:
+      - ./config/krakend:/etc/krakend
+    ports:
+      - "1234:1234"
+      - "8080:8080"
+      - "8090:8090"
+    command: ["run", "-d", "-c", "/etc/krakend/krakend.json"]
+    depends_on:
+      - userservice
+      - postservice
+      - journeyservice
+      - statisticservice
+  
+  user_database:
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=users
+    ports:
+      - '5433:5432'
+    volumes: 
+      - ./volumes/user:/data
+
+  post_database:
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=posts
+    ports:
+      - '5434:5432'
+    volumes: 
+      - ./volumes/post:/data
+  
+  client:
+    image: client:latest
+    build:
+      context: ./client
+    ports:
+      - 3000:3000
