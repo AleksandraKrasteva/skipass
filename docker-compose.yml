@@ -10,7 +10,7 @@ services:
      - 15672:15672
 
   userservice:
-    image: userservice:latest
+    image: user-service:latest
     build:
       context: ./UserService
     ports:
@@ -20,7 +20,7 @@ services:
       - user_database
 
   postservice:
-    image: postservice:latest
+    image: post-service:latest
     build:
       context: ./PostManagement
     ports:
@@ -30,7 +30,7 @@ services:
       - post_database
 
   statisticservice:
-    image: statisticservice:latest
+    image: statistic-service:latest
     build:
       context: ./StatisticsService
     ports:
@@ -39,7 +39,7 @@ services:
       - userservice
 
   journeyservice:
-    image: journeyservice:latest
+    image: journey-service:latest
     build:
       context: ./JourneyService
     ports:
