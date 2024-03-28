@@ -1,5 +1,6 @@
-package com.skipass.usermanagement.persistance;
+package com.skipass.userservice.persistance;
 
+import com.skipass.userservice.domain.UserType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,4 +19,5 @@ public class UserEntity {
     private long id;
     private String username;
     private String email;
+    private UserType type;
 }

@@ -1,4 +1,4 @@
-package com.skipass.usermanagement.messaging;
+package com.skipass.userservice.messaging;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
