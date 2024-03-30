@@ -1,5 +1,6 @@
 package com.skipass.postmanagement.messaging;
 
+import com.skipass.postmanagement.business.PostService;
 import com.skipass.postmanagement.persistance.PostRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -11,12 +12,11 @@ public class RabbitMQReceiver {
 
     private RabbitMQProducer rabbitMQProducer;
 
-    private final PostRepository postRepository;
-
+    private final PostService postService;
     @RabbitListener(queues = "delete-profile-posts")
     public void receiveMessage(long userId) {
         System.out.println("Received delete posts for user: " + userId);
-        postRepository.deletePostEntitiesByUserIdIs(userId);
+        postService.deletePostsForUser(userId);
     }
 }
 

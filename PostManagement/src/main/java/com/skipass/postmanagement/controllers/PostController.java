@@ -1,6 +1,8 @@
 package com.skipass.postmanagement.controllers;
 
+import com.skipass.postmanagement.business.PostService;
 import com.skipass.postmanagement.domain.CreatePostRequest;
+import com.skipass.postmanagement.domain.CreatePostResponse;
 import com.skipass.postmanagement.persistance.PostEntity;
 import com.skipass.postmanagement.persistance.PostRepository;
 import lombok.AllArgsConstructor;
@@ -14,24 +16,23 @@ import java.util.List;
 @AllArgsConstructor
 public class PostController {
 
-    private final PostRepository postRepository;
+    private final PostService postService;
 
     @PostMapping("/create-post")
     public ResponseEntity createPost(@RequestBody CreatePostRequest request) {
-        PostEntity post = PostEntity.builder().text(request.getText()).userId(request.getUserId()).build();
-        var response = postRepository.save(post);
+        CreatePostResponse response = postService.createPost(request);
         return ResponseEntity.ok().body(response.getId());
     }
 
     @GetMapping("/view/{userId}")
     public ResponseEntity<List<PostEntity>> viewPostsForUser(@PathVariable(value = "userId") long userId) {
-        List<PostEntity> posts = postRepository.getPostEntitiesByUserIdIs(userId);
+        List<PostEntity> posts = postService.getPostsForUser(userId);
         return ResponseEntity.ok().body(posts);
     }
 
     @DeleteMapping("/delete/{postId}")
     public ResponseEntity deletePost(@PathVariable(value = "postId") long postId) {
-        postRepository.deleteById(postId);
+        postService.deletePostById(postId);
         return ResponseEntity.ok().build();
     }
 }
