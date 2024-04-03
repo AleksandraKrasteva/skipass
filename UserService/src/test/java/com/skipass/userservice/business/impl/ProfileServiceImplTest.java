@@ -25,7 +25,6 @@ class ProfileServiceImplTest {
     private UserRepository userRepository;
     @InjectMocks
     private ProfileServiceImpl profileService;
-
     @Mock
     private RabbitMQProducer rabbitMQProducer;
 
