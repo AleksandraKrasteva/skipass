@@ -1,8 +1,8 @@
-package com.skipass.usermanagement.persistance;
+package com.skipass.userservice.persistance;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ClientRepository extends JpaRepository<ClientEntity, Long> {
+public interface UserRepository extends JpaRepository<UserEntity, Long> {
 }

@@ -1,4 +1,4 @@
-package com.skipass.usermanagement.persistance;
+package com.skipass.userservice.persistance;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -16,5 +16,7 @@ public class ClientEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Enum type;
+    //    private skiusertype type;
+    private boolean acceptStatistics;
+
 }
