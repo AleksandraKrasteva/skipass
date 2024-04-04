@@ -15,8 +15,8 @@ public class RabbitMQProducer {
 
     // Routing key is not set, as the exchange is fanout
     public void sendDeleteUserProfileMessage(long userId) {
-        System.out.print("In rabbitmq ");
-        System.out.print(userId);
+        System.out.println("In rabbitmq ");
+        System.out.println(userId);
 
         rabbitTemplate.convertAndSend(
                 deleteProfileExchange.getName(), "", userId);
