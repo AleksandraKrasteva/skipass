@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@EnableRabbit
 public class RabbitMQConfig {
 
     static final String fanoutExchangeName = "delete-profile";
