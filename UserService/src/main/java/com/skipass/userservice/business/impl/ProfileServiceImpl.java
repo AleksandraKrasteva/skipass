@@ -31,7 +31,7 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public void deleteUserProfile(DeleteUserProfileRequest request) {
-        System.out.print("In delete profile service");
+        System.out.println("In delete profile service");
 
         rabbitMQProducer.sendDeleteUserProfileMessage(request.getUserID());
         userRepository.deleteById(request.getUserID());
