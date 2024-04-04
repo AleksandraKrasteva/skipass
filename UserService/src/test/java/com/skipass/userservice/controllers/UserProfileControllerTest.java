@@ -17,7 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -56,5 +56,6 @@ class UserProfileControllerTest {
         DeleteUserProfileRequest request = DeleteUserProfileRequest.builder().userID(1).build();
 
         this.mockMvc.perform(delete("/delete/1")).andExpect(status().isOk());
+        verify(service, times(1)).deleteUserProfile(request);
     }
 }

@@ -24,6 +24,7 @@ public class UserProfileController {
 
     @DeleteMapping("/delete/{userId}")
     public ResponseEntity<Long> deleteProfile(@PathVariable(value = "userId") long userId) {
+        System.out.print("In delete profile controller");
         DeleteUserProfileRequest request = DeleteUserProfileRequest.builder().userID(userId).build();
         profileService.deleteUserProfile(request);
         return ResponseEntity.ok().build();
