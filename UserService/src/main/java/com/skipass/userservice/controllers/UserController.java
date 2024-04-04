@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://krakend:8080")
+@CrossOrigin(origins = "*")
 @AllArgsConstructor
 public class UserController {
 
