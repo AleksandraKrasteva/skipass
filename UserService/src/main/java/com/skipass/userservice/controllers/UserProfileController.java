@@ -5,12 +5,14 @@ import com.skipass.userservice.domain.requests.CreateUserProfileRequest;
 import com.skipass.userservice.domain.requests.DeleteUserProfileRequest;
 import com.skipass.userservice.domain.responses.CreateUserProfileResponse;
 import lombok.AllArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://krakend:8080")
 @AllArgsConstructor
+@RequestMapping("/")
 public class UserProfileController {
 
     private final ProfileServiceImpl profileService;

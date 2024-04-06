@@ -1,4 +1,4 @@
-import { createPost, createUser, deletePost, deleteUserProfile, viewPostsForUser, viewUsers } from '@/api/requests';
+import { UserData, createPost, createUser, deletePost, deleteUserProfile, viewPostsForUser, viewUsers } from '@/api/requests';
 import { Post, User } from '@/api/types';
 import Navigation from '@/components/molecultes/Navigation';
 import { Box, Button, List, ListItem, ListItemText, MenuItem, Select, TextField, Typography } from '@mui/material';
@@ -14,7 +14,11 @@ const HomePage = () => {
 	const [postsForUser, setPostsForUser] = useState<Post[]>([]);
 
 	const createUserProfile = async() =>{
-		await createUser(username);
+		const user:UserData = {
+			username: username,
+			email: username+'@email.com'
+		};
+		await createUser(user);
 	};
 
 	const getUsers = async()=>{

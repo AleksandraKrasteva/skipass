@@ -3,8 +3,14 @@ import { Post } from './types';
 
 // This will be modied by using react query 
 
-export const createUser = (username:string) => {
-	return axios.post('http://localhost:8080/create-user', username).then((res) => {
+export type UserData = {
+	username: string;
+	email:string;
+}
+
+export const createUser = (user: UserData) => {
+
+	return axios.post('http://localhost:8080/create-user', user).then((res) => {
 		return res;
 	});
 };
