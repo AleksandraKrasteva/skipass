@@ -51,6 +51,5 @@ public class RabbitMQConfig {
         return BindingBuilder.bind(journeyQueue()).to(deleteProfileExchange());
     }
 
-
 }
 
