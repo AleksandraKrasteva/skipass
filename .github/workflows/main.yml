@@ -27,7 +27,7 @@ jobs:
       uses: gradle/actions/setup-gradle@v3
           
     - name: Test PostService
-      working-directory: ./PostService
+      working-directory: ./PostManagement
       run: ./gradlew test
       
   build:
