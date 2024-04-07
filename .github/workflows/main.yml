@@ -29,7 +29,7 @@ jobs:
          gradle-version: '8.5'
       
     - name: Test PostService      
-      run: gradle test ./PostService
+      run: gradle test ../PostService
       
   build:
     runs-on: ubuntu-latest
