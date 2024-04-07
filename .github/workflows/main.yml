@@ -19,9 +19,9 @@ jobs:
       working-directory: ./PostManagement
       run: chmod +x ./gradlew
     
-    - name: Test PostService
+    - name: build PostService
       working-directory: ./PostManagement
-      run: ./gradlew test
+      run: ./gradlew build
       
   build:
     runs-on: ubuntu-latest
