@@ -34,6 +34,10 @@ jobs:
         - dockerfile: ./client/Dockerfile
           image: ghcr.io/AleksandraKrasteva/client
           working-directory: ./client  
+
+        - dockerfile: ./Dockerfile
+          image: ghcr.io/AleksandraKrasteva/rabbitmq
+          working-directory: ./
     permissions:
       contents: read
       packages: write
