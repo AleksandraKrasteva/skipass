@@ -14,6 +14,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+
+    - name: Change wrapper permissions
+      working-directory: ./PostManagement
+      run: chmod +x ./gradlew
     
     - name: Test PostService
       working-directory: ./PostManagement
