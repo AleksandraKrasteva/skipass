@@ -14,15 +14,10 @@ import org.springframework.stereotype.Service;
 
 
 @AllArgsConstructor
-//@EnableRabbit
 @Component
-//@Service
-//@AllArgsConstructor
 public class RabbitMQReceiver {
 
     private final PostService postService;
-//    @RabbitHandler
-
     @RabbitListener(queues = "delete-profile-posts")
     public void receiveMessage(long userId) {
         System.out.println("Received delete posts for user: " + userId);
