@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@EnableRabbit
 public class RabbitMQConfig {
 
     static final String fanoutExchangeName = "delete-profile";
@@ -19,7 +18,7 @@ public class RabbitMQConfig {
 
     @Bean
     public FanoutExchange deleteProfileExchange() {
-        return new FanoutExchange(fanoutExchangeName);
+        return new FanoutExchange(fanoutExchangeName, true, false);
     }
 
     @Bean
@@ -29,7 +28,7 @@ public class RabbitMQConfig {
 
     @Bean
     public Queue postsQueue() {
-        return new Queue(postsQueueName);
+        return new Queue(postsQueueName, true);
     }
 
     @Bean
@@ -51,5 +50,6 @@ public class RabbitMQConfig {
     public Binding journeyBinding() {
         return BindingBuilder.bind(journeyQueue()).to(deleteProfileExchange());
     }
+
 }
 

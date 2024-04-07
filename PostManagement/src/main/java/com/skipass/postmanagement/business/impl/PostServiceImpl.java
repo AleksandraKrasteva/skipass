@@ -38,6 +38,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void deletePostsForUser(long userId) {
+        System.out.print("In delete posts for user");
         postRepository.deletePostEntitiesByUserIdIs(userId);
     }
 }
