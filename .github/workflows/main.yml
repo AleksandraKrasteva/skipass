@@ -33,7 +33,7 @@ jobs:
     
     - name: build PostService
       working-directory: ./PostManagement
-      run: ./gradlew build
+      run: ./gradlew test -i
       
   build:
     runs-on: ubuntu-latest
