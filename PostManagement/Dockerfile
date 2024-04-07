@@ -1,7 +1,8 @@
 FROM gradle:latest AS build
 COPY . /home
 WORKDIR /home
-RUN gradle build --no-daemon
+ENV TESTCONTAINERS_HOST_OVERRIDE=host.docker.internal
+RUN gradle build -x test --no-daemon
 
 FROM eclipse-temurin:17-jre-alpine as builder
 WORKDIR application

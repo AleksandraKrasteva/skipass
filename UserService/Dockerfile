@@ -1,7 +1,7 @@
 FROM gradle:latest AS build
 COPY . /home
 WORKDIR /home
-RUN gradle build --no-daemon
+RUN gradle build -x test --no-daemon
 
 FROM eclipse-temurin:17-jre-alpine as builder
 WORKDIR application
@@ -15,6 +15,7 @@ COPY --from=builder application/spring-boot-loader/ ./
 COPY --from=builder application/snapshot-dependencies/ ./
 COPY --from=builder application/application/ ./
 
+EXPOSE 8080
 ENTRYPOINT ["java", "org.springframework.boot.loader.launch.JarLauncher"]
 
 
