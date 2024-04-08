@@ -3,11 +3,18 @@ package com.skipass.postmanagement.integration;
 import com.skipass.postmanagement.PostManagementApplication;
 import com.skipass.postmanagement.persistance.PostEntity;
 import com.skipass.postmanagement.persistance.PostRepository;
+import org.apache.catalina.filters.CorsFilter;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
+import org.springframework.core.env.Environment;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.web.client.RestTemplate;
@@ -19,6 +26,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Testcontainers()
+@Profile("test")
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
         classes = PostManagementApplication.class)
@@ -37,7 +45,6 @@ public class UserServiceIntegration {
             .parse("postgres")).withDatabaseName("posts");
     static GenericContainer userService =  new GenericContainer((DockerImageName
             .parse("ghcr.io/aleksandrakrasteva/user-service:main")));
-
 
     @DynamicPropertySource
     static void registerProperties(DynamicPropertyRegistry registry) {
@@ -79,6 +86,7 @@ public class UserServiceIntegration {
 
     @Test
     void deletePostsForUserRabbitMQListenerTest()  {
+
         List<PostEntity> before = repository.getPostEntitiesByUserIdIs(1);
 
         RestTemplate restTemplate = new RestTemplate();
