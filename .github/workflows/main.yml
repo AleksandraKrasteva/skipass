@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - ci-setup
 
 env: 
   REGISTRY: ghcr.io
