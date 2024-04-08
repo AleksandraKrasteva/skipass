@@ -53,11 +53,11 @@ public class UserServiceIntegration {
     @BeforeAll
     public static void setUserService(){
         postsPostgres.withNetwork(network).start();
-        userPostgres.withNetwork(network).start();
+        userPostgres.withNetwork(network).withNetworkAliases("userdb").start();
         rabbit.withNetwork(network).start();
         userService
                 .withEnv("spring.profiles.active", "test")
-                .withEnv("spring.datasource.url", "jdbc:postgresql:/"+ userPostgres.getContainerName() + ":5432/users")
+                .withEnv("spring.datasource.url", "jdbc:postgresql://userdb:5432/users")
                 .withEnv("spring.datasource.username", userPostgres.getUsername())
                 .withEnv("spring.datasource.password", userPostgres.getPassword())
                 .withEnv("spring.rabbitmq.host", rabbit.getContainerName().substring(1))
