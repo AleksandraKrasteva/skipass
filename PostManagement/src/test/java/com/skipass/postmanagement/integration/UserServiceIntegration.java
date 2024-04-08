@@ -66,6 +66,9 @@ public class UserServiceIntegration {
                 .withExposedPorts(8080)
                 .withNetwork(network)
                 .start();
+
+        final String logs = userService.getLogs();
+        System.out.println(logs);
     }
 
     @BeforeEach
@@ -75,7 +78,7 @@ public class UserServiceIntegration {
     }
 
     @Test
-    void deletePostsForUserRabbitMQListenerTest() throws InterruptedException {
+    void deletePostsForUserRabbitMQListenerTest()  {
         List<PostEntity> before = repository.getPostEntitiesByUserIdIs(1);
 
         RestTemplate restTemplate = new RestTemplate();
