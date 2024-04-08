@@ -44,7 +44,7 @@ public class UserServiceIntegration {
     static PostgreSQLContainer postsPostgres = new PostgreSQLContainer(DockerImageName
             .parse("postgres")).withDatabaseName("posts");
     static GenericContainer userService =  new GenericContainer((DockerImageName
-            .parse("ghcr.io/aleksandrakrasteva/user-service:main")));
+            .parse("ghcr.io/aleksandrakrasteva/user-service:ci-setup")));
 
     @DynamicPropertySource
     static void registerProperties(DynamicPropertyRegistry registry) {
