@@ -90,6 +90,9 @@ public class UserServiceIntegration {
 
         restTemplate.delete(deleteUserProfileEndpoint);
 
+        final String logs = userService.getLogs();
+        System.out.println(logs);
+
         List<PostEntity> posts = repository.getPostEntitiesByUserIdIs(1);
 
         assertEquals(1, before.size());
