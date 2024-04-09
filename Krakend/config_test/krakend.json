@@ -42,7 +42,7 @@
           "method": "GET",
           "encoding": "string",
           "host": [
-            "http://userservice:8080"
+            "http://$user_service:8080"
           ]         
          }
       ]
@@ -56,7 +56,7 @@
           "method": "POST",
           "encoding": "string",
           "host": [
-            "http://userservice:8080"
+            "http://$user_service:8080"
           ]         
          }
       ]
@@ -89,7 +89,7 @@
           "encoding": "json",
           "is_collection": true,
           "host": [
-            "http://userservice:8080"
+            "http://$user_service:8080"
           ]         
          }
       ]
@@ -118,7 +118,7 @@
           "method": "DELETE",
           "encoding": "no-op",
           "host": [
-            "http://userservice:8080"
+            "http://$user_service:8080"
           ]         
          }
       ]
