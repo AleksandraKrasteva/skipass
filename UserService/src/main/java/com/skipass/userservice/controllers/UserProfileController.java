@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
+@CrossOrigin("http://krakend:8080")
 @RequestMapping("/")
 public class UserProfileController {
 

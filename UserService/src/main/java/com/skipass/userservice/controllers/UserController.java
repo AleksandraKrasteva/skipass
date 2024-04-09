@@ -20,7 +20,7 @@ import java.util.List;
 @RestController
 //@CrossOrigin(origins = "http://krakend:808")
 @AllArgsConstructor
-@CrossOrigin
+@CrossOrigin("http://krakend:8080")
 @RequestMapping("/")
 //@PropertySource("{value.from.file}")
 //@PropertySource("classpath:/com/${my.placeholder:default/path}/app.properties")
