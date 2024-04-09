@@ -7,8 +7,8 @@ RUN chown -R foouser:foouser /var/lib/rabbitmq
 
 VOLUME ["/var/lib/rabbitmq"]
 
-COPY config/rabbitmq/definitions.json /etc/rabbitmq
-COPY config/rabbitmq/rabbitmq.conf /etc/rabbitmq
+COPY config/definitions.json /etc/rabbitmq
+COPY config/rabbitmq.conf /etc/rabbitmq
 
 # enable RabbitMQ management plugin
 RUN rabbitmq-plugins enable --offline rabbitmq_management
