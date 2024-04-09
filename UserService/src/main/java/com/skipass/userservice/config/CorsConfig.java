@@ -66,7 +66,7 @@ public class CorsConfig {
 //        config.setMaxAge(3600L);
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
-    }C
+    }
 }
 
 
