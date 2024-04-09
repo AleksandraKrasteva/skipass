@@ -67,7 +67,7 @@ jobs:
 
         - dockerfile: ./RabbitMQ/Dockerfile
           image: ghcr.io/AleksandraKrasteva/rabbitmq
-          working-directory: ./
+          working-directory: ./RabbitMQ
           
 
     permissions:
