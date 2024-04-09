@@ -35,41 +35,7 @@ jobs:
     - name: build PostService
       working-directory: ./PostManagement
       run: ./gradlew test -i
-      
-  codacy-security-scan:
-    permissions:
-      contents: read # for actions/checkout to fetch code
-      security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
-      actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
-    name: Codacy Security Scan
-    runs-on: ubuntu-latest
-    steps:
-      # Checkout the repository to the GitHub Actions runner
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      # Execute Codacy Analysis CLI and generate a SARIF output with the security issues identified during the analysis
-      - name: Run Codacy Analysis CLI
-        uses: codacy/codacy-analysis-cli-action@d840f886c4bd4edc059706d09c6a1586111c540b
-        with:
-          # Check https://github.com/codacy/codacy-analysis-cli#project-token to get your project token from your Codacy repository
-          # You can also omit the token and run the tools that support default configurations
-          project-token: ${{ secrets.CODACY_TOKEN }}
-          verbose: true
-          output: results.sarif
-          format: sarif
-          # Adjust severity of non-security issues
-          gh-code-scanning-compat: true
-          # Force 0 exit code to allow SARIF file generation
-          # This will handover control about PR rejection to the GitHub side
-          max-allowed-issues: 2147483647
-
-      # Upload the SARIF file generated in the previous step
-      - name: Upload SARIF results file
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: results.sarif
-          
+             
   build:
     runs-on: ubuntu-latest
     strategy: 
@@ -95,9 +61,15 @@ jobs:
           image: ghcr.io/AleksandraKrasteva/client
           working-directory: ./client  
 
-        - dockerfile: ./Dockerfile
+        - dockerfile: ./Krakend/Dockerfile
+          image: ghcr.io/AleksandraKrasteva/krakend_test
+          working-directory: ./Krakend
+
+        - dockerfile: ./RabbitMQ/Dockerfile
           image: ghcr.io/AleksandraKrasteva/rabbitmq
-          working-directory: ./
+          working-directory: ./RabbitMQ
+          
+
     permissions:
       contents: read
       packages: write
