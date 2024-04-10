@@ -34,7 +34,7 @@ jobs:
     
     - name: build PostService
       working-directory: ./PostManagement
-      run: ./gradlew jacocoTestReport
+      run: ./gradlew test
       
     - name: Codacy Report
       uses: codacy/codacy-coverage-reporter-action@v1.3.0
