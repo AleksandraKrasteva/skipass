@@ -41,10 +41,8 @@
           "url_pattern": "/get",
           "method": "GET",
           "encoding": "string",
-          "host": [
-            "http://$user_service:8080"
-          ]         
-         }
+          "host":"http://user-service:8080"
+        }
       ]
     },
     {
@@ -56,7 +54,7 @@
           "method": "POST",
           "encoding": "string",
           "host": [
-            "http://$user_service:8080"
+            "http://user-service:8080"
           ]         
          }
       ]
@@ -89,7 +87,7 @@
           "encoding": "json",
           "is_collection": true,
           "host": [
-            "http://$user_service:8080"
+            "http://user-service:8080"
           ]         
          }
       ]
@@ -118,7 +116,7 @@
           "method": "DELETE",
           "encoding": "no-op",
           "host": [
-            "http://$user_service:8080"
+            "http://user-service:8080"
           ]         
          }
       ]
