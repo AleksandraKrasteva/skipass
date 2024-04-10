@@ -54,8 +54,3 @@ jacocoTestReport {
         html.outputLocation = layout.buildDirectory.dir('reports')
     }
 }
-
-//jacoco {
-//    toolVersion = "0.8.11"
-//    reportsDirectory = layout.buildDirectory.dir('cust')
-//}
