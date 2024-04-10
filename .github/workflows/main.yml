@@ -36,18 +36,18 @@ jobs:
       uses: docker/setup-buildx-action@v3
 
     - name: Change wrapper permissions
-      working-directory: ${{matrix.image}}
+      working-directory: ${{matrix.directory}}
       run: chmod +x ./gradlew
     
     - name: Run tests for service
-      working-directory: ${{matrix.image}}
+      working-directory: ${{matrix.directory}}
       run: ./gradlew test
       
     - name: Add test report to Codacy
       uses: codacy/codacy-coverage-reporter-action@v1.3.0
       with:
           api-token: ${{ secrets.CODACY_TOKEN }}
-          coverage-reports: ${{matrix.image}}/build/reports/jacoco/test/jacocoTestReport.xml
+          coverage-reports: ${{matrix.directory}}/build/reports/jacoco/test/jacocoTestReport.xml
           language: java     
 
   build:
