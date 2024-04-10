@@ -19,6 +19,7 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.web.client.RestTemplate;
 import org.testcontainers.containers.*;
+import org.testcontainers.images.PullPolicy;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 import java.util.List;
@@ -38,13 +39,19 @@ public class UserServiceIntegration {
 
     static RabbitMQContainer rabbit = new RabbitMQContainer(DockerImageName
             .parse("ghcr.io/aleksandrakrasteva/rabbitmq:main")
-            .asCompatibleSubstituteFor("rabbitmq"));
+            .asCompatibleSubstituteFor("rabbitmq"))
+            .withImagePullPolicy(PullPolicy.alwaysPull());
     static PostgreSQLContainer userPostgres = new PostgreSQLContainer(DockerImageName
             .parse("postgres")).withDatabaseName("users");
     static PostgreSQLContainer postsPostgres = new PostgreSQLContainer(DockerImageName
             .parse("postgres")).withDatabaseName("posts");
     static GenericContainer userService =  new GenericContainer((DockerImageName
-            .parse("ghcr.io/aleksandrakrasteva/user-service:ci-setup")));
+            .parse("ghcr.io/aleksandrakrasteva/user-service:ci-setup")))
+            .withImagePullPolicy(PullPolicy.alwaysPull());
+
+    static GenericContainer krakendContainer = new GenericContainer(DockerImageName
+            .parse("ghcr.io/aleksandrakrasteva/krakend_test:ci-setup"))
+            .withImagePullPolicy(PullPolicy.alwaysPull());
 
     @DynamicPropertySource
     static void registerProperties(DynamicPropertyRegistry registry) {
@@ -70,8 +77,12 @@ public class UserServiceIntegration {
                 .withEnv("spring.rabbitmq.host", "rabbitmq")
                 .withEnv("spring.rabbitmq.username", rabbit.getAdminUsername())
                 .withEnv("spring.rabbitmq.password", rabbit.getAdminPassword())
+                .withNetworkAliases("user-service")
                 .withExposedPorts(8080)
                 .withNetwork(network)
+                .start();
+
+        krakendContainer.withNetwork(network).withNetworkAliases("krakend").withExposedPorts(8080)
                 .start();
 
         final String logs = userService.getLogs();
@@ -92,9 +103,9 @@ public class UserServiceIntegration {
         RestTemplate restTemplate = new RestTemplate();
 
         String deleteUserProfileEndpoint = "http://"
-                + userService.getHost()
-                + ":"  + userService.getMappedPort(8080)
-                + "/delete/1";
+                + krakendContainer.getHost()
+                + ":"  + krakendContainer.getMappedPort(8080)
+                + "/delete-profile/1";
 
         restTemplate.delete(deleteUserProfileEndpoint);
 
