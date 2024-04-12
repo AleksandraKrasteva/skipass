@@ -82,7 +82,9 @@ jacocoTestReport {
 					"com/skipass/userservice/domain",
 					"com/skipass/userservice/persistance",
 					"com/skipass/userservice/config",
-					"com/skipass/userservice/business/*Service.*"
+					"com/skipass/userservice/business/ProfileService.java",
+					"com/skipass/userservice/business/UserService.java"
+
 
 			])
 		}))
