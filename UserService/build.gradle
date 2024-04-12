@@ -48,26 +48,28 @@ test {
 	finalizedBy jacocoTestReport
 }
 
-//task unitTests(type: Test) {
-//	useJUnitPlatform {
-//		excludeTags 'integration'
-//	}
-//	description 'run integration tests'
-//	finalizedBy jacocoTestReport
-//}
-//
-//task integrationTests(type: Test) {
-//	useJUnitPlatform {
-//		excludeTags 'unit'
-//	}
-//	description 'run unit tests'
-//	finalizedBy jacocoTestReport
-//
-//}
+task unitTests(type: Test) {
+	useJUnitPlatform {
+		excludeTags 'integration'
+	}
+	description 'run integration tests'
+	finalizedBy jacocoTestReport
+}
+
+task integrationTests(type: Test) {
+	useJUnitPlatform {
+		excludeTags 'unit'
+	}
+	description 'run unit tests'
+	finalizedBy jacocoTestReport
+
+}
 
 jacocoTestReport {
-	dependsOn test
+//	dependsOn test
 //executionData(unitTests, integrationTests)
+	dependsOn integrationTests
+	dependsOn unitTests
 
 	reports {
 		xml.required = true
@@ -78,7 +80,9 @@ jacocoTestReport {
 		classDirectories.setFrom(files(classDirectories.files.collect {
 			fileTree(dir: it, exclude: [
 					"com/skipass/userservice/domain",
-					"com/skipass/userservice/persistance"
+					"com/skipass/userservice/persistance",
+					"com/skipass/userservice/config",
+
 			])
 		}))
 	}
