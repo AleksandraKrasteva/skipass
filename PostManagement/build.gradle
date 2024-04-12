@@ -66,9 +66,9 @@ task integrationTests(type: Test) {
 }
 jacocoTestReport {
 //    dependsOn test
-    dependsOn unitTests
-    dependsOn integrationTests
-//    executionData(unitTests, integrationTests)
+//    dependsOn unitTests
+//    dependsOn integrationTests
+    executionData(unitTests, integrationTests)
 //
     reports {
         xml.required = true
