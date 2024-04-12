@@ -65,10 +65,10 @@ task integrationTests(type: Test) {
     finalizedBy jacocoTestReport
 }
 jacocoTestReport {
-//    dependsOn test
+    dependsOn test
 //    dependsOn unitTests
 //    dependsOn integrationTests
-    executionData(unitTests, integrationTests)
+//    executionData(unitTests, integrationTests)
 //
     reports {
         xml.required = true
@@ -80,7 +80,7 @@ jacocoTestReport {
             fileTree(dir: it, exclude: [
                     "com/skipass/postmanagement/domain",
                     "com/skipass/postmanagement/persistance",
-                    "com/skipass/postmanagement/business/*Service*"
+                    "com/skipass/postmanagement/business/*Service.*"
 
             ])
         }))
