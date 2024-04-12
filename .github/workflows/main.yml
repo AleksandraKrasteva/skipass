@@ -17,9 +17,10 @@ jobs:
       matrix:
         include: 
         - directory: ./UserService
-        - directory: ./JourneyService
         - directory: ./PostManagement
-        - directory: ./StatisticsService
+        # The other services are not currently implemented
+        # - directory: ./JourneyService
+        # - directory: ./StatisticsService
 
     steps:
     - uses: actions/checkout@v4    
@@ -34,11 +35,7 @@ jobs:
 
     - name: Setup Docker Buildx
       uses: docker/setup-buildx-action@v3
-
-    # - name: Change wrapper permissions
-    #   working-directory: ${{matrix.directory}}
-    #   run: chmod +x ./gradlew
-    
+  
     - name: Run unit tests for service
       working-directory: ${{matrix.directory}}
       run: ./gradlew unitTests
