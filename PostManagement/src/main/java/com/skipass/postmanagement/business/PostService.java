@@ -12,7 +12,8 @@ import java.util.List;
 public interface PostService {
 
     List<PostEntity> getPostsForUser(long userId);
-    List<PostEntity> getAllPosts();
+
+//    List<PostEntity> getAllPosts(); Currently not used
     void deletePostById(long postId);
     CreatePostResponse createPost(CreatePostRequest request);
 

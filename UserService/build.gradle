@@ -82,6 +82,7 @@ executionData(unitTests, integrationTests)
 					"com/skipass/userservice/domain",
 					"com/skipass/userservice/persistance",
 					"com/skipass/userservice/config",
+					"com/skipass/userservice/business/*Service"
 
 			])
 		}))
