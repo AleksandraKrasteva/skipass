@@ -48,26 +48,26 @@ test {
 	finalizedBy jacocoTestReport
 }
 
-task unitTests(type: Test) {
-	useJUnitPlatform {
-		excludeTags 'integration'
-	}
-	description 'run integration tests'
-	finalizedBy jacocoTestReport
-}
-
-task integrationTests(type: Test) {
-	useJUnitPlatform {
-		excludeTags 'unit'
-	}
-	description 'run unit tests'
-	finalizedBy jacocoTestReport
-
-}
+//task unitTests(type: Test) {
+//	useJUnitPlatform {
+//		excludeTags 'integration'
+//	}
+//	description 'run integration tests'
+//	finalizedBy jacocoTestReport
+//}
+//
+//task integrationTests(type: Test) {
+//	useJUnitPlatform {
+//		excludeTags 'unit'
+//	}
+//	description 'run unit tests'
+//	finalizedBy jacocoTestReport
+//
+//}
 
 jacocoTestReport {
-//	dependsOn test
-executionData(unitTests, integrationTests)
+	dependsOn test
+//executionData(unitTests, integrationTests)
 
 	reports {
 		xml.required = true
