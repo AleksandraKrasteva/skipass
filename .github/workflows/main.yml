@@ -35,9 +35,9 @@ jobs:
     - name: Setup Docker Buildx
       uses: docker/setup-buildx-action@v3
 
-    - name: Change wrapper permissions
-      working-directory: ${{matrix.directory}}
-      run: chmod +x ./gradlew
+    # - name: Change wrapper permissions
+    #   working-directory: ${{matrix.directory}}
+    #   run: chmod +x ./gradlew
     
     - name: Run unit tests for service
       working-directory: ${{matrix.directory}}
@@ -46,6 +46,10 @@ jobs:
     - name: Run integration tests for service
       working-directory: ${{matrix.directory}}
       run: ./gradlew integrationTests
+ 
+    - name: Run jacocoTestReport
+      working-directory: ${{matrix.directory}}
+      run: ./gradlew jacocoTestReport
       
     - name: Add test report to Codacy
       uses: codacy/codacy-coverage-reporter-action@v1.3.0
