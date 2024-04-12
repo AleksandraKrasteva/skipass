@@ -8,6 +8,7 @@ import com.skipass.userservice.domain.responses.CreateUserProfileResponse;
 import com.skipass.userservice.messaging.RabbitMQProducer;
 import com.skipass.userservice.persistance.UserEntity;
 import com.skipass.userservice.persistance.UserRepository;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -29,6 +30,7 @@ class ProfileServiceImplTest {
     private RabbitMQProducer rabbitMQProducer;
 
     @Test
+    @Tag("unit")
     void createUserProfile() {
         CreateUserProfileRequest request = CreateUserProfileRequest.builder().email("email@gmail.com").username("username").build();
         UserEntity createdUser = UserEntity.builder().type(UserType.CLIENT).email("email@gmail.com").username("username").build();
@@ -43,6 +45,7 @@ class ProfileServiceImplTest {
     }
 
     @Test
+    @Tag("unit")
     void deleteUserProfile() {
         DeleteUserProfileRequest request = DeleteUserProfileRequest.builder().userID(1).build();
 

@@ -6,6 +6,7 @@ import com.skipass.postmanagement.persistance.PostRepository;
 import org.apache.catalina.filters.CorsFilter;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,7 +28,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Testcontainers()
-@Profile("test")
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
         classes = PostManagementApplication.class)
@@ -96,6 +96,7 @@ public class UserServiceIntegration {
     }
 
     @Test
+    @Tag("integration")
     void deletePostsForUserRabbitMQListenerTest()  {
 
         List<PostEntity> before = repository.getPostEntitiesByUserIdIs(1);

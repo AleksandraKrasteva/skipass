@@ -8,6 +8,7 @@ import com.skipass.userservice.domain.requests.CreateUserProfileRequest;
 import com.skipass.userservice.domain.requests.DeleteUserProfileRequest;
 import com.skipass.userservice.domain.responses.CreateUserProfileResponse;
 import com.skipass.userservice.persistance.UserEntity;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -38,6 +39,7 @@ class UserProfileControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
+    @Tag("unit")
     void createUser() throws Exception {
         CreateUserProfileResponse response = CreateUserProfileResponse.builder().id(1).build();
         CreateUserProfileRequest request = CreateUserProfileRequest.builder().email("email").username("username").build();

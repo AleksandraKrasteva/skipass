@@ -1,3 +1,5 @@
+import org.gradle.api.tasks.testing.Test
+
 plugins {
     id 'java'
     id 'org.springframework.boot' version '3.2.3'
@@ -46,11 +48,42 @@ tasks.named('test') {
 test {
     finalizedBy jacocoTestReport // report is always generated after tests run
 }
+
+task unitTests(type: Test) {
+    useJUnitPlatform {
+        excludeTags 'integration'
+    }
+    description 'run integration tests'
+    finalizedBy jacocoTestReport
+}
+
+task integrationTests(type: Test) {
+    useJUnitPlatform {
+        excludeTags 'unit'
+    }
+    description 'run unit tests'
+    finalizedBy jacocoTestReport
+}
+
 jacocoTestReport {
-    dependsOn test // tests are required to run before generating the report
+//    dependsOn test // tests are required to run before generating the report
+    executionData(test, unitTests, integrationTests)
+
     reports {
         xml.required = true
         csv.required = false
         html.outputLocation = layout.buildDirectory.dir('reports')
     }
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    "com/skipass/postmanagement/domain",
+                    "com/skipass/postmanagement/persistance"
+            ])
+        }))
+    }
 }
+
+
+
+

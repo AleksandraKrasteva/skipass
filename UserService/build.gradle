@@ -54,4 +54,29 @@ jacocoTestReport {
 		csv.required = false
 		html.outputLocation = layout.buildDirectory.dir('reports')
 	}
+	afterEvaluate {
+		classDirectories.setFrom(files(classDirectories.files.collect {
+			fileTree(dir: it, exclude: [
+					"com/skipass/userservice/domain",
+					"com/skipass/userservice/persistance"
+			])
+		}))
+	}
+}
+
+task unitTests(type: Test) {
+	useJUnitPlatform {
+		excludeTags 'integration'
+	}
+	description 'run integration tests'
+	finalizedBy jacocoTestReport
+}
+
+task integrationTests(type: Test) {
+	useJUnitPlatform {
+		excludeTags 'unit'
+	}
+	description 'run unit tests'
+	finalizedBy jacocoTestReport
+
 }
