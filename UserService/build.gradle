@@ -48,7 +48,9 @@ test {
 	finalizedBy jacocoTestReport
 }
 jacocoTestReport {
-	dependsOn test
+//	dependsOn test
+    executionData(unitTests, integrationTests)
+
 	reports {
 		xml.required = true
 		csv.required = false
