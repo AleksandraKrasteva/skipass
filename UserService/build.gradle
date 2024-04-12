@@ -47,24 +47,6 @@ tasks.named('test') {
 test {
 	finalizedBy jacocoTestReport
 }
-jacocoTestReport {
-//	dependsOn test
-    executionData(unitTests, integrationTests)
-
-	reports {
-		xml.required = true
-		csv.required = false
-		html.outputLocation = layout.buildDirectory.dir('reports')
-	}
-	afterEvaluate {
-		classDirectories.setFrom(files(classDirectories.files.collect {
-			fileTree(dir: it, exclude: [
-					"com/skipass/userservice/domain",
-					"com/skipass/userservice/persistance"
-			])
-		}))
-	}
-}
 
 task unitTests(type: Test) {
 	useJUnitPlatform {
@@ -81,4 +63,23 @@ task integrationTests(type: Test) {
 	description 'run unit tests'
 	finalizedBy jacocoTestReport
 
+}
+
+jacocoTestReport {
+//	dependsOn test
+executionData(unitTests, integrationTests)
+
+	reports {
+		xml.required = true
+		csv.required = false
+		html.outputLocation = layout.buildDirectory.dir('reports')
+	}
+	afterEvaluate {
+		classDirectories.setFrom(files(classDirectories.files.collect {
+			fileTree(dir: it, exclude: [
+					"com/skipass/userservice/domain",
+					"com/skipass/userservice/persistance"
+			])
+		}))
+	}
 }
