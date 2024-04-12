@@ -80,7 +80,7 @@ jacocoTestReport {
             fileTree(dir: it, exclude: [
                     "com/skipass/postmanagement/domain",
                     "com/skipass/postmanagement/persistance",
-                    "com/skipass/postmanagement/business/*Service.java"
+                    "com/skipass/postmanagement/business/*Service*"
 
             ])
         }))
