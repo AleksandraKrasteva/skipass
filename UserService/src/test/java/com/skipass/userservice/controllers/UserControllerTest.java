@@ -1,7 +1,7 @@
 package com.skipass.userservice.controllers;
 
 
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -43,5 +43,7 @@ class UserControllerTest {
 
         this.mockMvc.perform(get("/get-users")).andExpect(status().isOk())
                 .andExpect(content().json("[{\"id\":1,\"username\":\"username\",\"email\":\"email@gmail.com\",\"type\":\"CLIENT\"},{\"id\":2,\"username\":\"username2\",\"email\":\"email2@gmail.com\",\"type\":\"CLIENT\"}]"));
+
+        verify(service, times(1)).getAllUsers();
     }
 }

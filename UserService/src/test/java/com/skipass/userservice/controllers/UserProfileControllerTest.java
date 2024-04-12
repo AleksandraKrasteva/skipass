@@ -51,6 +51,8 @@ class UserProfileControllerTest {
                         .content(objectMapper.writeValueAsString(request)))
                 .andDo(print()).andExpect(status().isOk())
                 .andExpect(content().json("1"));
+        verify(service, times(1)).createUserProfile(request);
+
     }
 
     @Test

@@ -47,6 +47,7 @@ class PostControllerTest {
                         .content(objectMapper.writeValueAsString(request)))
                 .andDo(print()).andExpect(status().isOk())
                 .andExpect(content().json("1"));
+        verify(service, times(1)).createPost(request);
     }
 
     @Test
@@ -60,6 +61,9 @@ class PostControllerTest {
 
         this.mockMvc.perform(get("/view/1")).andExpect(status().isOk())
                 .andExpect(content().json("[{\"id\":1,\"text\":\"\",\"userId\":1},{\"id\":2,\"text\":\"\",\"userId\":1},{\"id\":3,\"text\":\"\",\"userId\":1}]"));
+
+        verify(service, times(1)).getPostsForUser(1);
+
     }
 
     @Test

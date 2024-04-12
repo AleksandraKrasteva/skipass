@@ -39,12 +39,12 @@ class PostServiceImplTest {
         assertEquals(3, actual.size());
         verify(postRepository, times(1)).getPostEntitiesByUserIdIs(1);
     }
-
-    @Test
-    @Tag("unit")
-    void getAllPosts() {
-
-    }
+// Not implemented
+//    @Test
+//    @Tag("unit")
+//    void getAllPosts() {
+//
+//    }
 
     @Test
     @Tag("unit")
