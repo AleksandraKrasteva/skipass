@@ -33,24 +33,6 @@ services:
     depends_on:
       - userservice
       - post_database
-
-  statisticservice:
-    image: statistic-service:latest
-    build:
-      context: ./StatisticsService
-    ports:
-      - 8083:8080
-    depends_on:
-      - userservice
-
-  journeyservice:
-    image: journey-service:latest
-    build:
-      context: ./JourneyService
-    ports:
-      - 8085:8080
-    depends_on:
-      - userservice
   
   krakend:
     image: devopsfaith/krakend
@@ -60,19 +42,17 @@ services:
       - "1234:1234"
       - "8080:8080"
       - "8090:8090"
-    command: ["run", "-d", "-c", "/etc/krakend/krakend.json"]
+    command: ["run", "-d", "-c", "/etc/krakend.json"]
     depends_on:
       - userservice
       - postservice
-      - journeyservice
-      - statisticservice
   
   user_database:
     image: postgres
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=users
+      - POSTGRES_USER=${POSTGRES_USER_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_USER_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_USER_DB}
     ports:
       - '5433:5432'
     volumes: 
@@ -81,9 +61,9 @@ services:
   post_database:
     image: postgres
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=posts
+      - POSTGRES_USER=${POSTGRES_POST_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_POST_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_POST_DB}
     ports:
       - '5434:5432'
     volumes: 
@@ -95,3 +75,22 @@ services:
       context: ./client
     ports:
       - 3000:3000
+
+   # Curently those services are not being worked on 
+  # statisticservice:
+  #   image: statistic-service:latest
+  #   build:
+  #     context: ./StatisticsService
+  #   ports:
+  #     - 8083:8080
+  #   depends_on:
+  #     - userservice
+
+  # journeyservice:
+  #   image: journey-service:latest
+  #   build:
+  #     context: ./JourneyService
+  #   ports:
+  #     - 8085:8080
+  #   depends_on:
+  #     - userservice
