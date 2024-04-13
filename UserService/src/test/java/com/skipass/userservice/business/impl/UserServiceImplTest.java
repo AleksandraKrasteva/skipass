@@ -4,6 +4,7 @@ import com.skipass.userservice.business.UserService;
 import com.skipass.userservice.domain.UserType;
 import com.skipass.userservice.persistance.UserEntity;
 import com.skipass.userservice.persistance.UserRepository;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,6 +26,7 @@ class UserServiceImplTest {
     private UserServiceImpl userService;
 
     @Test
+    @Tag("unit")
     void getAllUsers() {
         UserEntity userOne = UserEntity.builder().type(UserType.CLIENT).id(1).email("email@gmail.com").username("username").build();
         UserEntity userTwo = UserEntity.builder().type(UserType.CLIENT).id(2).email("email2@gmail.com").username("username2").build();

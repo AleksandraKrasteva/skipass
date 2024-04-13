@@ -6,6 +6,7 @@ import com.skipass.postmanagement.business.impl.PostServiceImpl;
 import com.skipass.postmanagement.domain.CreatePostRequest;
 import com.skipass.postmanagement.domain.CreatePostResponse;
 import com.skipass.postmanagement.persistance.PostEntity;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -30,10 +31,12 @@ class PostControllerTest {
 
     @MockBean
     private PostServiceImpl service;
+
     @Autowired
     private ObjectMapper objectMapper;
 
     @Test
+    @Tag("unit")
     void createPost() throws Exception {
         CreatePostRequest request = CreatePostRequest.builder().text("").userId(1l).build();
         CreatePostResponse response = CreatePostResponse.builder().id(1).build();
@@ -45,9 +48,11 @@ class PostControllerTest {
                         .content(objectMapper.writeValueAsString(request)))
                 .andDo(print()).andExpect(status().isOk())
                 .andExpect(content().json("1"));
+        verify(service, times(1)).createPost(request);
     }
 
     @Test
+    @Tag("unit")
     void viewPostsForUser() throws Exception {
         PostEntity postOne = PostEntity.builder().userId(1l).id(1l).text("").build();
         PostEntity postTwo = PostEntity.builder().userId(1l).id(2l).text("").build();
@@ -57,9 +62,12 @@ class PostControllerTest {
 
         this.mockMvc.perform(get("/view/1")).andExpect(status().isOk())
                 .andExpect(content().json("[{\"id\":1,\"text\":\"\",\"userId\":1},{\"id\":2,\"text\":\"\",\"userId\":1},{\"id\":3,\"text\":\"\",\"userId\":1}]"));
+
+        verify(service, times(1)).getPostsForUser(1);
     }
 
     @Test
+    @Tag("unit")
     void deletePost() throws Exception {
         this.mockMvc.perform(delete("/delete/1")).andExpect(status().isOk());
         verify(service, times(1)).deletePostById(1);

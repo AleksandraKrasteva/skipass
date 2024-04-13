@@ -20,7 +20,7 @@ public class RabbitMQReceiver {
     private final PostService postService;
     @RabbitListener(queues = "delete-profile-posts")
     public void receiveMessage(long userId) {
-        System.out.println("Received delete posts for user: " + userId);
+        System.out.println("RabbitMQ: Received delete posts for user: " + userId);
         postService.deletePostsForUser(userId);
     }
 }
