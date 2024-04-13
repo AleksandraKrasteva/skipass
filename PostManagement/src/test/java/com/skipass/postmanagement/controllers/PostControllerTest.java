@@ -31,6 +31,7 @@ class PostControllerTest {
 
     @MockBean
     private PostServiceImpl service;
+
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -63,7 +64,6 @@ class PostControllerTest {
                 .andExpect(content().json("[{\"id\":1,\"text\":\"\",\"userId\":1},{\"id\":2,\"text\":\"\",\"userId\":1},{\"id\":3,\"text\":\"\",\"userId\":1}]"));
 
         verify(service, times(1)).getPostsForUser(1);
-
     }
 
     @Test
