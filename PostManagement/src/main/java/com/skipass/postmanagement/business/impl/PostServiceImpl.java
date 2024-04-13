@@ -21,10 +21,10 @@ public class PostServiceImpl implements PostService {
     public List<PostEntity> getPostsForUser(long userId) {
         return postRepository.getPostEntitiesByUserIdIs(userId);
     }
-    @Override
-    public List<PostEntity> getAllPosts() {
-        return null;
-    }
+//    @Override
+//    public List<PostEntity> getAllPosts() {
+//        return null;
+//    }
     @Override
     public void deletePostById(long postId) {
         postRepository.deleteById(postId);
@@ -38,7 +38,6 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void deletePostsForUser(long userId) {
-        System.out.print("In delete posts for user");
         postRepository.deletePostEntitiesByUserIdIs(userId);
     }
 }

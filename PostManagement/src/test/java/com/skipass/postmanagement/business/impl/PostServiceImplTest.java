@@ -4,6 +4,7 @@ import com.skipass.postmanagement.domain.CreatePostRequest;
 import com.skipass.postmanagement.domain.CreatePostResponse;
 import com.skipass.postmanagement.persistance.PostEntity;
 import com.skipass.postmanagement.persistance.PostRepository;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,6 +26,7 @@ class PostServiceImplTest {
     @InjectMocks
     PostServiceImpl postService;
     @Test
+    @Tag("unit")
     void getPostsForUser() {
         PostEntity postOne = PostEntity.builder().userId(1l).id(1l).text("").build();
         PostEntity postTwo = PostEntity.builder().userId(1l).id(2l).text("").build();
@@ -37,13 +39,16 @@ class PostServiceImplTest {
         assertEquals(3, actual.size());
         verify(postRepository, times(1)).getPostEntitiesByUserIdIs(1);
     }
+// Not implemented
+//    @Test
+//    @Tag("unit")
+//    void getAllPosts() {
+//
+//    }
 
     @Test
-    void getAllPosts() {
+    @Tag("unit")
 
-    }
-
-    @Test
     void deletePostById() {
         postService.deletePostById(1l);
 
@@ -51,6 +56,8 @@ class PostServiceImplTest {
     }
 
     @Test
+    @Tag("unit")
+
     void createPost() {
         CreatePostRequest request = CreatePostRequest.builder().userId(1l).text("").build();
         PostEntity returned = PostEntity.builder().id(1l).build();
@@ -68,6 +75,8 @@ class PostServiceImplTest {
     }
 
     @Test
+    @Tag("unit")
+
     void deletePostsForUser() {
 
         postService.deletePostsForUser(1);

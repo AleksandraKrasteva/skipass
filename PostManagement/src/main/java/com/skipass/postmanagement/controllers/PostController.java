@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://krakend:8080")
+//@CrossOrigin(origins = "http://krakend:8080")
 @AllArgsConstructor
 public class PostController {
 

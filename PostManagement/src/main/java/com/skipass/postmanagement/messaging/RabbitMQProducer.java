@@ -14,8 +14,9 @@ public class RabbitMQProducer {
     @Autowired
     private FanoutExchange deletePostExchange;
 
-    public void sendDeleteStatisticsAndReactionsForPostMessage(String message) {
-        rabbitTemplate.convertAndSend(
-                deletePostExchange.getName(), "", message);
-    }
+//    Currently not used
+//    public void sendDeleteStatisticsAndReactionsForPostMessage(String message) {
+//        rabbitTemplate.convertAndSend(
+//                deletePostExchange.getName(), "", message);
+//    }
 }
