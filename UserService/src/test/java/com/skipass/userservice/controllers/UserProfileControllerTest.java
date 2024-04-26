@@ -59,7 +59,7 @@ class UserProfileControllerTest {
     void deleteProfile() throws Exception {
         DeleteUserProfileRequest request = DeleteUserProfileRequest.builder().userID(1).build();
 
-        this.mockMvc.perform(delete("/delete/1")).andExpect(status().isOk());
+        this.mockMvc.perform(delete("/delete-profile/1")).andExpect(status().isOk());
         verify(service, times(1)).deleteUserProfile(request);
     }
 }

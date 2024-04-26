@@ -69,7 +69,7 @@ class PostControllerTest {
     @Test
     @Tag("unit")
     void deletePost() throws Exception {
-        this.mockMvc.perform(delete("/delete/1")).andExpect(status().isOk());
+        this.mockMvc.perform(delete("/delete-post/1")).andExpect(status().isOk());
         verify(service, times(1)).deletePostById(1);
     }
 }
