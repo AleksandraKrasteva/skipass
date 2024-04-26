@@ -30,7 +30,7 @@ public class PostController {
         return ResponseEntity.ok().body(posts);
     }
 
-    @DeleteMapping("/delete/{postId}")
+    @DeleteMapping("/delete-post/{postId}")
     public ResponseEntity deletePost(@PathVariable(value = "postId") long postId) {
         postService.deletePostById(postId);
         return ResponseEntity.ok().build();
