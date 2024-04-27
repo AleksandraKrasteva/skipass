@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-db-deployment
+  labels:
+    app: user-db
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      app: user-db
+  template:
+    metadata:
+      labels:
+        app: user-db      
+    spec:
+      containers:
+        - name: user-db
+          image: postgres
+          ports: 
+          - containerPort: 5432
+          env:
+          - name: POSTGRES_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: global-secret
+                key: user-db-user
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: global-secret
+                key: user-db-pass
+          - name: POSTGRES_DB
+            valueFrom:
+              configMapKeyRef:
+                name: global-config
+                key: user-db-database
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-db-service
+spec:
+  selector:
+    app: user-db
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432

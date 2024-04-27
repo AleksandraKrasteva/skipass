@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-service-deployment
+  labels:
+    app: user-service
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      app: user-service
+  template:
+    metadata:
+      labels:
+        app: user-service       
+    spec:
+      containers:
+        - name: user-service
+          image: ghcr.io/aleksandrakrasteva/user-service:dev
+          imagePullPolicy: Always
+          ports: 
+          - containerPort: 8080
+          env:
+          - name: RABBITMQ_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: global-config
+                key: rabbitmq-host
+          - name: RABBITMQ_PORT
+            valueFrom:
+              configMapKeyRef:
+                  name: global-config
+                  key: rabbitmq-port
+          - name: USER_DB_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: global-config
+                key: user-db-host   
+          - name: USER_DB_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: global-config
+                key:  user-db-port
+          - name: RABBITMQ_USER
+            valueFrom:
+              secretKeyRef:
+                  name: global-secret
+                  key: rabbitmq-user 
+          - name: RABBITMQ_PASS
+            valueFrom:
+              secretKeyRef:
+                name: global-secret
+                key: rabbitmq-pass   
+          - name: USER_DB_USER
+            valueFrom:
+              secretKeyRef:
+                name: global-secret
+                key: user-db-user
+          - name: USER_DB_PASS
+            valueFrom:
+              secretKeyRef:
+                name: global-secret
+                key: user-db-pass
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-service-service
+spec:
+  selector:
+    app: user-service
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
