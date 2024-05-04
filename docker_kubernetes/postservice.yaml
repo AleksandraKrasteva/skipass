@@ -62,6 +62,10 @@ spec:
               secretKeyRef:
                 name: global-secret
                 key: post-db-pass
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsUser: 4000
 ---
 apiVersion: v1
 kind: Service
