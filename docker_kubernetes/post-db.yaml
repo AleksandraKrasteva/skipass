@@ -1,20 +1,87 @@
-apiVersion: apps/v1
-kind: Deployment
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: post-db-deployment
+#   labels:
+#     app: post-db
+# spec:
+#   replicas: 1
+#   revisionHistoryLimit: 0
+#   selector:
+#     matchLabels:
+#       app: post-db
+#   template:
+#     metadata:
+#       labels:
+#         app: post-db      
+#     spec:
+#       containers:
+#         - name: post-db
+#           image: postgres
+#           ports: 
+#           - containerPort: 5432
+#           env:
+#           - name: POSTGRES_USERNAME
+#             valueFrom:
+#               secretKeyRef:
+#                 name: global-secret
+#                 key: post-db-user
+#           - name: POSTGRES_PASSWORD
+#             valueFrom:
+#               secretKeyRef:
+#                 name: global-secret
+#                 key: post-db-pass
+#           - name: POSTGRES_DB
+#             valueFrom:
+#               configMapKeyRef:
+#                 name: global-config
+#                 key: post-db-database
+#           securityContext:
+#             allowPrivilegeEscalation: false
+#             # readOnlyRootFilesystem: true
+#             # runAsUser: 5000
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: post-db-service
+# spec:
+#   selector:
+#     app: post-db
+#   ports:
+#     - protocol: TCP
+#       port: 5432
+#       targetPort: 5432
+
+apiVersion: v1
+kind: Service
 metadata:
-  name: post-db-deployment
-  labels:
-    app: post-db
+  name: post-db-service
 spec:
-  replicas: 1
-  revisionHistoryLimit: 0
+  selector:
+    app: post-db
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: post-db-set
+spec:
   selector:
     matchLabels:
-      app: post-db
+      app: post-db 
+  serviceName: "post-db-service"
+  replicas: 1
+  minReadySeconds: 10
   template:
     metadata:
       labels:
-        app: post-db      
+        app: post-db 
     spec:
+      terminationGracePeriodSeconds: 10
       containers:
         - name: post-db
           image: postgres
@@ -38,17 +105,10 @@ spec:
                 key: post-db-database
           securityContext:
             allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
-            runAsUser: 5000
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: post-db-service
-spec:
-  selector:
-    app: post-db
-  ports:
-    - protocol: TCP
-      port: 5432
-      targetPort: 5432
+          volumeMounts:
+             - mountPath: "/volumes/post/data"
+               name: storage
+      volumes:
+         - name: storage
+           persistentVolumeClaim:
+            claimName: post-db-pvc

@@ -64,9 +64,6 @@ spec:
                 key: user-db-pass
           securityContext:
             allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
-            runAsUser: 1000
-
 ---
 apiVersion: v1
 kind: Service

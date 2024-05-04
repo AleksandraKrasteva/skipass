@@ -1,20 +1,32 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: Service
 metadata:
-  name: user-db-deployment
-  labels:
-    app: user-db
+  name: user-db-service
 spec:
-  replicas: 1
-  revisionHistoryLimit: 0
+  selector:
+    app: user-db
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: user-db-set
+spec:
   selector:
     matchLabels:
-      app: user-db
+      app: user-db 
+  serviceName: "user-db-service"
+  replicas: 1
+  minReadySeconds: 10
   template:
     metadata:
       labels:
-        app: user-db      
+        app: user-db 
     spec:
+      terminationGracePeriodSeconds: 10
       containers:
         - name: user-db
           image: postgres
@@ -38,17 +50,10 @@ spec:
                 key: user-db-database
           securityContext:
             allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
-            runAsUser: 2000
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: user-db-service
-spec:
-  selector:
-    app: user-db
-  ports:
-    - protocol: TCP
-      port: 5432
-      targetPort: 5432
+          volumeMounts:
+             - mountPath: "/volumes/user/data"
+               name: storage
+      volumes:
+         - name: storage
+           persistentVolumeClaim:
+            claimName: user-db-pvc
