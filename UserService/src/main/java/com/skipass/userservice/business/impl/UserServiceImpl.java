@@ -16,7 +16,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserEntity> getAllUsers() {
+        try{
         List<UserEntity> users = userRepository.findAll();
         return users;
+
+        }
+        catch(Exception e){
+            System.out.print(e);
+        }
+        return null;
     }
 }

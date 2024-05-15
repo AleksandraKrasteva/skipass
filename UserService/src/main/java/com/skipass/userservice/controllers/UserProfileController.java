@@ -22,6 +22,7 @@ public class UserProfileController {
     @PostMapping(
             path = "/create-user")
     public ResponseEntity<Long> createUser(@RequestBody CreateUserProfileRequest request) {
+        System.out.println("CreateUser");
         CreateUserProfileResponse response = profileService.createUserProfile(request);
         return ResponseEntity.ok().body(response.getId());
     }

@@ -42,7 +42,10 @@ public class UserController {
     @GetMapping("/get-users")
 //    @CrossOrigin(origins = {corsOrigins})
     public ResponseEntity<List<UserEntity>> getUsers() {
-        return ResponseEntity.ok().body(userService.getAllUsers());
+        System.out.print("Request users");
+        var users = userService.getAllUsers();
+
+        return ResponseEntity.ok().body(users);
     }
 }
 
