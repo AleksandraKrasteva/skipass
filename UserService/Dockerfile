@@ -25,7 +25,7 @@ ENV OTEL_EXPORTER_OTLP_PROTOCOL="http/protobuf"
 WORKDIR test
 COPY ../grafana-opentelemetry-java.jar test/grafana-opentelemetry-java.jar
 #ENTRYPOINT ["java", "org.springframework.boot.loader.launch.JarLauncher"]
-ENTRYPOINT ["java", "-javaagent:test/grafana-opentelemetry-java.jar", "org.springframework.boot.loader.launch.JarLauncher"]
+ENTRYPOINT ["java", "-javaagent:test/grafana-opentelemetry-java.jar", "java", "org.springframework.boot.loader.launch.JarLauncher"]
 
 
 #java -javaagent:../grafana-opentelemetry-java.jar -jar myapp.jar
