@@ -17,7 +17,15 @@ COPY --from=builder /application/application/ ./
 RUN addgroup -S app && adduser -S app -G app
 USER app
 
-ENTRYPOINT ["java", "org.springframework.boot.loader.launch.JarLauncher"]
+
+ENV OTEL_SERVICE_NAME=user-service
+ENV OTEL_RESOURCE_ATTRIBUTES="deployment.environment=dev,service.namespace=app,service.version=1"
+ENV OTEL_EXPORTER_OTLP_ENDPOINT="http://grafana-k8s-monitoring-grafana-agent.default.svc.cluster.local:4318"
+ENV OTEL_EXPORTER_OTLP_PROTOCOL="http/protobuf"
+WORKDIR test
+COPY ../grafana-opentelemetry-java.jar test/grafana-opentelemetry-java.jar
+#ENTRYPOINT ["java", "org.springframework.boot.loader.launch.JarLauncher"]
+ENTRYPOINT ["java", "-javaagent:test/grafana-opentelemetry-java.jar", "org.springframework.boot.loader.launch.JarLauncher"]
 
 
-
+#java -javaagent:../grafana-opentelemetry-java.jar -jar myapp.jar
