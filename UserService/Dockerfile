@@ -20,7 +20,7 @@ USER app
 
 ENV OTEL_SERVICE_NAME=user-service
 ENV OTEL_RESOURCE_ATTRIBUTES="deployment.environment=dev,service.namespace=app,service.version=1"
-ENV OTEL_EXPORTER_OTLP_ENDPOINT="http://grafana-k8s-monitoring-grafana-agent.default.svc.cluster.local:4318"
+ENV OTEL_EXPORTER_OTLP_ENDPOINT="http://grafana-k8s-monitoring-grafana-agent.monitoring.svc.cluster.local:4318"
 ENV OTEL_EXPORTER_OTLP_PROTOCOL="http/protobuf"
 WORKDIR test
 COPY ../grafana-opentelemetry-java.jar test/grafana-opentelemetry-java.jar
