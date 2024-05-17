@@ -8,6 +8,7 @@ import com.skipass.userservice.domain.responses.CreateUserProfileResponse;
 import com.skipass.userservice.messaging.RabbitMQProducer;
 import com.skipass.userservice.persistance.UserEntity;
 import com.skipass.userservice.persistance.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ public class ProfileServiceImpl implements ProfileService {
 
 
     @Override
+    @Transactional
     public CreateUserProfileResponse createUserProfile(CreateUserProfileRequest request) {
         UserEntity newUser = UserEntity.builder()
                 .email(request.getEmail())
