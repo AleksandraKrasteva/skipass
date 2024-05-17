@@ -18,6 +18,8 @@ spec:
       containers:
         - name: user-service
           image: ghcr.io/aleksandrakrasteva/user-service:dev
+          # image: ghcr.io/aleksandrakrasteva/user-service@sha256:a5618825b8c98454904e9c037a223bb19c17c9f29468953c20b79896580c6820
+          # image: ghcr.io/aleksandrakrasteva/user-service@sha256:2f91d31790571a208deee17ce16308d54279f705f37038e3bb81e91ebc96b6fb
           imagePullPolicy: Always
           ports: 
           - containerPort: 8080
@@ -64,6 +66,28 @@ spec:
                 key: user-db-pass
           securityContext:
             allowPrivilegeEscalation: false
+          resources:
+            requests:
+              cpu: 250m
+              memory: "600Mi"
+            limits: 
+              cpu: 250m 
+              memory: "600Mi"
+
+          # horizontalPodAutoscaler:
+          #   minReplicas: 2
+          #   maxReplicas: 8
+          #   resources:
+          #     cpu:
+          #       type: Utilization
+          #       averageUtilization: 50
+          #     memory:
+          #       type: Utilization
+          #       averageUtilization: 50
+          #   metrics:
+          #     golang_sample_app_requests_per_second:
+          #       type: AverageValue
+          #       averageValue: 10
 ---
 apiVersion: v1
 kind: Service

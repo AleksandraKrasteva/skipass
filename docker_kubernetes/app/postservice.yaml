@@ -64,6 +64,11 @@ spec:
                 key: post-db-pass
           securityContext:
             allowPrivilegeEscalation: false
+          resources:
+            limits:
+              cpu: 2500m
+            requests:
+              cpu: 2000m
 ---
 apiVersion: v1
 kind: Service

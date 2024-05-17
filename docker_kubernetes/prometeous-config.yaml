@@ -1,0 +1,16 @@
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+  namespace: prometheus
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 15s
+      scrape_timeout: 10s
+      evaluation_interval: 15s
+    scrape_configs:
+      - job_name: 'services'
+        scrape_interval: 5s
+        static_configs:
+          - targets: ['user-service:8080']
+          - targets: ['post-service:8080']

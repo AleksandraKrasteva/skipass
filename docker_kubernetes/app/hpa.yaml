@@ -1,0 +1,75 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: hpa-custom
+  namespace: default
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: user-service-deployment
+  minReplicas: 1
+  maxReplicas: 3
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 75
+
+# kind: HorizontalPodAutoscaler
+# apiVersion: autoscaling/v2
+# metadata:
+#   name: sample-app
+# spec:
+#   scaleTargetRef:
+#     # point the HPA at the sample application
+#     # you created above
+#     apiVersion: apps/v1
+#     kind: Deployment
+#     name: user-service-deployment
+#   # autoscale between 1 and 10 replicas
+#   minReplicas: 1
+#   maxReplicas: 10
+#   metrics:
+#   # use a "Pods" metric, which takes the average of the
+#   # given metric across all pods controlled by the autoscaling target
+#   - type: Pods
+#     pods:
+#       # use the metric that you used above: pods/http_requests
+#       metric:
+#         name: http_requests
+#       # target 500 milli-requests per second,
+#       # which is 1 request every two seconds
+#       target:
+#         type: Value
+#         averageValue: 500m
+
+  # - type: Pods
+  #   pods:
+  #   metricName: myapplication_api_response_time_avg
+  #   targetAverageValue: "500"
+  # metrics:
+  # - type: Resource
+  #   resource:
+  #     metricName: 'golang_sample_app_requests_count'
+  # metrics:
+  # - type: Resource
+  #   resource:
+  #     name: cpu
+  #     target:
+  #       type: Utilization
+  #       averageUtilization: 50
+# status:
+#   observedGeneration: 1
+#   # lastScaleTime: <some-time>
+#   currentReplicas: 1
+#   desiredReplicas: 1
+#   currentMetrics:
+#   - type: Resource
+#     resource:
+#       name: cpu
+#       current:
+#         averageUtilization: 0
+#         averageValue: 0
