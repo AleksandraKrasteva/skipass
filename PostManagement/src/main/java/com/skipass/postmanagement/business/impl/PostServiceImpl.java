@@ -32,8 +32,16 @@ public class PostServiceImpl implements PostService {
     @Override
     public CreatePostResponse createPost(CreatePostRequest request) {
         PostEntity post = PostEntity.builder().text(request.getText()).userId(request.getUserId()).build();
-        var response = postRepository.save(post);
-        return CreatePostResponse.builder().id(response.getId()).build();
+        try{
+            var response = postRepository.save(post);
+            return CreatePostResponse.builder().id(response.getId()).build();
+        }
+        catch(Exception e){
+            System.out.println("ERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR!!!!!!!!!!!!!!!!!!!!!!!");
+            System.out.println(e);
+        }
+        return null;
+
     }
 
     @Override

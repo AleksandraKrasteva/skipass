@@ -21,7 +21,7 @@ public class ProfileServiceImpl implements ProfileService {
 
 
     @Override
-    @Transactional
+//    @Transactional
     public CreateUserProfileResponse createUserProfile(CreateUserProfileRequest request) {
         UserEntity newUser = UserEntity.builder()
                 .email(request.getEmail())

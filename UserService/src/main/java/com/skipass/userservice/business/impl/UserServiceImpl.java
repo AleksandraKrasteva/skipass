@@ -16,7 +16,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    @Transactional
+//    @Transactional
     public List<UserEntity> getAllUsers() {
         try{
         List<UserEntity> users = userRepository.findAll();
@@ -24,7 +24,8 @@ public class UserServiceImpl implements UserService {
 
         }
         catch(Exception e){
-            System.out.print(e);
+            System.out.println("ERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR!!!!!!!!!!!!!!!!!!!!!!!");
+            System.out.println(e);
         }
         return null;
     }
