@@ -1,12 +1,10 @@
-import Button from '@mui/material/Button';
-import { handleAuth } from '@auth0/nextjs-auth0';
-
-export const GET = handleAuth();
+import React from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const LoginButton = () => {
-	// const { loginWithRedirect } = useAuth0();
+	const { loginWithRedirect } = useAuth0();
 
-	return <Button variant="outlined" onClick={() => {}}>Log In</Button>;
+	return <button onClick={() => loginWithRedirect()}>Log In</button>;
 };
 
 export default LoginButton;
