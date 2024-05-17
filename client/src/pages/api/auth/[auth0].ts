@@ -19,7 +19,9 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
 			res.setHeader('Allow', ['GET']);
 			res.status(405).end(`Method ${req.method} Not Allowed`);
 		}
-	} catch (error: any) {
+	} catch (error) {
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		// @ts-ignore
 		res.status(500).json({ error: 'Authentication Error', details: error.message });
 	}
 }
