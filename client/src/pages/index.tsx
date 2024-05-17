@@ -2,6 +2,7 @@ import { UserData, createPost, createUser, deletePost, deleteUserProfile, viewPo
 import { Post, User } from '@/api/types';
 import Navigation from '@/components/molecultes/Navigation';
 import { Box, Button, List, ListItem, ListItemText, MenuItem, Select, TextField, Typography } from '@mui/material';
+import axios from 'axios';
 import React, { useState } from 'react';
 
 
@@ -58,6 +59,11 @@ const HomePage = () => {
 		await deletePost(id);
 	};
 
+	const handleLogin=()=>{
+		const res = axios.get('http://localhost:3000/api/auth/login');
+		console.log(res);
+	};
+
 	return (
 		<>
 			<Navigation/>
@@ -110,6 +116,8 @@ const HomePage = () => {
 						);
 					})}
 				</List>
+				<Button onClick={()=>handleLogin()}>Login</Button>
+				<a href="/api/auth/login">Login</a>
 			</Box>
 		</>
 	);
