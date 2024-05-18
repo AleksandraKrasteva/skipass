@@ -1,77 +1,88 @@
-import { UserData, createPost, createUser, deletePost, deleteUserProfile, viewPostsForUser, viewUsers } from '@/api/requests';
-import { Post, User } from '@/api/types';
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+import { createPost, deletePost, viewPostsForUser } from '@/api/requests';
+import { Post } from '@/api/types';
 import LoginButton from '@/components/atoms/LogInBtn';
 import LogoutButton from '@/components/atoms/LogOutBtn';
+import Profile from '@/components/atoms/UserProfile';
 import Navigation from '@/components/molecultes/Navigation';
-import { Box, Button, List, ListItem, ListItemText, MenuItem, Select, TextField, Typography } from '@mui/material';
+import { useAuth0 } from '@auth0/auth0-react';
+import { Box, Button, List, ListItem, ListItemText, TextField, Typography } from '@mui/material';
 // import axios from 'axios';
 import React, { useState } from 'react';
 
 
+
 const HomePage = () => {
 
-	const [username, setUsername] = useState('');
-	const [users, setUsers] = useState<User[]>([]);
-	const [selectedUser, setSelectedUser] = useState<User['id']|null>(null);
+	// const [username, setUsername] = useState('');
+	// const [users, setUsers] = useState<User[]>([]);
+	// const [selectedUser, setSelectedUser] = useState<User['id']|null>(null);
 	const [postText, setPostText] = useState<string>(''); 
 	const [postsForUser, setPostsForUser] = useState<Post[]>([]);
 
-	const createUserProfile = async() =>{
-		const user:UserData = {
-			username: username,
-			email: username+'@email.com'
-		};
-		await createUser(user);
-	};
 
-	const getUsers = async()=>{
-		const res = await viewUsers();
-		setUsers(res.data.collection);
-	};
+	const { user, isAuthenticated } = useAuth0();
 
-	const handleUserChange = (id:unknown) =>{
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-ignore
-		setSelectedUser(id);
-	};
+
+
+
+	// const createUserProfile = async() =>{
+	// 	const user:UserData = {
+	// 		username: username,
+	// 		email: username+'@email.com'
+	// 	};
+	// 	await createUser(user);
+	// };
+
+	// const getUsers = async()=>{
+	// 	const res = await viewUsers();
+	// 	setUsers(res.data.collection);
+	// };
+
+	// const handleUserChange = (id:unknown) =>{
+	// 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// 	// @ts-ignore
+	// 	setSelectedUser(id);
+	// };
 
 	const createPostForUser = async() => {
-		if(!postText || !selectedUser) return;
+		if(!isAuthenticated) return;
 
 		const post:Post = {
-			userId: selectedUser,
+			// @ts-ignore
+			userEmail: user.email,
 			text: postText,
 		};
 		await createPost(post); 
 	};
 
 	const viewPosts = async()=>{
-		if(!selectedUser) return;
-		const res = await viewPostsForUser(selectedUser);
+		if(!isAuthenticated) return;
+		// @ts-ignore
+		const res = await viewPostsForUser(user.email);
 		setPostsForUser(res.data.collection);
 	};
 
-	const deleteUser = async()=>{
-		if(!selectedUser) return;
-		await deleteUserProfile(selectedUser);
-		setSelectedUser(null);
-	};
+	// const deleteUser = async()=>{
+	// 	if(!selectedUser) return;
+	// 	await deleteUserProfile(selectedUser);
+	// 	setSelectedUser(null);
+	// };
 	
 	const deletePostById = async(id:number)=>{
 		await deletePost(id);
 	};
-
 	
 
 	return (
 		<>
 			<Navigation/>
-			<Box sx={{mt: 10, border: 1, borderColor: 'black'}} >
+			{/* <Box sx={{mt: 10, border: 1, borderColor: 'black'}} >
 				<TextField  label="Username" variant="outlined" required
 					onChange={(e)=>setUsername(e.target.value)} />
 				<Button variant="contained" onClick={()=>createUserProfile()}>Create user</Button>
-			</Box>
-			<Box sx={{mt: 4, border: 1, borderColor: 'black'}} >
+			</Box> */}
+			{/* <Box sx={{mt: 4, border: 1, borderColor: 'black'}} >
 				<Button variant="contained" onClick={()=>getUsers()}>View all users</Button>
 				<Select
 					label='Users list'
@@ -82,8 +93,8 @@ const HomePage = () => {
 							<MenuItem value={user.id}>{user.username}</MenuItem>
 						);})}			
 				</Select>
-			</Box>
-			<Button sx={{backgroundColor:'pink', mt:4}} variant="contained" onClick={()=>deleteUser()}>Delete selected user profile</Button>
+			</Box> */}
+			{/* <Button sx={{backgroundColor:'pink', mt:4}} variant="contained" onClick={()=>deleteUser()}>Delete selected user profile</Button> */}
 
 			<Box sx={{mt: 4, border: 1, borderColor: 'black'}}  >
 				<TextField id="outlined-basic" label="Post" variant="outlined" required
@@ -98,7 +109,7 @@ const HomePage = () => {
 						return (
 							<ListItem alignItems="flex-start">
 								<ListItemText
-									primary={post.userId}
+									primary={post.userEmail}
 									secondary={
 										<Typography
 											sx={{ display: 'inline' }}
@@ -119,6 +130,7 @@ const HomePage = () => {
 				<a href="/api/auth/login">Login</a> */}
 				<LoginButton/>
 				<LogoutButton/>
+				<Profile/>
 			</Box>
 		</>
 	);

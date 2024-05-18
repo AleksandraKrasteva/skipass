@@ -5,7 +5,8 @@ const LogoutButton = () => {
 	const { logout } = useAuth0();
 
 	return (
-		<Button onClick={() => logout({ logoutParams: { returnTo: 'https://auth0.skipass.pages.dev' } })}>
+		// <Button onClick={() => logout({ logoutParams: { returnTo: 'https://auth0.skipass.pages.dev' } })}>
+		<Button onClick={() => logout({ logoutParams: { returnTo: 'http://localhost:3000' } })}>
       Log Out
 		</Button>
 	);
