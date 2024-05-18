@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - dev
+      - auth0
       # - ci-setup
 
 env: 
