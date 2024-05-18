@@ -60,10 +60,7 @@ const HomePage = () => {
 		await deletePost(id);
 	};
 
-	// const handleLogin=()=>{
-	// 	const res = axios.get('http://localhost:3000/api/auth/login');
-	// 	console.log(res);
-	// };
+	
 
 	return (
 		<>
