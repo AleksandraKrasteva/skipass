@@ -18,10 +18,12 @@ import org.springframework.stereotype.Service;
 public class RabbitMQReceiver {
 
     private final PostService postService;
-    @RabbitListener(queues = "delete-profile-posts")
-    public void receiveMessage(long userId) {
-        System.out.println("RabbitMQ: Received delete posts for user: " + userId);
-        postService.deletePostsForUser(userId);
-    }
+
+    //THIS WONT'T BE SEND
+//    @RabbitListener(queues = "delete-profile-posts")
+//    public void receiveMessage(String userEmail) {
+//        System.out.println("RabbitMQ: Received delete posts for user: " + userId);
+//        postService.deletePostsForUser(userEmail);
+//    }
 }
 

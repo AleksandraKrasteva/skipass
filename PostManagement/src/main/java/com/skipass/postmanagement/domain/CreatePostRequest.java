@@ -7,5 +7,5 @@ import lombok.Data;
 @Builder
 public class CreatePostRequest {
     private String text;
-    private Long userId;
+    private String userEmail;
 }
