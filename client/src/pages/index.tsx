@@ -1,6 +1,7 @@
 import { UserData, createPost, createUser, deletePost, deleteUserProfile, viewPostsForUser, viewUsers } from '@/api/requests';
 import { Post, User } from '@/api/types';
 import LoginButton from '@/components/atoms/LogInBtn';
+import LogoutButton from '@/components/atoms/LogOutBtn';
 import Navigation from '@/components/molecultes/Navigation';
 import { Box, Button, List, ListItem, ListItemText, MenuItem, Select, TextField, Typography } from '@mui/material';
 // import axios from 'axios';
@@ -116,7 +117,8 @@ const HomePage = () => {
 				</List>
 				{/* <Button onClick={()=>handleLogin()}>Login</Button>
 				<a href="/api/auth/login">Login</a> */}
-				<LoginButton></LoginButton>
+				<LoginButton/>
+				<LogoutButton/>
 			</Box>
 		</>
 	);

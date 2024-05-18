@@ -8,7 +8,7 @@ export default function App(props: AppProps) {
 	const { Component, pageProps } = props;
 	return (
 		<Auth0Provider domain="dev-hxsl4k6mw7xspicu.eu.auth0.com" clientId="pZ5kS27dqX4zxH3xzTF1Q18qz7dTLrrJ" authorizationParams={{
-			redirect_uri: 'https://auth0.skipass.pages.dev/api/auth/callback'
+			redirect_uri: 'https://auth0.skipass.pages.dev/'
 	 	  }}
 	  >
 			<Component {...pageProps} />
