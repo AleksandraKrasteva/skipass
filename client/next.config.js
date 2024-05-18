@@ -3,9 +3,6 @@
 
 const nextConfig = {
   output: "standalone",
-  serverRuntimeConfig: {
-    runtime: "edge",
-  },
 };
 
 export default nextConfig;
