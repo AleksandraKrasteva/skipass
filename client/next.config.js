@@ -2,10 +2,10 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
-	output: 'standalone',
-
+  output: "standalone",
+  serverRuntimeConfig: {
+    runtime: "edge",
+  },
 };
 
-
 export default nextConfig;
-
