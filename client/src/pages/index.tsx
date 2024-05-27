@@ -10,8 +10,6 @@ import { Box, Button, List, ListItem, ListItemText, TextField, Typography } from
 // import axios from 'axios';
 import React, { useState } from 'react';
 
-
-
 const HomePage = () => {
 
 	// const [username, setUsername] = useState('');
@@ -19,11 +17,29 @@ const HomePage = () => {
 	// const [selectedUser, setSelectedUser] = useState<User['id']|null>(null);
 	const [postText, setPostText] = useState<string>(''); 
 	const [postsForUser, setPostsForUser] = useState<Post[]>([]);
+	const [defaultPostsForUser, setDefaultPostsForUser] = useState<Post[]>([]);
 
+	const { user, isAuthenticated, getAccessTokenSilently, loginWithRedirect  } = useAuth0();
 
-	const { user, isAuthenticated } = useAuth0();
+	const getMetadata = async()=>{
+		if (!isAuthenticated) {
+			return;
+		}
+		const userDetailsByIdUrl: string = `https://dev-hxsl4k6mw7xspicu.eu.auth0.com/api/v2/users/${user?.sub}`;
+		const token = await getAccessTokenSilently({
+			authorizationParams: {
+				audience: 'https://dev-hxsl4k6mw7xspicu.eu.auth0.com/api/v2/',
+				scope: 'read:current_user',
+			}});
 
-
+		const metadata =  await fetch(userDetailsByIdUrl, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+	
+		return await metadata.json();
+	};
 
 
 	// const createUserProfile = async() =>{
@@ -47,21 +63,43 @@ const HomePage = () => {
 
 	const createPostForUser = async() => {
 		if(!isAuthenticated) return;
-
+		const metadata = await getMetadata(); 
 		const post:Post = {
 			// @ts-ignore
-			userEmail: user.email,
+			userEmail: metadata.email,
 			text: postText,
 		};
-		await createPost(post); 
+		const token = await getAccessTokenSilently({
+			authorizationParams: {
+				audience: 'https://dev-hxsl4k6mw7xspicu.eu.auth0.com/api/v2/',
+				scope: 'read:current_user',
+			}}).catch(()=>{
+			loginWithRedirect();
+		});
+	
+		if(!token) return;
+
+		await createPost(post, token).catch((e)=>{
+			if(e.response.status === 401){
+				loginWithRedirect();
+			}
+		}); 
 	};
 
-	const viewPosts = async()=>{
+	const viewPostsForLoggedIn = async()=>{
 		if(!isAuthenticated) return;
+		const metadata = await getMetadata(); 
 		// @ts-ignore
-		const res = await viewPostsForUser(user.email);
-		setPostsForUser(res.data.collection);
+		const res = await viewPostsForUser(metadata.email);
+		setPostsForUser(res.data);
 	};
+
+	const viewPostsForDefaultUser =  async()=>{
+		const res = await viewPostsForUser('default@email.com');
+		setDefaultPostsForUser(res.data);
+	};
+
+	// getMetadata(); 
 
 	// const deleteUser = async()=>{
 	// 	if(!selectedUser) return;
@@ -70,7 +108,23 @@ const HomePage = () => {
 	// };
 	
 	const deletePostById = async(id:number)=>{
-		await deletePost(id);
+		const token = await getAccessTokenSilently({
+			authorizationParams: {
+				audience: 'https://dev-hxsl4k6mw7xspicu.eu.auth0.com/api/v2/',
+				scope: 'read:current_user',
+			}}).catch(()=>{
+			loginWithRedirect();
+		});
+
+		if(!token) return;
+
+
+		await deletePost(id, token).catch((e)=>{
+			console.log(e);
+			if(e.response.status === 401){
+				loginWithRedirect();
+			}
+		});
 	};
 	
 
@@ -96,16 +150,44 @@ const HomePage = () => {
 			</Box> */}
 			{/* <Button sx={{backgroundColor:'pink', mt:4}} variant="contained" onClick={()=>deleteUser()}>Delete selected user profile</Button> */}
 
-			<Box sx={{mt: 4, border: 1, borderColor: 'black'}}  >
+			<Box sx={{mt: 10, border: 1, borderColor: 'black'}}  >
 				<TextField id="outlined-basic" label="Post" variant="outlined" required
 					onChange={(e)=>setPostText(e.target.value)} />
 				<Button variant="contained" onClick={()=>createPostForUser()}>Create post for selected user</Button>
 			</Box>
 
 			<Box sx={{mt: 4, border: 1, borderColor: 'black'}}  >
-				<Button variant="contained" onClick={()=>viewPosts()}>Get Posts For Selected User</Button>
+				{isAuthenticated && (
+					<>
+						<Button variant="contained" onClick={()=>viewPostsForLoggedIn()}>Get mine posts</Button>
+						<List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+							{postsForUser.map((post)=>{
+								return (
+									<ListItem alignItems="flex-start">
+										<ListItemText
+											primary={post.userEmail}
+											secondary={
+												<Typography
+													sx={{ display: 'inline' }}
+													component="span"
+													variant="body2"
+													color="text.primary"
+												>
+													{post.text}
+												</Typography>
+											}
+										/>
+										<Button  sx={{backgroundColor:'pink'}} size="small" variant="contained" onClick={()=>deletePostById(post.id!)}>Delete</Button>
+									</ListItem>
+								);
+							})}
+						</List>
+					</>
+				)}
+				
+				<Button variant="contained" onClick={()=>viewPostsForDefaultUser()}>Get posts for Default user</Button>
 				<List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-					{postsForUser.map((post)=>{
+					{defaultPostsForUser.map((post)=>{
 						return (
 							<ListItem alignItems="flex-start">
 								<ListItemText
@@ -126,8 +208,6 @@ const HomePage = () => {
 						);
 					})}
 				</List>
-				{/* <Button onClick={()=>handleLogin()}>Login</Button>
-				<a href="/api/auth/login">Login</a> */}
 				<LoginButton/>
 				<LogoutButton/>
 				<Profile/>

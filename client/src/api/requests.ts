@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { Post } from './types';
 
+
 // This will be modied by using react query 
 
 export type UserData = {
@@ -15,8 +16,13 @@ export type UserData = {
 // 	});
 // };
 
-export const createPost = (post: Post) => {
-	return axios.post('http://skipass.api:80/create-post',post ).then((res) => {
+export const createPost = (post: Post, token: string) => {
+	const headers = {
+		'Content-Type': 'application/json',
+		Authorization: 'Bearer ' + token,
+	};
+
+	return axios.post('http://skipass.api:80/create-post',post, {headers}).then((res) => {
 		return res;
 	});
 };
@@ -28,22 +34,29 @@ export const createPost = (post: Post) => {
 // };
 
 export const viewPostsForUser = (userEmail: string) => {
-	return axios.get(`http://skipass.api:80/view/posts/${userEmail}`).then((res) => {
+	return axios.get(`http://skipass.api:80/view/${userEmail}`).then((res) => {
 		return res;
 	});
 };
 
-export const deleteUserProfile = (userId:number)=>{
-	return axios.delete(`http://skipass.api:80/delete-profile/${userId}`).then((res) => {
+// export const deleteUserProfile = (userId:number)=>{
+// 	return axios.delete(`http://skipass.api:80/delete-profile/${userId}`).then((res) => {
+// 		return res;
+// 	});
+// };
+
+export const deletePost = (postId:number, token: string)=>{
+	const headers = {
+		'Content-Type': 'application/json',
+		Authorization: 'Bearer ' + token,
+	};
+
+	return axios.delete(`http://skipass.api:80/delete-post/${postId}`, {headers}).then((res) => {
 		return res;
 	});
 };
 
-export const deletePost = (postId:number)=>{
-	return axios.delete(`http://skipass.api:80/delete-post/${postId}`).then((res) => {
-		return res;
-	});
-};
+
 
 
 
