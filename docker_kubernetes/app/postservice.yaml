@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: post-service
-          image: ghcr.io/aleksandrakrasteva/post-service:dev
+          image: ghcr.io/aleksandrakrasteva/post-service:auth0
           imagePullPolicy: Always
           ports: 
           - containerPort: 8080
@@ -66,9 +66,11 @@ spec:
             allowPrivilegeEscalation: false
           resources:
             limits:
-              cpu: 2500m
+              cpu: 950m
+              memory: "1000M"
             requests:
-              cpu: 2000m
+              cpu: 950m
+              memory: "1000M"
 ---
 apiVersion: v1
 kind: Service
