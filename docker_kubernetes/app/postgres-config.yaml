@@ -1,13 +1,13 @@
-    apiVersion: v1
-    kind: ConfigMap
-    metadata:
-      name: postgres-config
-    data:
-      postgresql.conf: |
-        log_statement = 'all'
-        log_destination = 'stderr'
-        logging_collector = 'off'
-        log_connections = 'true'
-        log_checkpoints = 'true'
-        log_disconnections = 'true'
-        log_min_messages = 'DEBUG5'
+    # apiVersion: v1
+    # kind: ConfigMap
+    # metadata:
+    #   name: postgres-config
+    # data:
+    #   postgresql.conf: |
+    #     log_statement = 'all'
+    #     log_destination = 'stderr'
+    #     logging_collector = 'off'
+    #     log_connections = 'true'
+    #     log_checkpoints = 'true'
+    #     log_disconnections = 'true'
+    #     log_min_messages = 'DEBUG5'

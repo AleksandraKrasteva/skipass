@@ -17,6 +17,6 @@ public class PostEntity {
 
     String text;
 
-    Long userId;
+    String userEmail;
 
 }

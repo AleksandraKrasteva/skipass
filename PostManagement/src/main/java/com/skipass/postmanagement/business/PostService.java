@@ -11,11 +11,11 @@ import java.util.List;
 @Service
 public interface PostService {
 
-    List<PostEntity> getPostsForUser(long userId);
+    List<PostEntity> getPostsForUser(String userEmail);
 
 //    List<PostEntity> getAllPosts(); Currently not used
     void deletePostById(long postId);
     CreatePostResponse createPost(CreatePostRequest request);
 
-    void deletePostsForUser(long userId);
+    void deletePostsForUser(String userEmail);
 }

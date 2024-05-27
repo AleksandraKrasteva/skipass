@@ -1,5 +1,5 @@
 export type Post ={
-	userId: number;
+	userEmail: string;
 	text: string;
 	id?:number;
 }

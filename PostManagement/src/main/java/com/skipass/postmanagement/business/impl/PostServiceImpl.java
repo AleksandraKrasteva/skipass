@@ -18,8 +18,8 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
 
     @Override
-    public List<PostEntity> getPostsForUser(long userId) {
-        return postRepository.getPostEntitiesByUserIdIs(userId);
+    public List<PostEntity> getPostsForUser(String userEmail) {
+        return postRepository.getPostEntitiesByUserEmailIs(userEmail);
     }
 //    @Override
 //    public List<PostEntity> getAllPosts() {
@@ -31,7 +31,7 @@ public class PostServiceImpl implements PostService {
     }
     @Override
     public CreatePostResponse createPost(CreatePostRequest request) {
-        PostEntity post = PostEntity.builder().text(request.getText()).userId(request.getUserId()).build();
+        PostEntity post = PostEntity.builder().text(request.getText()).userEmail(request.getUserEmail()).build();
         try{
             var response = postRepository.save(post);
             return CreatePostResponse.builder().id(response.getId()).build();
@@ -45,7 +45,8 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void deletePostsForUser(long userId) {
-        postRepository.deletePostEntitiesByUserIdIs(userId);
+    public void deletePostsForUser(String userEmail) {
+        postRepository.deletePostEntitiesByUserEmailIs(userEmail
+        );
     }
 }

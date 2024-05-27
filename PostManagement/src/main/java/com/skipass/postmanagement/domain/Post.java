@@ -10,6 +10,6 @@ public class Post {
 
     private String text;
 
-    private Long userId;
+    private String userEmail;
 
 }

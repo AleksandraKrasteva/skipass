@@ -24,9 +24,9 @@ public class PostController {
         return ResponseEntity.ok().body(response.getId());
     }
 
-    @GetMapping("/view/{userId}")
-    public ResponseEntity<List<PostEntity>> viewPostsForUser(@PathVariable(value = "userId") long userId) {
-        List<PostEntity> posts = postService.getPostsForUser(userId);
+    @GetMapping("/view/{userEmail}")
+    public ResponseEntity<List<PostEntity>> viewPostsForUser(@PathVariable(value = "userEmail") String userEmail) {
+        List<PostEntity> posts = postService.getPostsForUser(userEmail);
         return ResponseEntity.ok().body(posts);
     }
 
