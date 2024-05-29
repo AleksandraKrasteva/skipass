@@ -21,11 +21,15 @@ jobs:
       id: check-repo
       run: |
          $repoPath = "${{ secrets.REPO_PATH }}"
-         echo "Repository Path: $repoPath"
          if (Test-Path $repoPath) {
-           echo "Repository exists"
+           $repoContents = Get-ChildItem -Path $repoPath
+           if ($repoContents.Count -gt 0) {
+             echo "repo-exists=true" >> $env:GITHUB_ENV
+           } else {
+             echo "repo-exists=false" >> $env:GITHUB_ENV
+           }
          } else {
-           echo "Repository does not exist"
+           echo "repo-exists=false" >> $env:GITHUB_ENV
          }
 
         
