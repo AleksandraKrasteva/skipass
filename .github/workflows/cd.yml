@@ -20,7 +20,7 @@ jobs:
     - name: Check if repository is checked out
       id: check-repo
       run: |
-        if [ -d ${{ variables.REPO_PATH }} ]; then
+        if [ -d ${{ secrets.REPO_PATH }} ]; then
           echo "repo-exists=true" >> $GITHUB_ENV
         else
           echo "repo-exists=false" >> $GITHUB_ENV
@@ -30,11 +30,11 @@ jobs:
     - name: Checkout repository if not present
       if: env.repo-exists == 'false'
       run: |
-        git clone https://github.com/AleksandraKrasteva/skipass.git ${{ variables.REPO_PATH }}
+        git clone https://github.com/AleksandraKrasteva/skipass.git ${{ secrets.REPO_PATH }}
 
     - name: Switch to dev branch and pull latest changes
       run: |
-        cd ${{ variables.REPO_PATH }}
+        cd ${{ secrets.REPO_PATH }}
         git checkout dev
         git pull origin dev
       shell: bash
@@ -61,7 +61,7 @@ jobs:
     - name: Deploy Application if Not Running
       if: steps.check-deployment.outputs.status == '0'
       run: |
-        kubectl apply -f ${{ variables.REPO_PATH }}/post-service.yaml
+        kubectl apply -f ${{ secrets.REPO_PATH }}/post-service.yaml
 
     - name: Update Deployment 
       run: |
