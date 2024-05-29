@@ -63,21 +63,21 @@ jobs:
         #   image: ghcr.io/AleksandraKrasteva/user-service
         #   working-directory: ./UserService
 
-        - dockerfile: ./JourneyService/Dockerfile
-          image: ghcr.io/AleksandraKrasteva/journey-service
-          working-directory: ./JourneyService
+        # - dockerfile: ./JourneyService/Dockerfile
+        #   image: ghcr.io/AleksandraKrasteva/journey-service
+        #   working-directory: ./JourneyService
 
         - dockerfile: ./PostManagement/Dockerfile
           image: ghcr.io/AleksandraKrasteva/post-service
           working-directory: ./PostManagement
 
-        - dockerfile: ./StatisticsService/Dockerfile
-          image: ghcr.io/AleksandraKrasteva/statistics-service
-          working-directory: ./StatisticsService
+        # - dockerfile: ./StatisticsService/Dockerfile
+        #   image: ghcr.io/AleksandraKrasteva/statistics-service
+        #   working-directory: ./StatisticsService
 
-        - dockerfile: ./Krakend/Dockerfile
-          image: ghcr.io/AleksandraKrasteva/krakend_test
-          working-directory: ./Krakend
+        # - dockerfile: ./Krakend/Dockerfile
+        #   image: ghcr.io/AleksandraKrasteva/krakend_test
+        #   working-directory: ./Krakend
 
         - dockerfile: ./RabbitMQ/Dockerfile
           image: ghcr.io/AleksandraKrasteva/rabbitmq
@@ -129,11 +129,11 @@ jobs:
       with:
         version: 'latest'
           
-    - name: Configure kubeconfig
-      env:
-        KUBECONFIG: ${{ secrets.KUBECONFIG }}
-      run: |
-        echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
+    # - name: Configure kubeconfig
+    #   env:
+    #     KUBECONFIG: ${{ secrets.KUBECONFIG }}
+    #   run: |
+    #     echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
 
     - name: Check Deployment Status
       id: check-deployment
