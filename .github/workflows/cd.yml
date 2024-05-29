@@ -32,7 +32,6 @@ jobs:
         git clone https://github.com/AleksandraKrasteva/skipass.git ${{ secrets.REPO_PATH }}
 
     - name: Switch to dev branch and pull latest change
-      shell: pwsh
       run: |
         cd ${{ secrets.REPO_PATH }}
         git checkout dev
