@@ -20,12 +20,13 @@ jobs:
     - name: Check if repository is checked out
       id: check-repo
       run: |
-        $repoPath = "${{ secrets.REPO_PATH }}"
-        if (Test-Path $repoPath) {
-          echo "repo-exists=true" >> $env:GITHUB_ENV
-        } else {
-          echo "repo-exists=false" >> $env:GITHUB_ENV
-        }
+         $repoPath = "${{ secrets.REPO_PATH }}"
+         echo "Repository Path: $repoPath"
+         if (Test-Path $repoPath) {
+           echo "Repository exists"
+         } else {
+           echo "Repository does not exist"
+         }
 
         
     - name: Checkout repository if not present
