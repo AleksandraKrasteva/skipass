@@ -17,6 +17,29 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
+    - name: Check if repository is checked out
+      id: check-repo
+      run: |
+        if [ -d ${{ variables.REPO_PATH }} ]; then
+          echo "repo-exists=true" >> $GITHUB_ENV
+        else
+          echo "repo-exists=false" >> $GITHUB_ENV
+        fi
+      shell: bash
+
+    - name: Checkout repository if not present
+      if: env.repo-exists == 'false'
+      run: |
+        git clone https://github.com/AleksandraKrasteva/skipass.git ${{ variables.REPO_PATH }}
+
+    - name: Switch to dev branch and pull latest changes
+      run: |
+        cd ${{ variables.REPO_PATH }}
+        git checkout dev
+        git pull origin dev
+      shell: bash
+
+
     # - name: Set up kubectl
     #   run: |
     #     curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
@@ -36,10 +59,9 @@ jobs:
       continue-on-error: true
 
     - name: Deploy Application if Not Running
-      working-directory: docker_kubernetes/app
       if: steps.check-deployment.outputs.status == '0'
       run: |
-        kubectl apply -f post-service.yaml
+        kubectl apply -f ${{ variables.REPO_PATH }}/post-service.yaml
 
     - name: Update Deployment 
       run: |
