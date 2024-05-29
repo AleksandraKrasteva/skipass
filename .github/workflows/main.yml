@@ -1,4 +1,4 @@
-name: CI pipeline
+name: CI and CD pipeline
 
 on:
   push:
@@ -115,4 +115,40 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+  
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up kubectl
+      uses: azure/setup-kubectl@v1
+      with:
+        version: 'latest'
+          
+    - name: Configure kubeconfig
+      env:
+        KUBECONFIG: ${{ secrets.KUBECONFIG }}
+      run: |
+        echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
+
+    - name: Check Deployment Status
+      id: check-deployment
+      run: |
+        kubectl get deployment post-service -o jsonpath='{.status.readyReplicas}' || echo "0"
+
+    - name: Deploy Application if Not Running
+      working-directory: docker_kubernetes/app
+      if: steps.check-deployment.outputs.status == '0'
+      run: |
+        kubectl apply -f postservice.yaml
+
+    - name: Deploy to Kubernetes
+      env:
+        KUBECONFIG: ${{ secrets.KUBECONFIG }}
+      run: |
+        kubectl set image deployment/post-service post-service=ghcr.io/${{ github.repository_owner }}/post-service:dev
+        kubectl rollout status deployment/post-service
       
