@@ -18,7 +18,7 @@ jobs:
     strategy: 
       matrix:
         include: 
-        - directory: ./UserService
+        # - directory: ./UserService
         - directory: ./PostManagement
         # The other services are not currently implemented
         # - directory: ./JourneyService
@@ -59,9 +59,9 @@ jobs:
     strategy: 
       matrix:
         include: 
-        - dockerfile: ./UserService/Dockerfile
-          image: ghcr.io/AleksandraKrasteva/user-service
-          working-directory: ./UserService
+        # - dockerfile: ./UserService/Dockerfile
+        #   image: ghcr.io/AleksandraKrasteva/user-service
+        #   working-directory: ./UserService
 
         - dockerfile: ./JourneyService/Dockerfile
           image: ghcr.io/AleksandraKrasteva/journey-service
@@ -74,10 +74,6 @@ jobs:
         - dockerfile: ./StatisticsService/Dockerfile
           image: ghcr.io/AleksandraKrasteva/statistics-service
           working-directory: ./StatisticsService
-
-        - dockerfile: ./client/Dockerfile
-          image: ghcr.io/AleksandraKrasteva/client
-          working-directory: ./client  
 
         - dockerfile: ./Krakend/Dockerfile
           image: ghcr.io/AleksandraKrasteva/krakend_test
