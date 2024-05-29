@@ -19,7 +19,7 @@ jobs:
       with:
         version: 'latest'
           
-     - name: Configure kubeconfig
+    - name: Configure kubeconfig
       env:
         KUBECONFIG: ${{ secrets.KUBECONFIG }}
       run: |
@@ -31,7 +31,7 @@ jobs:
         kubectl get deployment post-service -o jsonpath='{.status.readyReplicas}' || echo "0"
 
     - name: Deploy Application if Not Running
-      workdir: docker_kubernetes/app
+      working-directory: docker_kubernetes/app
       if: steps.check-deployment.outputs.status == '0'
       run: |
         kubectl apply -f postservice.yaml
