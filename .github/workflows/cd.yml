@@ -68,7 +68,7 @@ jobs:
     - name: Deploy Application if Not Running
       if: steps.check-deployment.outputs.status == '0'
       run: |
-        kubectl apply -f ${{ secrets.REPO_PATH }}/docker_kubernetes/app/post-service.yaml
+        kubectl apply -f ${{ secrets.REPO_PATH }}/docker_kubernetes/app/postservice.yaml
 
     - name: Update Deployment 
       run: |
