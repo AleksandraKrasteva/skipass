@@ -125,9 +125,8 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Set up kubectl
-      uses: azure/setup-kubectl@v1
-      with:
-        version: 'latest'
+      uses: actions-hub/kubectl@master
+      
           
     # - name: Configure kubeconfig
     #   env:
