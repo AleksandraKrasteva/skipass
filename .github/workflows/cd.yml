@@ -19,25 +19,26 @@ jobs:
 
     - name: Check if repository is checked out
       id: check-repo
+      shell: pwsh
       run: |
-        if [ -d ${{ secrets.REPO_PATH }} ]; then
-          echo "repo-exists=true" >> $GITHUB_ENV
-        else
-          echo "repo-exists=false" >> $GITHUB_ENV
-        fi
-      shell: bash
+        if (Test-Path -Path "${{ secrets.REPO_PATH }}") {
+          echo "repo-exists=true" >> $env:GITHUB_ENV
+        } else {
+          echo "repo-exists=false" >> $env:GITHUB_ENV
+        }
 
     - name: Checkout repository if not present
       if: env.repo-exists == 'false'
+      shell: pwsh
       run: |
         git clone https://github.com/AleksandraKrasteva/skipass.git ${{ secrets.REPO_PATH }}
 
-    - name: Switch to dev branch and pull latest changes
+    - name: Switch to dev branch and pull latest change
+      shell: pwsh
       run: |
-        cd ${{ secrets.REPO_PATH }}
+        Set-Location -Path ${{ secrets.REPO_PATH }}
         git checkout dev
         git pull origin dev
-      shell: bash
 
 
     # - name: Set up kubectl
