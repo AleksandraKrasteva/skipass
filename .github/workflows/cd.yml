@@ -53,12 +53,7 @@ jobs:
     - name: Deploy Application if Not Running
       if: steps.check-deployment.outputs.status == '0'
       run: |
-        kubectl create secret generic global-secret 
-        --from-literal=post-db-user=${{ secrets.USER_DB_SECRET }} 
-        --from-literal=post-db-pass=${{ secrets.PASS_DB_SECRET }}
-        --from-literal=rabbitmq-user=${{ secrets.RABBITMQ_USER }}
-        --from-literal=rabbitmq-pass=${{ secrets.RABBITMQ_PASS }}
-        
+        kubectl create secret generic global-secret --from-literal=post-db-user=${{ secrets.USER_DB_SECRET }} --from-literal=post-db-pass=${{ secrets.PASS_DB_SECRET }} --from-literal=rabbitmq-user=${{ secrets.RABBITMQ_USER }} --from-literal=rabbitmq-pass=${{ secrets.RABBITMQ_PASS }}
         kubectl apply -f ${{ secrets.REPO_PATH }}/docker_kubernetes/app/
 
     - name: Update Deployment 
