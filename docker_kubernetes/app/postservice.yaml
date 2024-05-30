@@ -66,10 +66,10 @@ spec:
             allowPrivilegeEscalation: false
           resources:
             limits:
-              cpu: 950m
+              cpu: 3040m
               memory: "1000M"
             requests:
-              cpu: 950m
+              cpu: 3040m
               memory: "1000M"
 ---
 apiVersion: v1
