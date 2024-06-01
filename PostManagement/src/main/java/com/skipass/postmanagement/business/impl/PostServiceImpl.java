@@ -16,28 +16,27 @@ import java.util.List;
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
-
     @Override
-    public List<PostEntity> getPostsForUser(long userId) {
-        return postRepository.getPostEntitiesByUserIdIs(userId);
+    public List<PostEntity> getPostsForUser(String userEmail) {
+        return postRepository.getPostEntitiesByUserEmailIs(userEmail);
     }
-//    @Override
-//    public List<PostEntity> getAllPosts() {
-//        return null;
-//    }
+    @Override
+    public List<PostEntity> getAllPosts() {
+        return postRepository.findAll();
+    }
     @Override
     public void deletePostById(long postId) {
         postRepository.deleteById(postId);
     }
     @Override
     public CreatePostResponse createPost(CreatePostRequest request) {
-        PostEntity post = PostEntity.builder().text(request.getText()).userId(request.getUserId()).build();
-        var response = postRepository.save(post);
-        return CreatePostResponse.builder().id(response.getId()).build();
+        PostEntity post = PostEntity.builder().text(request.getText()).userEmail(request.getUserEmail()).build();
+            var response = postRepository.save(post);
+            return CreatePostResponse.builder().id(response.getId()).build();
     }
-
     @Override
-    public void deletePostsForUser(long userId) {
-        postRepository.deletePostEntitiesByUserIdIs(userId);
+    public void deletePostsForUser(String userEmail) {
+        postRepository.deletePostEntitiesByUserEmailIs(userEmail
+        );
     }
 }

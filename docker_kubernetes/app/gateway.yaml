@@ -1,0 +1,107 @@
+# Based on: https://github.com/envoyproxy/gateway/releases/download/v0.6.0/quickstart.yaml
+apiVersion: gateway.networking.k8s.io/v1
+kind: GatewayClass
+metadata:
+  name: eg
+spec:
+  controllerName: gateway.envoyproxy.io/gatewayclass-controller
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: eg
+spec:
+  gatewayClassName: eg
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: auth-routes
+spec:
+  parentRefs:
+    - name: eg
+  hostnames:
+    - "skipass.api"
+  rules:
+    - backendRefs:
+        - kind: Service
+          namespace: default
+          name: post-service-service
+          port: 8080
+      matches:
+        - path:
+            type: PathPrefix
+            value: /create-post
+        - path:
+            type: PathPrefix
+            value: /delete-post
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: auth-policy
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: HTTPRoute
+    name: auth-routes
+  jwt:
+    providers:
+    - name: auth0-jwt
+      remoteJWKS:         
+        uri: "https://dev-hxsl4k6mw7xspicu.eu.auth0.com/.well-known/jwks.json"
+  cors:
+    allowOrigins:
+    - "http://localhost:3000"
+    allowMethods:
+    - GET
+    - POST 
+    - DELETE 
+    allowHeaders:
+    - "*"
+    exposeHeaders:
+    - "*"
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: open-routes
+spec:
+  parentRefs:
+    - name: eg
+  hostnames:
+    - "skipass.api"
+  rules:
+    - backendRefs:
+        - kind: Service
+          namespace: default
+          name: post-service-service
+          port: 8080
+      matches:
+        - path:
+            type: PathPrefix
+            value: /view
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: open-policy
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: HTTPRoute
+    name: open-routes
+  cors:
+    allowOrigins:
+    - "http://localhost:3000"
+    allowMethods:
+    - GET
+    allowHeaders:
+    - "*"
+    exposeHeaders:
+    - "*"
+---

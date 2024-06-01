@@ -28,16 +28,16 @@ class PostServiceImplTest {
     @Test
     @Tag("unit")
     void getPostsForUser() {
-        PostEntity postOne = PostEntity.builder().userId(1l).id(1l).text("").build();
-        PostEntity postTwo = PostEntity.builder().userId(1l).id(2l).text("").build();
-        PostEntity postThree = PostEntity.builder().userId(1l).id(3l).text("").build();
+        PostEntity postOne = PostEntity.builder().userEmail("email@email.com").id(1l).text("").build();
+        PostEntity postTwo = PostEntity.builder().userEmail("email@email.com").id(2l).text("").build();
+        PostEntity postThree = PostEntity.builder().userEmail("email@email.com").id(3l).text("").build();
 
-        when(postRepository.getPostEntitiesByUserIdIs(1)).thenReturn(List.of(postOne, postTwo, postThree));
+        when(postRepository.getPostEntitiesByUserEmailIs("email@email.com")).thenReturn(List.of(postOne, postTwo, postThree));
 
-        List<PostEntity> actual = postService.getPostsForUser(1);
+        List<PostEntity> actual = postService.getPostsForUser("email@email.com");
 
         assertEquals(3, actual.size());
-        verify(postRepository, times(1)).getPostEntitiesByUserIdIs(1);
+        verify(postRepository, times(1)).getPostEntitiesByUserEmailIs("email@email.com");
     }
 // Not implemented
 //    @Test
@@ -59,9 +59,9 @@ class PostServiceImplTest {
     @Tag("unit")
 
     void createPost() {
-        CreatePostRequest request = CreatePostRequest.builder().userId(1l).text("").build();
+        CreatePostRequest request = CreatePostRequest.builder().userEmail("email@email.com").text("").build();
         PostEntity returned = PostEntity.builder().id(1l).build();
-        PostEntity inserted = PostEntity.builder().userId(1l).text("").build();
+        PostEntity inserted = PostEntity.builder().userEmail("email@email.com").text("").build();
         CreatePostResponse expected = CreatePostResponse.builder().id(1).build();
 
         when(postRepository.save(inserted)).thenReturn(returned);
@@ -79,8 +79,8 @@ class PostServiceImplTest {
 
     void deletePostsForUser() {
 
-        postService.deletePostsForUser(1);
+        postService.deletePostsForUser("email@email.com");
 
-        verify(postRepository, times(1)).deletePostEntitiesByUserIdIs(1);
+        verify(postRepository, times(1)).deletePostEntitiesByUserEmailIs("email@email.com");
     }
 }

@@ -1,0 +1,37 @@
+# apiVersion: networking.k8s.io/v1
+# kind: NetworkPolicy
+# metadata:
+#   name: network-policy
+#   namespace: default
+# spec:
+#   podSelector:
+#     matchLabels:
+#       app: user-service
+#   policyTypes:
+#   - Ingress
+#   - Egress
+#   ingress:
+#   - from:
+#     - podSelector:
+#         matchExpressions:
+#           - key: app
+#             operator: In
+#             values: ["rabbitmq"]
+       
+#   egress:
+#   - to:
+#     - podSelector:
+#         matchExpressions:
+#           - key: app
+#             operator: In
+#             values: ["rabbitmq" ]
+       
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-all
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  - Egress

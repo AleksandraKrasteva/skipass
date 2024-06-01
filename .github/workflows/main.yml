@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+      - dev
+      - auth0
       # - ci-setup
 
 env: 
@@ -16,7 +18,7 @@ jobs:
     strategy: 
       matrix:
         include: 
-        - directory: ./UserService
+        # - directory: ./UserService
         - directory: ./PostManagement
         # The other services are not currently implemented
         # - directory: ./JourneyService
@@ -57,29 +59,25 @@ jobs:
     strategy: 
       matrix:
         include: 
-        - dockerfile: ./UserService/Dockerfile
-          image: ghcr.io/AleksandraKrasteva/user-service
-          working-directory: ./UserService
+        # - dockerfile: ./UserService/Dockerfile
+        #   image: ghcr.io/AleksandraKrasteva/user-service
+        #   working-directory: ./UserService
 
-        - dockerfile: ./JourneyService/Dockerfile
-          image: ghcr.io/AleksandraKrasteva/journey-service
-          working-directory: ./JourneyService
+        # - dockerfile: ./JourneyService/Dockerfile
+        #   image: ghcr.io/AleksandraKrasteva/journey-service
+        #   working-directory: ./JourneyService
 
         - dockerfile: ./PostManagement/Dockerfile
           image: ghcr.io/AleksandraKrasteva/post-service
           working-directory: ./PostManagement
 
-        - dockerfile: ./StatisticsService/Dockerfile
-          image: ghcr.io/AleksandraKrasteva/statistics-service
-          working-directory: ./StatisticsService
+        # - dockerfile: ./StatisticsService/Dockerfile
+        #   image: ghcr.io/AleksandraKrasteva/statistics-service
+        #   working-directory: ./StatisticsService
 
-        - dockerfile: ./client/Dockerfile
-          image: ghcr.io/AleksandraKrasteva/client
-          working-directory: ./client  
-
-        - dockerfile: ./Krakend/Dockerfile
-          image: ghcr.io/AleksandraKrasteva/krakend_test
-          working-directory: ./Krakend
+        # - dockerfile: ./Krakend/Dockerfile
+        #   image: ghcr.io/AleksandraKrasteva/krakend_test
+        #   working-directory: ./Krakend
 
         - dockerfile: ./RabbitMQ/Dockerfile
           image: ghcr.io/AleksandraKrasteva/rabbitmq
@@ -117,4 +115,40 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+  
+  # deploy:
+  #   runs-on: ubuntu-latest
+  #   needs: build
+
+  #   steps:
+  #   - name: Checkout code
+  #     uses: actions/checkout@v2
+
+  #   - name: Set up kubectl
+  #     uses: actions-hub/kubectl@master
+      
+          
+  #   # - name: Configure kubeconfig
+  #   #   env:
+  #   #     KUBECONFIG: ${{ secrets.KUBECONFIG }}
+  #   #   run: |
+  #   #     echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
+
+  #   - name: Check Deployment Status
+  #     id: check-deployment
+  #     run: |
+  #       kubectl get deployment post-service -o jsonpath='{.status.readyReplicas}' || echo "0"
+
+  #   - name: Deploy Application if Not Running
+  #     working-directory: docker_kubernetes/app
+  #     if: steps.check-deployment.outputs.status == '0'
+  #     run: |
+  #       kubectl apply -f postservice.yaml
+
+  #   - name: Deploy to Kubernetes
+  #     env:
+  #       KUBECONFIG: ${{ secrets.KUBECONFIG }}
+  #     run: |
+  #       kubectl set image deployment/post-service post-service=ghcr.io/${{ github.repository_owner }}/post-service:dev
+  #       kubectl rollout status deployment/post-service
       

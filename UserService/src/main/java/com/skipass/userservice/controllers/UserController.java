@@ -20,7 +20,7 @@ import java.util.List;
 @RestController
 //@CrossOrigin(origins = "http://krakend:808")
 @AllArgsConstructor
-@CrossOrigin("http://krakend:8080")
+//@CrossOrigin("http://krakend:8080")
 @RequestMapping("/")
 //@PropertySource("{value.from.file}")
 //@PropertySource("classpath:/com/${my.placeholder:default/path}/app.properties")
@@ -42,7 +42,10 @@ public class UserController {
     @GetMapping("/get-users")
 //    @CrossOrigin(origins = {corsOrigins})
     public ResponseEntity<List<UserEntity>> getUsers() {
-        return ResponseEntity.ok().body(userService.getAllUsers());
+        System.out.print("Request users");
+        var users = userService.getAllUsers();
+
+        return ResponseEntity.ok().body(users);
     }
 }
 

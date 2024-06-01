@@ -1,0 +1,81 @@
+name: CD Pipeline
+
+on:
+ workflow_run:
+  workflows: ['CI pipeline']
+  types: [completed]
+  branches:
+   - 'dev'
+ # push:
+    # branches:
+    #   - dev
+  # workflow_run:
+  #   workflows: ["CI Pipeline"]
+  #   types:
+  #     - completed
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Check if repository is checked out
+      id: check-repo
+      run: |
+         $repoPath = "${{ secrets.REPO_PATH }}"
+         if (Test-Path $repoPath) {
+           $repoContents = Get-ChildItem -Path $repoPath
+           if ($repoContents.Count -gt 0) {
+             echo "repo-exists=true" >> $env:GITHUB_ENV
+           } else {
+             echo "repo-exists=false" >> $env:GITHUB_ENV
+           }
+         } else {
+           echo "repo-exists=false" >> $env:GITHUB_ENV
+         }
+         
+    - name: Checkout repository if not present
+      if: env.repo-exists == 'false'
+      run: |
+        git clone https://github.com/AleksandraKrasteva/skipass.git ${{ secrets.REPO_PATH }}
+
+    - name: Switch to dev branch and pull latest change
+      run: |
+        cd ${{ secrets.REPO_PATH }}
+        git checkout dev
+        git pull origin dev
+
+    - name: Check if deployment is running
+      id: check-deployment
+      run: |
+        kubectl get deployment grafana-k8s-monitoring-kube-state-metrics -n monitoring -o jsonpath='{.status.readyReplicas}'; echo "0"
+      continue-on-error: true
+
+    - name: Create temporary grafana values file if deployment is not running
+      if: steps.check-deployment.outputs.status == '0'
+      run: |
+        $grafanaFilePath = "${{secrets.REPO_PATH}}\docker_kubernetes\values.yaml";
+        $grafanaConfig = @"
+        ${{ secrets.GRAFANA_CONFIG }}
+        "@;
+        $grafanaConfig | Out-File -FilePath $grafanaFilePath -Encoding utf8
+        
+    - name: Deploy application if not running
+      if: steps.check-deployment.outputs.status == '0'
+      run: |
+        kubectl create secret generic global-secret --from-literal=post-db-user=${{ secrets.USER_DB_SECRET }} --from-literal=post-db-pass=${{ secrets.PASS_DB_SECRET }} --from-literal=rabbitmq-user=${{ secrets.RABBITMQ_USER }} --from-literal=rabbitmq-pass=${{ secrets.RABBITMQ_PASS }}
+        helm repo add grafana https://grafana.github.io/helm-charts;
+        helm repo update;
+        helm upgrade --install --atomic --timeout 300s grafana-k8s-monitoring grafana/k8s-monitoring --namespace "monitoring" --create-namespace --values ${{secrets.REPO_PATH}}\docker_kubernetes\values.yaml;
+        powershell.exe -File ${{ secrets.REPO_PATH }}/docker_kubernetes/initialize.ps1
+        
+    - name: Update deployment 
+      if: steps.check-deployment.outputs.status != '0'
+      run: |
+        kubectl rollout restart statefulset -n default;
+        kubectl rollout restart deployments -n default;
+        powershell.exe -File ${{ secrets.REPO_PATH }}/docker_kubernetes/initialize_redeploy.ps1
+

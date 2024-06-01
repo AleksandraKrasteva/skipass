@@ -9,11 +9,15 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @Builder
-@Table(name = "posts")
+@Table(name = "likes")
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReactionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private long id;
+    private long postId;
+    private String creator;
+    private boolean isLike;
 }
+

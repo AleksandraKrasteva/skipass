@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
-@CrossOrigin("http://krakend:8080")
+//@CrossOrigin("http://krakend:8080")
 @RequestMapping("/")
 public class UserProfileController {
 
@@ -22,11 +22,12 @@ public class UserProfileController {
     @PostMapping(
             path = "/create-user")
     public ResponseEntity<Long> createUser(@RequestBody CreateUserProfileRequest request) {
+        System.out.println("CreateUser");
         CreateUserProfileResponse response = profileService.createUserProfile(request);
         return ResponseEntity.ok().body(response.getId());
     }
 
-    @DeleteMapping("/delete/{userId}")
+    @DeleteMapping("/delete-profile/{userId}")
     public ResponseEntity<Long> deleteProfile(@PathVariable(value = "userId") long userId) {
         System.out.println("In delete profile controller");
         DeleteUserProfileRequest request = DeleteUserProfileRequest.builder().userID(userId).build();

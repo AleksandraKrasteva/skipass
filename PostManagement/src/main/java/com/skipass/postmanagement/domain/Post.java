@@ -6,10 +6,10 @@ import lombok.Data;
 @Data
 @Builder
 public class Post {
-    private Long id;
+    private long id;
 
     private String text;
 
-    private Long userId;
+    private String userEmail;
 
 }
