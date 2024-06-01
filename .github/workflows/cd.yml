@@ -52,8 +52,8 @@ jobs:
 
     - name: Create temporary grafana values file
       run: |
-        $grafanaFilePath = "${{secrets.REPO_PATH}}\docker_kubernetes\values.yaml"
-        Set-Content -Path $grafanaFilePath -Value "${{ secrets.GRAFANA_CONFIG }}"
+        $grafanaFilePath = "${{secrets.REPO_PATH}}\docker_kubernetes\values.yaml";
+        Set-Content -Path $grafanaFilePath -Value = @"${{ secrets.GRAFANA_CONFIG }}"@;
         
     - name: Deploy Application if Not Running
       if: steps.check-deployment.outputs.status == '0'
