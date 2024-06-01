@@ -4,6 +4,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.2.3'
     id 'io.spring.dependency-management' version '1.1.4'
+    id "org.owasp.dependencycheck" version "7.3.2"
     id 'jacoco'
 }
 
@@ -38,12 +39,17 @@ dependencies {
     testImplementation 'org.testcontainers:junit-jupiter'
     testImplementation 'org.testcontainers:postgresql'
     testImplementation 'org.testcontainers:rabbitmq'
+
 }
 
 tasks.named('test') {
     useJUnitPlatform()
 }
 
+dependencyCheck {
+    failBuildOnCVSS = 4
+    format = 'HTML'
+}
 
 test {
     finalizedBy jacocoTestReport
