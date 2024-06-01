@@ -1,2 +1,4 @@
-package com.skipass.journeyservice.persistance;public class JourneyEntity {
+package com.skipass.journeyservice.persistance;
+
+public class JourneyEntity {
 }

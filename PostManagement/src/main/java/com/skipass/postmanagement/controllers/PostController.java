@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-//@CrossOrigin(origins = "http://krakend:8080")
 @AllArgsConstructor
 public class PostController {
 
@@ -27,6 +26,12 @@ public class PostController {
     @GetMapping("/view/{userEmail}")
     public ResponseEntity<List<PostEntity>> viewPostsForUser(@PathVariable(value = "userEmail") String userEmail) {
         List<PostEntity> posts = postService.getPostsForUser(userEmail);
+        return ResponseEntity.ok().body(posts);
+    }
+
+    @GetMapping("/view-posts/")
+    public ResponseEntity<List<PostEntity>> viewAllPosts() {
+        List<PostEntity> posts = postService.getAllPosts();
         return ResponseEntity.ok().body(posts);
     }
 

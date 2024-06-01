@@ -1,2 +1,4 @@
-package com.skipass.statisticsservice.domain;public class AggregatedPostStatistics {
+package com.skipass.statisticsservice.domain;
+
+public class AggregatedPostStatistics {
 }

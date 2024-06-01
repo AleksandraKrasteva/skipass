@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @Builder
 public class Post {
-    private Long id;
+    private long id;
 
     private String text;
 

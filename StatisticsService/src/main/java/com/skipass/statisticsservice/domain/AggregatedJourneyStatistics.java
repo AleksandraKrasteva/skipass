@@ -1,2 +1,4 @@
-package com.skipass.statisticsservice.domain;public class AggregatedJourneyStatistics {
+package com.skipass.statisticsservice.domain;
+
+public class AggregatedJourneyStatistics {
 }

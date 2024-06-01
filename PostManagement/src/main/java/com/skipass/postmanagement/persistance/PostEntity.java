@@ -1,7 +1,10 @@
 package com.skipass.postmanagement.persistance;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -13,10 +16,15 @@ public class PostEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private long id;
 
-    String text;
+    private String text;
 
-    String userEmail;
+    private String userEmail;
+
+    @Nullable
+    @JoinColumn(name="reactions", nullable = true)
+    @OneToMany()
+    private List<ReactionEntity> reactions;
 
 }

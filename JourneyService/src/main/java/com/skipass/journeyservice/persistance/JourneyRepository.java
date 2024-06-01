@@ -1,2 +1,4 @@
-package com.skipass.journeyservice.persistance;public interface JourneyRepository {
+package com.skipass.journeyservice.persistance;
+
+public interface JourneyRepository {
 }

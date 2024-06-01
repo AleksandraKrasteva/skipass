@@ -1,2 +1,4 @@
-package com.skipass.statisticsservice.domain;public class JourneyStatistic {
+package com.skipass.statisticsservice.domain;
+
+public class JourneyStatistic {
 }

@@ -12,12 +12,12 @@ import lombok.NoArgsConstructor;
 @Table(name = "likes")
 @AllArgsConstructor
 @NoArgsConstructor
-public class LikesEntity {
+public class ReactionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    private int postId;
-    private int creator;
+    private long id;
+    private long postId;
+    private String creator;
     private boolean isLike;
 }
 

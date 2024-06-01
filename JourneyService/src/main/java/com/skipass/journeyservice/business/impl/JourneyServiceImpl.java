@@ -1,2 +1,4 @@
-package com.skipass.journeyservice.business.impl;public class JourneryServiceImpl {
+package com.skipass.journeyservice.business.impl;
+
+public class JourneyServiceImpl {
 }

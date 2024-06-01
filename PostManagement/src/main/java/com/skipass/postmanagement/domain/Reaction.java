@@ -5,8 +5,8 @@ import lombok.Data;
 
 @Data
 @Builder
-public class Like {
-    private int id;
+public class Reaction {
+    private long id;
     private int postId;
     private int creator;
     private boolean isLike;
