@@ -66,6 +66,14 @@ jobs:
         working-directory: ${{matrix.directory}}
         run: ./gradlew dependencyCheckAnalyze
         continue-on-error: true
+
+      - name: Verify file existence
+        run: |
+          echo "Current Directory: $(pwd)"
+          echo "Listing Files in Directory:"
+          ls -al
+          echo "Listing Files in zap_report.html location:"
+          ls -al ${{matrix.directory}}/build/reports/
       
       - name: Upload Dependency-Check Report
         uses: actions/upload-artifact@v2
