@@ -2,8 +2,8 @@ name: CD Pipeline
 
 on:
  push:
-    branches:
-      - dev
+    # branches:
+    #   - dev
   # workflow_run:
   #   workflows: ["CI Pipeline"]
   #   types:
@@ -31,8 +31,7 @@ jobs:
          } else {
            echo "repo-exists=false" >> $env:GITHUB_ENV
          }
-
-        
+         
     - name: Checkout repository if not present
       if: env.repo-exists == 'false'
       run: |
@@ -44,13 +43,14 @@ jobs:
         git checkout dev
         git pull origin dev
 
-    - name: Check Deployment Status
+    - name: Check if deployment is running
       id: check-deployment
       run: |
-        kubectl get deployment post-service -o jsonpath='{.status.readyReplicas}'; echo "0"
+        kubectl get deployment grafana-k8s-monitoring-kube-state-metrics -n monitoring -o jsonpath='{.status.readyReplicas}'; echo "0"
       continue-on-error: true
 
-    - name: Create temporary grafana values file
+    - name: Create temporary grafana values file if deployment is not running
+      if: steps.check-deployment.outputs.status == '0'
       run: |
         $grafanaFilePath = "${{secrets.REPO_PATH}}\docker_kubernetes\values.yaml";
         $grafanaConfig = @"
@@ -58,7 +58,7 @@ jobs:
         "@;
         $grafanaConfig | Out-File -FilePath $grafanaFilePath -Encoding utf8
         
-    - name: Deploy Application if Not Running
+    - name: Deploy application if not running
       if: steps.check-deployment.outputs.status == '0'
       run: |
         kubectl create secret generic global-secret --from-literal=post-db-user=${{ secrets.USER_DB_SECRET }} --from-literal=post-db-pass=${{ secrets.PASS_DB_SECRET }} --from-literal=rabbitmq-user=${{ secrets.RABBITMQ_USER }} --from-literal=rabbitmq-pass=${{ secrets.RABBITMQ_PASS }}
@@ -66,7 +66,11 @@ jobs:
         helm repo update;
         helm upgrade --install --atomic --timeout 300s grafana-k8s-monitoring grafana/k8s-monitoring --namespace "monitoring" --create-namespace --values ${{secrets.REPO_PATH}}\docker_kubernetes\values.yaml;
         powershell.exe -File ${{ secrets.REPO_PATH }}/docker_kubernetes/initialize.ps1
-    - name: Update Deployment 
+        
+    - name: Update deployment 
+      if: steps.check-deployment.outputs.status != '0'
       run: |
-        kubectl set image deployment/post-service-deployment post-service=ghcr.io/${{ github.repository_owner }}/post-service:dev
-        kubectl rollout status deployment/post-service
+        kubectl rollout restart statefulset -n default;
+        kubectl rollout restart deployments -n default;
+        powershell.exe -File ${{ secrets.REPO_PATH }}/docker_kubernetes/initialize_redeploy.ps1
+
