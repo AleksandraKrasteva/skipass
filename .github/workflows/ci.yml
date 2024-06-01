@@ -56,8 +56,7 @@ jobs:
     strategy: 
       matrix:
         include: 
-        - report-directory: ./PostManagement/build/reports/dependency-check-report.html
-          directory: ./PostManagement
+        - directory: ./PostManagement
           report: "post-service-dependency-report"
     steps:
       - name: Checkout
@@ -71,8 +70,8 @@ jobs:
       - name: Upload Dependency-Check Report
         uses: actions/upload-artifact@v2
         with:
-          # name: ${{matrix.report}}
-          path: ${{matrix.report-directory}}
+          name: ${{matrix.report}}
+          path:  ${{matrix.directory}}/build/reports/dependency-check-report.html
 
   build:
     runs-on: ubuntu-latest
