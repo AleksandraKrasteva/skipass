@@ -65,7 +65,7 @@ jobs:
         helm repo add grafana https://grafana.github.io/helm-charts;
         helm repo update;
         helm upgrade --install --atomic --timeout 300s grafana-k8s-monitoring grafana/k8s-monitoring --namespace "monitoring" --create-namespace --values ${{secrets.REPO_PATH}}\docker_kubernetes\values.yaml;
-        .\${{ secrets.REPO_PATH }}/docker_kubernetes/initialize.ps1
+        powershell.exe -File ${{ secrets.REPO_PATH }}/docker_kubernetes/initialize.ps1
     - name: Update Deployment 
       run: |
         kubectl set image deployment/post-service-deployment post-service=ghcr.io/${{ github.repository_owner }}/post-service:dev
