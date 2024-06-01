@@ -1,7 +1,12 @@
 name: CD Pipeline
 
 on:
- push:
+ workflow_run:
+  workflows: ['CI pipeline']
+  types: [completed]
+  branches:
+   - 'dev'
+ # push:
     # branches:
     #   - dev
   # workflow_run:
