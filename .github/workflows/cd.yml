@@ -5,8 +5,8 @@ on:
   workflows: ['CI pipeline']
   types: [completed]
   branches:
-   - 'dev'
-   - 'main'
+   - dev
+   - main
  # push:
     # branches:
     #   - dev
