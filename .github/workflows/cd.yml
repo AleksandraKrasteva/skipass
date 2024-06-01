@@ -64,7 +64,7 @@ jobs:
         kubectl create secret generic global-secret --from-literal=post-db-user=${{ secrets.USER_DB_SECRET }} --from-literal=post-db-pass=${{ secrets.PASS_DB_SECRET }} --from-literal=rabbitmq-user=${{ secrets.RABBITMQ_USER }} --from-literal=rabbitmq-pass=${{ secrets.RABBITMQ_PASS }}
         helm repo add grafana https://grafana.github.io/helm-charts;
         helm repo update;
-        helm upgrade --install --atomic --timeout 300s grafana-k8s-monitoring grafana/k8s-monitoring --namespace "monitoring" --create-namespace --values $grafanaFilePath;
+        helm upgrade --install --atomic --timeout 300s grafana-k8s-monitoring grafana/k8s-monitoring --namespace "monitoring" --create-namespace --values ${{secrets.REPO_PATH}}\docker_kubernetes\values.yaml;
         .\${{ secrets.REPO_PATH }}/docker_kubernetes/initialize.ps1
     - name: Update Deployment 
       run: |
