@@ -6,6 +6,7 @@ on:
   types: [completed]
   branches:
    - 'dev'
+   - 'main'
  # push:
     # branches:
     #   - dev
