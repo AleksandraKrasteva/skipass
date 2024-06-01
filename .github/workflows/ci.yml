@@ -11,13 +11,14 @@ env:
   IMAGE_NAME: ${{github.repository}}
 
 jobs:
-  test:
+  code-and-dependency-test:
     runs-on: ubuntu-latest
     strategy: 
       matrix:
         include: 
         # - directory: ./UserService
         - directory: ./PostManagement
+          report-name: "post-service-report"
         # The other services are not currently implemented
         # - directory: ./JourneyService
         # - directory: ./StatisticsService
@@ -50,40 +51,21 @@ jobs:
           api-token: ${{ secrets.CODACY_TOKEN }}
           coverage-reports: ${{matrix.directory}}/build/reports/jacoco/test/jacocoTestReport.xml
           language: java   
-
-  dependency-check:
-    runs-on: ubuntu-latest
-    strategy: 
-      matrix:
-        include: 
-        - directory: ./PostManagement
-          report: "post-service-dependency-report"
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        
-      - name: Run Dependency-Check
-        working-directory: ${{matrix.directory}}
-        run: ./gradlew dependencyCheckAnalyze
-        continue-on-error: true
-
-      - name: Verify file existence
-        run: |
-          echo "Current Directory: $(pwd)"
-          echo "Listing Files in Directory:"
-          ls -al
-          echo "Listing Files in zap_report.html location:"
-          ls -al ${{matrix.directory}}/build/reports/
+          
+    - name: Run Dependency-Check
+      working-directory: ${{matrix.directory}}
+      run: ./gradlew dependencyCheckAnalyze
+      continue-on-error: true
       
-      - name: Upload Dependency-Check Report
-        uses: actions/upload-artifact@v2
-        with:
-          name: ${{matrix.report}}
-          path:  ${{matrix.directory}}/build/reports/dependency-check-report.html
+    - name: Upload Dependency-Check Report
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{matrix.report}}
+        path:  ${{matrix.directory}}/build/reports/dependency-check-report.html
 
   build:
     runs-on: ubuntu-latest
-    needs: [test, dependency-check]
+    needs: code-and-dependency-test
     strategy: 
       matrix:
         include: 
