@@ -16,7 +16,7 @@ on:
   #     - completed
 
 jobs:
-  deploy:
+  deploy-locally:
     runs-on: self-hosted
 
     steps:
