@@ -57,21 +57,21 @@ jobs:
       matrix:
         include: 
         - directory: ./PostManagement
-          name: "PostService"
-          report: "post-service-report"
+          report: "post-service-dependency-report"
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        
       - name: Run Dependency-Check
-        uses: owasp/dependency-check-action@v2.0.0
-        with:
-          project: ${{matrix.name}}
-          scan: ${{matrix.directory}}
+        working-directory: ${{matrix.directory}}
+        run: ./gradlew dependencyCheckAnalyze
+      
       - name: Upload Dependency-Check Report
         uses: actions/upload-artifact@v2
         with:
           name: ${{matrix.report}}
-          path: dependency-check-report.html
+          working-directory: ${{matrix.directory}}
+          path: build/reports/dependency-check-report.html
 
   build:
     runs-on: ubuntu-latest
