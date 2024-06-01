@@ -56,7 +56,7 @@ jobs:
         $grafanaConfig = @"
         ${{ secrets.GRAFANA_CONFIG }}
         "@;
-        $grafanaConfig | Out-File -FilePath $valuesFilePath -Encoding utf8
+        $grafanaConfig | Out-File -FilePath $grafanaFilePath -Encoding utf8
         
     - name: Deploy Application if Not Running
       if: steps.check-deployment.outputs.status == '0'
