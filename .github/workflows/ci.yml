@@ -73,7 +73,7 @@ jobs:
     - name: Run Security Check
       working-directory: ${{matrix.directory}}
       run: ./gradlew dependencyCheckAnalyze
-      continue-on-error: true
+      # continue-on-error: true
       
     - name: Upload Dependency-Check Report
       uses: actions/upload-artifact@v2
