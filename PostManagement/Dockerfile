@@ -3,12 +3,12 @@ COPY . /home
 WORKDIR /home
 RUN gradle build -x test --no-daemon
 
-FROM eclipse-temurin:17-jre-alpine as builder
+FROM eclipse-temurin:21-jdk-alpine as builder
 WORKDIR /application
 COPY --from=build home/build/libs/*.jar application.jar
 RUN java -Djarmode=layertools -jar application.jar extract
 
-FROM eclipse-temurin:17-jre-alpine
+FROM eclipse-temurin:21-jdk-alpine
 WORKDIR /application
 COPY --from=builder /application/dependencies/ ./
 COPY --from=builder /application/spring-boot-loader/ ./
@@ -17,11 +17,10 @@ COPY --from=builder /application/application/ ./
 RUN addgroup -S app && adduser -S app -G app
 USER app
 
-ENV OTEL_SERVICE_NAME=post-service
-ENV OTEL_RESOURCE_ATTRIBUTES="deployment.environment=dev,service.namespace=app,service.version=1"
-ENV OTEL_EXPORTER_OTLP_ENDPOINT="http://grafana-k8s-monitoring-grafana-agent.monitoring.svc.cluster.local:4318"
-ENV OTEL_EXPORTER_OTLP_PROTOCOL="http/protobuf"
-COPY ../grafana-opentelemetry-java.jar grafana-opentelemetry-java.jar
-ENTRYPOINT ["java", "-javaagent:grafana-opentelemetry-java.jar", "org.springframework.boot.loader.launch.JarLauncher"]
-
-
+#ENV OTEL_SERVICE_NAME=post-service
+#ENV OTEL_RESOURCE_ATTRIBUTES="deployment.environment=dev,service.namespace=app,service.version=1"
+#ENV OTEL_EXPORTER_OTLP_ENDPOINT="http://grafana-k8s-monitoring-grafana-agent.monitoring.svc.cluster.local:4318"
+#ENV OTEL_EXPORTER_OTLP_PROTOCOL="http/protobuf"
+#COPY ../grafana-opentelemetry-java.jar grafana-opentelemetry-java.jar
+#ENTRYPOINT ["java", "-javaagent:grafana-opentelemetry-java.jar", "org.springframework.boot.loader.launch.JarLauncher"]
+ENTRYPOINT ["java", "org.springframework.boot.loader.launch.JarLauncher"]
