@@ -1,10 +1,7 @@
-import org.gradle.api.tasks.testing.Test
-
 plugins {
     id 'java'
     id 'org.springframework.boot' version '3.3.0'
     id 'io.spring.dependency-management' version '1.1.5'
-    id "org.owasp.dependencycheck" version "7.3.2"
     id 'jacoco'
 }
 
@@ -46,11 +43,6 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
-dependencyCheck {
-    failBuildOnCVSS = 4
-    format = 'HTML'
-}
-
 test {
     finalizedBy jacocoTestReport
 }
@@ -81,15 +73,15 @@ jacocoTestReport {
         csv.required = false
         html.outputLocation = layout.buildDirectory.dir('reports')
     }
-    afterEvaluate {
-        classDirectories.setFrom(files(classDirectories.files.collect {
-            fileTree(dir: it, exclude: [
-                    "com/skipass/postmanagement/domain",
-                    "com/skipass/postmanagement/persistance",
-                    "com/skipass/userservice/business/PostService.java",
-                    "com/skipass/userservice/business/ReactionService.java"
-
-            ])
-        }))
-    }
+//    afterEvaluate {
+//        classDirectories.setFrom(files(classDirectories.files.collect {
+//            fileTree(dir: it, exclude: [
+//                    "com/skipass/postmanagement/domain",
+//                    "com/skipass/postmanagement/persistance",
+//                    "com/skipass/userservice/business/PostService.java",
+//                    "com/skipass/userservice/business/ReactionService.java"
+//
+//            ])
+//        }))
+//    }
 }

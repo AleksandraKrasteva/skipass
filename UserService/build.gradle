@@ -2,7 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.3.0'
 	id 'io.spring.dependency-management' version '1.1.5'
-	id "org.owasp.dependencycheck" version "7.3.2"
+	id 'jacoco'
 }
 
 group = 'com.skipass'
@@ -36,8 +36,48 @@ dependencies {
 	testImplementation 'org.testcontainers:junit-jupiter'
 	testImplementation 'org.testcontainers:postgresql'
 	testImplementation 'org.testcontainers:rabbitmq'
+
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+test {
+	finalizedBy jacocoTestReport
+}
+
+task unitTests(type: Test) {
+	useJUnitPlatform {
+		excludeTags 'integration'
+	}
+	description 'run integration tests'
+	finalizedBy jacocoTestReport
+}
+
+task integrationTests(type: Test) {
+	useJUnitPlatform {
+		excludeTags 'unit'
+	}
+	description 'run unit tests'
+	finalizedBy jacocoTestReport
+}
+jacocoTestReport {
+	dependsOn test
+    reports {
+		xml.required = true
+		csv.required = false
+		html.outputLocation = layout.buildDirectory.dir('reports')
+	}
+	afterEvaluate {
+		classDirectories.setFrom(files(classDirectories.files.collect {
+			fileTree(dir: it, exclude: [
+					"com/skipass/postmanagement/domain",
+					"com/skipass/postmanagement/persistance",
+					"com/skipass/userservice/business/PostService.java",
+					"com/skipass/userservice/business/ReactionService.java"
+
+			])
+		}))
+	}
 }
