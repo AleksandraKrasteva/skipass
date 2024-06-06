@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: post-service
-          image: ghcr.io/aleksandrakrasteva/post-service:auth0
+          image: ghcr.io/aleksandrakrasteva/post-service:dev
           imagePullPolicy: Always
           ports: 
           - containerPort: 8080
@@ -64,6 +64,12 @@ spec:
                 key: post-db-pass
           securityContext:
             allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
+            runAsUser: 1000
+            capabilities:
+              drop: 
+                - ALL
           resources:
             limits:
               cpu: 3040m

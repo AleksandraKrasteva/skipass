@@ -1,9 +1,7 @@
-import org.gradle.api.tasks.testing.Test
-
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.2.3'
-    id 'io.spring.dependency-management' version '1.1.4'
+    id 'org.springframework.boot' version '3.3.0'
+    id 'io.spring.dependency-management' version '1.1.5'
     id 'jacoco'
 }
 
@@ -38,12 +36,12 @@ dependencies {
     testImplementation 'org.testcontainers:junit-jupiter'
     testImplementation 'org.testcontainers:postgresql'
     testImplementation 'org.testcontainers:rabbitmq'
+
 }
 
 tasks.named('test') {
     useJUnitPlatform()
 }
-
 
 test {
     finalizedBy jacocoTestReport
@@ -75,19 +73,15 @@ jacocoTestReport {
         csv.required = false
         html.outputLocation = layout.buildDirectory.dir('reports')
     }
-    afterEvaluate {
-        classDirectories.setFrom(files(classDirectories.files.collect {
-            fileTree(dir: it, exclude: [
-                    "com/skipass/postmanagement/domain",
-                    "com/skipass/postmanagement/persistance",
-                    "com/skipass/userservice/business/PostService.java",
-                    "com/skipass/userservice/business/ReactionService.java"
-
-            ])
-        }))
-    }
+//    afterEvaluate {
+//        classDirectories.setFrom(files(classDirectories.files.collect {
+//            fileTree(dir: it, exclude: [
+//                    "com/skipass/postmanagement/domain",
+//                    "com/skipass/postmanagement/persistance",
+//                    "com/skipass/userservice/business/PostService.java",
+//                    "com/skipass/userservice/business/ReactionService.java"
+//
+//            ])
+//        }))
+//    }
 }
-
-
-
-

@@ -1,7 +1,7 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.2.4'
-	id 'io.spring.dependency-management' version '1.1.4'
+	id 'org.springframework.boot' version '3.3.0'
+	id 'io.spring.dependency-management' version '1.1.5'
 	id 'jacoco'
 }
 
@@ -23,21 +23,20 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web:2.6.2'
-	implementation 'org.springframework.boot:spring-boot-starter-amqp:2.6.2'
-	implementation 'org.springframework.boot:spring-boot-starter:2.6.2'
-
-	implementation 'org.springframework.boot:spring-boot-starter-webflux:2.6.2'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-amqp'
+	testImplementation 'org.springframework.amqp:spring-rabbit-test'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.postgresql:postgresql'
-//	implementation 'org.springframework.boot:spring-boot-starter-security'
-	testImplementation 'io.projectreactor:reactor-test'
-//	testImplementation 'org.springframework.security:spring-security-test'
 	compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools:2.6.2'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.amqp:spring-rabbit-test'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.2'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.testcontainers:junit-jupiter'
+	testImplementation 'org.testcontainers:postgresql'
+	testImplementation 'org.testcontainers:rabbitmq'
+
 }
 
 tasks.named('test') {
@@ -62,16 +61,10 @@ task integrationTests(type: Test) {
 	}
 	description 'run unit tests'
 	finalizedBy jacocoTestReport
-
 }
-
 jacocoTestReport {
 	dependsOn test
-//executionData(unitTests, integrationTests)
-//	dependsOn integrationTests
-//	dependsOn unitTests
-
-	reports {
+    reports {
 		xml.required = true
 		csv.required = false
 		html.outputLocation = layout.buildDirectory.dir('reports')
@@ -79,12 +72,10 @@ jacocoTestReport {
 	afterEvaluate {
 		classDirectories.setFrom(files(classDirectories.files.collect {
 			fileTree(dir: it, exclude: [
-					"com/skipass/userservice/domain",
-					"com/skipass/userservice/persistance",
-					"com/skipass/userservice/config",
-					"com/skipass/userservice/business/ProfileService.java",
-					"com/skipass/userservice/business/UserService.java"
-
+					"com/skipass/postmanagement/domain",
+					"com/skipass/postmanagement/persistance",
+					"com/skipass/userservice/business/PostService.java",
+					"com/skipass/userservice/business/ReactionService.java"
 
 			])
 		}))
