@@ -45,8 +45,9 @@ jobs:
             - name: Deploy setup 
               run: |
                   kubectl apply -f  https://github.com/envoyproxy/gateway/releases/download/v1.0.1/install.yaml
-                  kubectl create secret generic azure-secret --from-literal=post-db-user=${{ secrets.AZURE_DB_USER }} --from-literal=post-db-pass=${{ secrets.AZURE_DB_PASS }} --from-literal=rabbitmq-user=${{ secrets.RABBITMQ_USER }} --from-literal=rabbitmq-pass=${{ secrets.RABBITMQ_PASS }} -o yaml | kubectl apply -f -
-                   
+                  kubectl delete secret azure-secret --ignore-not-found
+                  kubectl create secret generic azure-secret --from-literal=post-db-user=${{ secrets.AZURE_DB_USER }} --from-literal=post-db-pass=${{ secrets.AZURE_DB_PASS }} --from-literal=rabbitmq-user=${{ secrets.RABBITMQ_USER }} --from-literal=rabbitmq-pass=${{ secrets.RABBITMQ_PASS }} 
+                  
             - uses: Azure/k8s-deploy@v4
               name: Deploys application
               with:
