@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: post-service
-          image: ghcr.io/aleksandrakrasteva/post-service:dev
+          image: ghcr.io/aleksandrakrasteva/post-service:main
           imagePullPolicy: Always
           ports: 
           - containerPort: 8080
