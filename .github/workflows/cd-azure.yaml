@@ -9,9 +9,7 @@ env:
     CLUSTER_NAME: skipass-cluster
     CLUSTER_RESOURCE_GROUP: skipass-demo
     DEPLOYMENT_MANIFEST_PATH: |
-        ./docker_kubernetes/app/config/gateway.yaml
         ./docker_kubernetes/app/config/global-config.yaml
-        ./docker_kubernetes/app/http-routes.yaml
         ./docker_kubernetes/app/postservice.yaml
 jobs:
       deploy:
@@ -43,6 +41,5 @@ jobs:
               name: Deploys application
               with:
                 action: deploy
-                images:  ghcr.io/aleksandrakrasteva/post-service:main
                 manifests: ${{ env.DEPLOYMENT_MANIFEST_PATH }}
                 namespace: default
