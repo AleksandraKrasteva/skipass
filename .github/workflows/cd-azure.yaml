@@ -1,16 +1,17 @@
 name: cd-azure
-"on":
-    push:
-        branches:
-            - main
+on:
+    workflow_run:
+      workflows: ['CI pipeline']
+      types: [completed]
+      branches:
+        - main
     workflow_dispatch: {}
 env:
     ACR_RESOURCE_GROUP: skipass-demo
     CLUSTER_NAME: skipass-cluster
     CLUSTER_RESOURCE_GROUP: skipass-demo
     DEPLOYMENT_MANIFEST_PATH: |
-        ./docker_kubernetes/app/config/global-config.yaml
-        ./docker_kubernetes/app/postservice.yaml
+        ./docker_kubernetes/azure-deployment
 jobs:
       deploy:
         permissions:
@@ -20,16 +21,19 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v3
+         
             - uses: azure/login@92a5484dfaf04ca78a94597f4f19fea633851fa2
               name: Azure login
               with:
                 client-id: ${{ secrets.AZURE_CLIENT_ID }}
                 subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
                 tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          
             - uses: azure/use-kubelogin@v1
               name: Set up kubelogin for non-interactive login
               with:
                 kubelogin-version: v0.0.25
+          
             - uses: azure/aks-set-context@v3
               name: Get K8s context
               with:
@@ -37,6 +41,12 @@ jobs:
                 cluster-name: ${{ env.CLUSTER_NAME }}
                 resource-group: ${{ env.CLUSTER_RESOURCE_GROUP }}
                 use-kubelogin: "true"
+
+            - name: Deploy setup 
+              run: |
+                  kubectl apply -f  https://github.com/envoyproxy/gateway/releases/download/v1.0.1/install.yaml
+                  kubectl create secret generic azure-secret --from-literal=post-db-user=${{ secrets.AZURE_DB_USER }} --from-literal=post-db-pass=${{ secrets.AZURE_DB_PASS }} --from-literal=rabbitmq-user=${{ secrets.RABBITMQ_USER }} --from-literal=rabbitmq-pass=${{ secrets.RABBITMQ_PASS }}
+                   
             - uses: Azure/k8s-deploy@v4
               name: Deploys application
               with:
