@@ -11,7 +11,7 @@ env:
     CLUSTER_NAME: skipass-cluster
     CLUSTER_RESOURCE_GROUP: skipass-demo
     DEPLOYMENT_MANIFEST_PATH: |
-        ./docker_kubernetes/azure-deployment
+        ./docker_kubernetes/app/azure-deployment
 jobs:
       deploy:
         permissions:
