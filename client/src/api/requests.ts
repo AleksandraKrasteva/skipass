@@ -11,7 +11,7 @@ export type UserData = {
 
 // export const createUser = (user: UserData) => {
 
-// 	return axios.post('http://skipass.api:80/create-user', user).then((res) => {
+// 	return axios.post('http://4.182.131.77/:80/create-user', user).then((res) => {
 // 		return res;
 // 	});
 // };
@@ -22,25 +22,25 @@ export const createPost = (post: Post, token: string) => {
 		Authorization: 'Bearer ' + token,
 	};
 
-	return axios.post('http://skipass.api:80/create-post',post, {headers}).then((res) => {
+	return axios.post('http://4.182.131.77/:80/create-post',post, {headers}).then((res) => {
 		return res;
 	});
 };
 
 // export const viewUsers = () => {
-// 	return axios.get('http://skipass.api:80/get-users').then((res)=>{
+// 	return axios.get('http://4.182.131.77/:80/get-users').then((res)=>{
 // 		return res;
 // 	});
 // };
 
 export const viewPostsForUser = (userEmail: string) => {
-	return axios.get(`http://skipass.api:80/view/${userEmail}`).then((res) => {
+	return axios.get(`http://4.182.131.77/:80/view/${userEmail}`).then((res) => {
 		return res;
 	});
 };
 
 // export const deleteUserProfile = (userId:number)=>{
-// 	return axios.delete(`http://skipass.api:80/delete-profile/${userId}`).then((res) => {
+// 	return axios.delete(`http://4.182.131.77/:80/delete-profile/${userId}`).then((res) => {
 // 		return res;
 // 	});
 // };
@@ -51,7 +51,7 @@ export const deletePost = (postId:number, token: string)=>{
 		Authorization: 'Bearer ' + token,
 	};
 
-	return axios.delete(`http://skipass.api:80/delete-post/${postId}`, {headers}).then((res) => {
+	return axios.delete(`http://4.182.131.77/:80/delete-post/${postId}`, {headers}).then((res) => {
 		return res;
 	});
 };
