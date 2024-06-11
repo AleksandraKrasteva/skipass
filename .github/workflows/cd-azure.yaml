@@ -7,7 +7,6 @@ on:
         - main
     workflow_dispatch: {}
 env:
-    ACR_RESOURCE_GROUP: skipass-demo
     CLUSTER_NAME: skipass-cluster
     CLUSTER_RESOURCE_GROUP: skipass-demo
     DEPLOYMENT_MANIFEST_PATH: |
@@ -20,7 +19,7 @@ jobs:
             id-token: write
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
          
             - uses: azure/login@92a5484dfaf04ca78a94597f4f19fea633851fa2
               name: Azure login
@@ -29,10 +28,10 @@ jobs:
                 subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
                 tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           
-            - uses: azure/use-kubelogin@v1
-              name: Set up kubelogin for non-interactive login
-              with:
-                kubelogin-version: v0.0.25
+            # - uses: azure/use-kubelogin@v1
+            #   name: Set up kubelogin for non-interactive login
+            #   with:
+            #     kubelogin-version: v0.0.25
           
             - uses: azure/aks-set-context@v3
               name: Get K8s context
