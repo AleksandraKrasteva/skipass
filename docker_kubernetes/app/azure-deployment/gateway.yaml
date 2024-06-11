@@ -23,8 +23,8 @@ metadata:
 spec:
   parentRefs:
     - name: eg
-  hostnames:
-    - "skipass.api"
+  # hostnames:
+  #   - "skipass.api"
   rules:
     - backendRefs:
         - kind: Service
@@ -55,7 +55,9 @@ spec:
         uri: "https://dev-hxsl4k6mw7xspicu.eu.auth0.com/.well-known/jwks.json"
   cors:
     allowOrigins:
-    - "https://skipass.pages.dev"
+    - '*'
+
+    # - "https://skipass.pages.dev"
     allowMethods:
     - GET
     - POST 
@@ -72,8 +74,8 @@ metadata:
 spec:
   parentRefs:
     - name: eg
-  hostnames:
-    - "skipass.api"
+  # hostnames:
+  #   - "skipass.api"
   rules:
     - backendRefs:
         - kind: Service
@@ -96,7 +98,8 @@ spec:
     name: open-routes
   cors:
     allowOrigins:
-    - "https://skipass.pages.dev"
+    - '*'
+    # - "https://skipass.pages.dev"
     allowMethods:
     - GET
     allowHeaders:
