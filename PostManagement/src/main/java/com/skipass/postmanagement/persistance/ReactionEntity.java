@@ -18,6 +18,5 @@ public class ReactionEntity {
     private long id;
     private long postId;
     private String creator;
-    private boolean isLike;
 }
 

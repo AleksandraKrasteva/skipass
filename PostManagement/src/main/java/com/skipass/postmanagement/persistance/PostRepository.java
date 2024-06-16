@@ -9,9 +9,9 @@ import java.util.List;
 @Repository
 
 public interface PostRepository extends JpaRepository<PostEntity, Long> {
-    List<PostEntity> getPostEntitiesByUserEmailIs(String userEmail);
+    List<PostEntity> getPostEntitiesByUsernameIs(String username);
 
     @Transactional
-    void deletePostEntitiesByUserEmailIs(String userEmail);
+    void deletePostEntitiesByUsernameIs(String username);
 
 }

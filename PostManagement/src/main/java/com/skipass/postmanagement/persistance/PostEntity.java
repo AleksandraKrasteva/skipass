@@ -20,11 +20,13 @@ public class PostEntity {
 
     private String text;
 
-    private String userEmail;
+    private String username;
 
     @Nullable
     @JoinColumn(name="reactions", nullable = true)
     @OneToMany()
     private List<ReactionEntity> reactions;
+
+    private long journeyId;
 
 }

@@ -1,0 +1,48 @@
+package com.skipass.journeyservice.controllers;
+
+import com.skipass.journeyservice.business.JourneyService;
+import com.skipass.journeyservice.domain.Journey;
+import com.skipass.journeyservice.persistance.JourneyEntity;
+import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@AllArgsConstructor
+public class JourneyController {
+    private final JourneyService journeyService;
+
+    @PostMapping("/create-journey/{username}")
+    public ResponseEntity<Journey> createJourney(@PathVariable(value = "username") String username){
+        Journey journey = journeyService.createJourney(username);
+        return ResponseEntity.ok().body(journey);
+    }
+
+    @GetMapping("/view-journey/{id}")
+    public ResponseEntity<JourneyEntity> getJourneyById(@PathVariable(value = "id") long id) {
+        JourneyEntity journey = journeyService.getJourneyById(id);
+        return ResponseEntity.ok().body(journey);
+    }
+
+    @GetMapping("/view-journeys-user/{username}")
+    public ResponseEntity<List<JourneyEntity>> getJourneysForUser(@PathVariable(value = "username") String username) {
+        List<JourneyEntity> journeys = journeyService.getAllForUser(username);
+        return ResponseEntity.ok().body(journeys);
+    }
+
+    @DeleteMapping("/delete-journey/{id}")
+    public ResponseEntity deleteJourneyById(@PathVariable(value = "id")long  id) {
+        journeyService.deleteJourneyById(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/delete-journeys-user/{username}")
+    public ResponseEntity deleteJourneysForUser(@PathVariable(value = "username") String username) {
+        journeyService.deleteJourneysForAuthor(username);
+        return ResponseEntity.ok().build();
+    }
+
+
+}
