@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: journey-db-service
+spec:
+  selector:
+    app: journey-db
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: journey-db-set
+spec:
+  selector:
+    matchLabels:
+      app: journey-db 
+  serviceName: "journey-db-service"
+  replicas: 1
+  minReadySeconds: 10
+  template:
+    metadata:
+      labels:
+        app: journey-db 
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: journey-db
+          image: postgres
+          ports: 
+          - containerPort: 5432
+          env:
+          - name: POSTGRES_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: global-secret
+                key: journey-db-user
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: global-secret
+                key: journey-db-pass
+          - name: POSTGRES_DB
+            valueFrom:
+              configMapKeyRef:
+                name: global-config
+                key: journey-db-database
+          securityContext:
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - mountPath: "/var/lib/postgresql/data"
+              name: storage
+      volumes:
+         - name: storage
+           persistentVolumeClaim:
+            claimName: journey-db-pvc

@@ -9,5 +9,8 @@ data:
   post-db-host: "post-db-service"
   post-db-port: "5432"
   post-db-database: "posts"
+  journey-db-host: "journey-db-service"
+  journey-db-port: "5432"
+  journey-db-database: "journey"
   rabbitmq-host: "rabbitmq-service"
   rabbitmq-port: "5672"
