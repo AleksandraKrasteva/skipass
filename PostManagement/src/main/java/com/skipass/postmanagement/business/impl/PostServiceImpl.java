@@ -24,7 +24,7 @@ public class PostServiceImpl implements PostService {
     }
     @Override
     public List<PostEntity> getAllPosts() {
-        return postRepository.findAll().reversed();
+        return postRepository.findAll();
     }
     @Override
     public void deletePostById(long postId) {
