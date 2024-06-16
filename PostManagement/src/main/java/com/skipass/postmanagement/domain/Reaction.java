@@ -9,5 +9,4 @@ public class Reaction {
     private long id;
     private int postId;
     private int creator;
-    private boolean isLike;
 }

@@ -33,7 +33,7 @@ public class JourneyController {
     }
 
     @DeleteMapping("/delete-journey/{id}")
-    public ResponseEntity deleteJourneyById(@PathVariable(value = "id")long  id) {
+    public ResponseEntity deleteJourneyById(@PathVariable(value = "id") long id) {
         journeyService.deleteJourneyById(id);
         return ResponseEntity.ok().build();
     }
@@ -43,6 +43,4 @@ public class JourneyController {
         journeyService.deleteJourneysForAuthor(username);
         return ResponseEntity.ok().build();
     }
-
-
 }

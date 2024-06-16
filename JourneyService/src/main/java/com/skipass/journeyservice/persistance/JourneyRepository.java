@@ -8,7 +8,6 @@ import java.util.List;
 
 public interface JourneyRepository extends JpaRepository<JourneyEntity, Long> {
 
-    List<JourneyEntity> getJourneyEntityByPostIdIs(long postId);
     List<JourneyEntity> getJourneyEntitiesByAuthorUsernameIs(String authorUsername);
 
     void deleteAllByIdIs(long journeyId);
