@@ -11,10 +11,12 @@ export default function App(props: AppProps) {
 			clientId="pZ5kS27dqX4zxH3xzTF1Q18qz7dTLrrJ" 
 			// useRefreshTokens={true}
 			authorizationParams={{
-				redirect_uri: 'https://skipass.pages.dev/',
-				// redirect_uri:'http://localhost:3000',
+// 				redirect_uri: 'https://skipass.pages.dev/',
+				redirect_uri:'http://localhost:3000',
+				// redirect_uri: 'https://auth0.skipass.pages.dev/'
+				// redirect_uri: 'https://skipass.pages.dev/',
 				audience: 'https://dev-hxsl4k6mw7xspicu.eu.auth0.com/api/v2/',
-				scope: 'read:current_user update:current_user_metadata'
+				scope: 'read:current_user, update:current_user_metadata'
 	 	    }}
 	  >
 			<Component {...pageProps} />

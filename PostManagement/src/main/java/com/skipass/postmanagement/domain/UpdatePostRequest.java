@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class CreateReactionRequest {
+public class UpdatePostRequest {
     private long postId;
-    private String creator;
+    private String text;
 }

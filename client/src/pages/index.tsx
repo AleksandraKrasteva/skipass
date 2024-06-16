@@ -8,10 +8,9 @@ import Navigation from '@/components/molecultes/Navigation';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Box, Button, List, ListItem, ListItemText, TextField, Typography } from '@mui/material';
 // import axios from 'axios';
-import React, { useState } from 'react';
+import React, {  useState } from 'react';
 
 const HomePage = () => {
-
 	// const [username, setUsername] = useState('');
 	// const [users, setUsers] = useState<User[]>([]);
 	// const [selectedUser, setSelectedUser] = useState<User['id']|null>(null);
@@ -61,9 +60,14 @@ const HomePage = () => {
 	// 	setSelectedUser(id);
 	// };
 
+	
+	
+
 	const createPostForUser = async() => {
+
 		if(!isAuthenticated) return;
 		const metadata = await getMetadata(); 
+		console.log(metadata);
 		const post:Post = {
 			// @ts-ignore
 			userEmail: metadata.email,
@@ -76,6 +80,8 @@ const HomePage = () => {
 			}}).catch(()=>{
 			loginWithRedirect();
 		});
+
+		console.log(token);
 	
 		if(!token) return;
 
@@ -117,7 +123,6 @@ const HomePage = () => {
 		});
 
 		if(!token) return;
-
 
 		await deletePost(id, token).catch((e)=>{
 			console.log(e);

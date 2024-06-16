@@ -27,9 +27,4 @@ public class ReactionController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/update-reaction/{id}")
-    public ResponseEntity updateReaction(@PathVariable(value = "id") long reactionId) {
-        reactionService.updateReaction(reactionId);
-        return ResponseEntity.ok().build();
-    }
 }

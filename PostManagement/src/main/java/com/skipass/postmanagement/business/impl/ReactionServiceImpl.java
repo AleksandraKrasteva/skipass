@@ -15,23 +15,13 @@ public class ReactionServiceImpl implements ReactionService {
     private final ReactionRepository reactionRepository;
 
     @Override
-    public void updateReaction(long reactionId) {
-        Optional<ReactionEntity> reaction = reactionRepository.findById(reactionId);
-        if(reaction.get().isLike()) {
-            reaction.get().setLike(false);
-        }else{
-            reaction.get().setLike(true);
-        }
-        reactionRepository.save(reaction.get());
-    }
-    @Override
     public void deleteReaction(long reactionId) {
         reactionRepository.deleteByIdIs(reactionId);
     }
     @Override
     public long createReaction(CreateReactionRequest request) {
         ReactionEntity reaction = ReactionEntity.builder()
-                .creator(request.getCreator()).isLike(request.isLike()).postId(request.getPostId()).build();
+                .creator(request.getCreator()).postId(request.getPostId()).build();
 
         ReactionEntity returned = reactionRepository.save(reaction);
         return returned.getId();
