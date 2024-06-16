@@ -18,8 +18,8 @@ jobs:
       matrix:
         include: 
         - directory: ./PostManagement
+        - directory: ./JourneyService
         # The other services are not currently implemented
-        # - directory: ./JourneyService
         # - directory: ./StatisticsService
 
     steps:
@@ -57,9 +57,9 @@ jobs:
     strategy: 
       matrix:
         include: 
-        # - dockerfile: ./JourneyService/Dockerfile
-        #   image: ghcr.io/AleksandraKrasteva/journey-service
-        #   working-directory: ./JourneyService
+        - dockerfile: ./JourneyService/Dockerfile
+          image: ghcr.io/AleksandraKrasteva/journey-service
+          working-directory: ./JourneyService
 
         - dockerfile: ./PostManagement/Dockerfile
           image: ghcr.io/AleksandraKrasteva/post-service
