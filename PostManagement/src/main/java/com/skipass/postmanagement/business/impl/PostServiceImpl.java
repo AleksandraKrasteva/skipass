@@ -1,36 +1,56 @@
 package com.skipass.postmanagement.business.impl;
 
 import com.skipass.postmanagement.business.PostService;
-import com.skipass.postmanagement.domain.CreatePostRequest;
-import com.skipass.postmanagement.domain.CreatePostResponse;
-import com.skipass.postmanagement.domain.Post;
-import com.skipass.postmanagement.domain.UpdatePostRequest;
+import com.skipass.postmanagement.domain.*;
 import com.skipass.postmanagement.persistance.PostEntity;
 import com.skipass.postmanagement.persistance.PostRepository;
+import com.skipass.postmanagement.persistance.ReactionEntity;
+import com.skipass.postmanagement.persistance.ReactionRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
+    private final ReactionRepository reactionRepository;
     @Override
-    public List<PostEntity> getPostsForUser(String username) {
-        return postRepository.getPostEntitiesByUsernameIs(username);
+    public List<Post> getPostsForUser(String username) {
+        List<Post> posts = postRepository.getPostEntitiesByUsernameIs(username).
+                stream().map(this::convertToPost).collect(Collectors.toList());
+        return posts;
+    }
+
+    private Post convertToPost(PostEntity post) {
+        List<ReactionEntity> reactionEntities = reactionRepository.getReactionEntitiesByPostIdIs(post.getId());
+        List<Reaction> reactions = reactionEntities.stream().map(this::convertReactions).collect(Collectors.toList());
+
+        Post postDto = Post.builder().id(post.getId()).journeyId(post.getJourneyId())
+                .text(post.getText()).reactions(reactions).build();
+        return postDto;
+    }
+
+    private Reaction convertReactions(ReactionEntity reaction){
+        return Reaction.builder().postId(reaction.getPostId())
+                .id(reaction.getId())
+                .creator(reaction.getCreator()).build();
     }
     @Override
-    public List<PostEntity> getAllPosts() {
+    public List<Post> getAllPosts() {
+        List<Post> posts = postRepository.findAll().
+                stream().map(this::convertToPost).collect(Collectors.toList());
+        return posts;
 
-
-        return postRepository.findAll();
     }
     @Override
     public void deletePostById(long postId) {
         postRepository.deleteById(postId);
+        //delete all reactions
     }
     @Override
     public CreatePostResponse createPost(CreatePostRequest request) {
@@ -41,7 +61,9 @@ public class PostServiceImpl implements PostService {
     }
     @Override
     public void deletePostsForUser(String username) {
+
         postRepository.deletePostEntitiesByUsernameIs(username);
+        //delete all reactions
     }
 
     @Override

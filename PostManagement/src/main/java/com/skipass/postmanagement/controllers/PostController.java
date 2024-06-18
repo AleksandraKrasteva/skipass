@@ -3,6 +3,7 @@ package com.skipass.postmanagement.controllers;
 import com.skipass.postmanagement.business.PostService;
 import com.skipass.postmanagement.domain.CreatePostRequest;
 import com.skipass.postmanagement.domain.CreatePostResponse;
+import com.skipass.postmanagement.domain.Post;
 import com.skipass.postmanagement.domain.UpdatePostRequest;
 import com.skipass.postmanagement.persistance.PostEntity;
 import com.skipass.postmanagement.persistance.PostRepository;
@@ -25,14 +26,14 @@ public class PostController {
     }
 
     @GetMapping("/view-posts-user/{username}")
-    public ResponseEntity<List<PostEntity>> viewPostsForUser(@PathVariable(value = "username") String username) {
-        List<PostEntity> posts = postService.getPostsForUser(username);
+    public ResponseEntity<List<Post>> viewPostsForUser(@PathVariable(value = "username") String username) {
+        List<Post> posts = postService.getPostsForUser(username);
         return ResponseEntity.ok().body(posts);
     }
 
     @GetMapping("/view-posts")
-    public ResponseEntity<List<PostEntity>> viewAllPosts() {
-        List<PostEntity> posts = postService.getAllPosts();
+    public ResponseEntity<List<Post>> viewAllPosts() {
+        List<Post> posts = postService.getAllPosts();
         return ResponseEntity.ok().body(posts);
     }
 

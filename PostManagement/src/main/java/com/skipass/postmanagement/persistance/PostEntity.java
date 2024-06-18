@@ -21,9 +21,6 @@ public class PostEntity {
 
     private String username;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<ReactionEntity> reactions;
-
     private long journeyId;
 
 }

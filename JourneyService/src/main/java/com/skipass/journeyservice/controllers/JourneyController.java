@@ -17,6 +17,8 @@ public class JourneyController {
 
     @PostMapping("/create-journey")
     public ResponseEntity<JourneyEntity> createJourney(@RequestBody CreateJourneyRequest request){
+        System.out.println(request);
+
         System.out.println(request.getUsername());
         JourneyEntity journey = journeyService.createJourney(request.getUsername());
         return ResponseEntity.ok().body(journey);

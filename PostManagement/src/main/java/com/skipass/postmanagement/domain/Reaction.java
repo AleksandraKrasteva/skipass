@@ -7,6 +7,6 @@ import lombok.Data;
 @Builder
 public class Reaction {
     private long id;
-    private int postId;
-    private int creator;
+    private long postId;
+    private String creator;
 }

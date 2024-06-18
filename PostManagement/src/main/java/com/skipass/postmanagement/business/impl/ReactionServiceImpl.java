@@ -9,6 +9,7 @@ import com.skipass.postmanagement.persistance.ReactionRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 @Service
 @AllArgsConstructor
@@ -22,17 +23,8 @@ public class ReactionServiceImpl implements ReactionService {
     }
     @Override
     public long createReaction(CreateReactionRequest request) {
-
-        Optional<PostEntity> post  = postRepository.findById(request.getPostId());
-        System.out.println(post);
-
-        if(post.isPresent()) {
-            ReactionEntity reaction = ReactionEntity.builder()
-                    .creator(request.getCreator()).post(post.get()).build();
-
-            ReactionEntity returned = reactionRepository.save(reaction);
-            return returned.getId();
-        }
-        return 0;
+        ReactionEntity reaction = ReactionEntity.builder().creator(request.getCreator()).postId(request.getPostId()).build();
+        ReactionEntity returned = reactionRepository.save(reaction);
+        return returned.getId();
     }
 }
