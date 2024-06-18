@@ -20,7 +20,7 @@ public class JourneyServiceImpl implements JourneyService {
     private final JourneyRepository journeyRepository;
 
     @Override
-    public Journey createJourney(String authorUsername) {
+    public JourneyEntity createJourney(String authorUsername) {
         Random random = new Random();
         JourneyType[] types = JourneyType.values();
         JourneyType type = types[random.nextInt(types.length)];
@@ -54,10 +54,11 @@ public class JourneyServiceImpl implements JourneyService {
         int slowestRun = fastestRun + random.nextInt(10);
 
         LocalDate date = LocalDate.now();
-
-        Journey journey = Journey.builder().authorUsername(authorUsername).date(date).fastest(fastestRun)
+        JourneyEntity journey = JourneyEntity.builder().authorUsername(authorUsername).date(date).fastest(fastestRun)
                 .type(type).slowest(slowestRun).totalKm(totalKilometers).totalPasses(totalPasses).build();
-        return journey;
+       var returned = journeyRepository.save(journey);
+
+        return returned;
     }
 
     @Override

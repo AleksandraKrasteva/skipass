@@ -8,7 +8,7 @@ import java.util.List;
 
 @Service
 public interface JourneyService {
-    Journey createJourney(String authorUsername);
+    JourneyEntity createJourney(String authorUsername);
 
     List<JourneyEntity> getAllForUser(String authorUsername);
 
