@@ -31,7 +31,7 @@ public class PostServiceImpl implements PostService {
         List<Reaction> reactions = reactionEntities.stream().map(this::convertReactions).collect(Collectors.toList());
 
         Post postDto = Post.builder().id(post.getId()).journeyId(post.getJourneyId())
-                .text(post.getText()).reactions(reactions).build();
+                .text(post.getText()).username(post.getUsername()).reactions(reactions).build();
         return postDto;
     }
 
