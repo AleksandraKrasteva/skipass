@@ -23,8 +23,8 @@ public class PostEntity {
     private String username;
 
     @Nullable
-    @JoinColumn(name="reactions", nullable = true)
-    @OneToMany()
+    @JoinColumn(name="reaction_id", nullable = true)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ReactionEntity> reactions;
 
     private long journeyId;
