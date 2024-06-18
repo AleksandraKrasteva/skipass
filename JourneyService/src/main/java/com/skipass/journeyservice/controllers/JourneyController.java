@@ -18,7 +18,9 @@ public class JourneyController {
     @PostMapping("/create-journey")
     public ResponseEntity<JourneyEntity> createJourney(@RequestBody String username){
         System.out.println(username);
-        JourneyEntity journey = journeyService.createJourney(username);
+        System.out.println(username.substring(1, username.length()));
+        String usernameFormed = username.substring(1, username.length());
+        JourneyEntity journey = journeyService.createJourney(usernameFormed);
         return ResponseEntity.ok().body(journey);
     }
 
@@ -30,6 +32,7 @@ public class JourneyController {
 
     @GetMapping("/view-journeys-user/{username}")
     public ResponseEntity<List<JourneyEntity>> getJourneysForUser(@PathVariable(value = "username") String username) {
+        username.toString()
         List<JourneyEntity> journeys = journeyService.getAllForUser(username);
         return ResponseEntity.ok().body(journeys);
     }
