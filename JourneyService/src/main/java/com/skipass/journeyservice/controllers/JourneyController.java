@@ -32,7 +32,6 @@ public class JourneyController {
 
     @GetMapping("/view-journeys-user/{username}")
     public ResponseEntity<List<JourneyEntity>> getJourneysForUser(@PathVariable(value = "username") String username) {
-        username.toString()
         List<JourneyEntity> journeys = journeyService.getAllForUser(username);
         return ResponseEntity.ok().body(journeys);
     }
