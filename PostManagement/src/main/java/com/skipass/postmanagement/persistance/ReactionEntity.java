@@ -17,11 +17,7 @@ public class ReactionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
-    private PostEntity post;
-
+    private long postId;
     private String creator;
 }
 

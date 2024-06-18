@@ -27,7 +27,7 @@ public class ReactionServiceImpl implements ReactionService {
 
         if(post.isPresent()) {
             ReactionEntity reaction = ReactionEntity.builder()
-                    .creator(request.getCreator()).post(post.get()).build();
+                    .creator(request.getCreator()).postId(post.get().getId()).build();
 
             ReactionEntity returned = reactionRepository.save(reaction);
             return returned.getId();

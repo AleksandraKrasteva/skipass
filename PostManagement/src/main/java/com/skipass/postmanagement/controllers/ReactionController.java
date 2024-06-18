@@ -18,6 +18,7 @@ public class ReactionController {
     private final ReactionService reactionService;
     @PostMapping("/create-reaction")
     public ResponseEntity createReaction(@RequestBody CreateReactionRequest request) {
+        System.out.println(request);
         long response = reactionService.createReaction(request);
         return ResponseEntity.ok().body(response);
     }
