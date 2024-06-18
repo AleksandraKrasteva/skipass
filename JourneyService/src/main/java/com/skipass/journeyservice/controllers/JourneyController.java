@@ -18,8 +18,8 @@ public class JourneyController {
     @PostMapping("/create-journey")
     public ResponseEntity<JourneyEntity> createJourney(@RequestBody String username){
         System.out.println(username);
-        System.out.println(username.substring(1, username.length()));
-        String usernameFormed = username.substring(1, username.length());
+        System.out.println(username.substring(1, username.length()-1));
+        String usernameFormed = username.substring(1, username.length()-1);
         JourneyEntity journey = journeyService.createJourney(usernameFormed);
         return ResponseEntity.ok().body(journey);
     }
