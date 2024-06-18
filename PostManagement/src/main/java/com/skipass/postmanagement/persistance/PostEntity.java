@@ -22,7 +22,7 @@ public class PostEntity {
     private String username;
 
 //    @JoinColumn(name="reaction_id", nullable = true)
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<ReactionEntity> reactions;
 
     private long journeyId;
