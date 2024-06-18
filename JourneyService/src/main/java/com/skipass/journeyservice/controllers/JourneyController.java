@@ -1,6 +1,7 @@
 package com.skipass.journeyservice.controllers;
 
 import com.skipass.journeyservice.business.JourneyService;
+import com.skipass.journeyservice.domain.CreateJourneyRequest;
 import com.skipass.journeyservice.domain.Journey;
 import com.skipass.journeyservice.persistance.JourneyEntity;
 import lombok.AllArgsConstructor;
@@ -14,9 +15,9 @@ import java.util.List;
 public class JourneyController {
     private final JourneyService journeyService;
 
-    @PostMapping("/create-journey/{username}")
-    public ResponseEntity<Journey> createJourney(@PathVariable(value = "username") String username){
-        Journey journey = journeyService.createJourney(username);
+    @PostMapping("/create-journey")
+    public ResponseEntity<Journey> createJourney(CreateJourneyRequest request){
+        Journey journey = journeyService.createJourney(request.getUsername());
         return ResponseEntity.ok().body(journey);
     }
 
