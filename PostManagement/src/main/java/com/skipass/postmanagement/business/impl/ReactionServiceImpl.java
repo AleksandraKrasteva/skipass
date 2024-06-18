@@ -19,7 +19,9 @@ public class ReactionServiceImpl implements ReactionService {
 
     @Override
     public void deleteReaction(long reactionId) {
-        reactionRepository.deleteByIdIs(reactionId);
+        System.out.println(reactionId);
+        reactionRepository.deleteById(reactionId);
+//        reactionRepository.deleteByIdIs(reactionId);
     }
     @Override
     public long createReaction(CreateReactionRequest request) {

@@ -9,5 +9,4 @@ import java.util.List;
 @Repository
 public interface ReactionRepository extends JpaRepository<ReactionEntity, Long> {
     List<ReactionEntity> getReactionEntitiesByPostIdIs(long postId);
-    void deleteByIdIs(long id);
 }
