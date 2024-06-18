@@ -1,6 +1,5 @@
 package com.skipass.postmanagement.persistance;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,9 +21,8 @@ public class PostEntity {
 
     private String username;
 
-    @Nullable
-    @JoinColumn(name="reaction_id", nullable = true)
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JoinColumn(name="reaction_id", nullable = true)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReactionEntity> reactions;
 
     private long journeyId;
