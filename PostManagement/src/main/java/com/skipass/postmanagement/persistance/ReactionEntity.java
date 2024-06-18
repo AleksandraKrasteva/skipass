@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @Builder
-@Table(name = "likes")
+@Table(name = "reactions")
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReactionEntity {
