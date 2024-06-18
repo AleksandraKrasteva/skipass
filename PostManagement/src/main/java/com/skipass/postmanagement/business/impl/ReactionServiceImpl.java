@@ -24,10 +24,11 @@ public class ReactionServiceImpl implements ReactionService {
     public long createReaction(CreateReactionRequest request) {
 
         Optional<PostEntity> post  = postRepository.findById(request.getPostId());
+        System.out.println(post);
 
         if(post.isPresent()) {
             ReactionEntity reaction = ReactionEntity.builder()
-                    .creator(request.getCreator()).postId(post.get().getId()).build();
+                    .creator(request.getCreator()).post(post.get()).build();
 
             ReactionEntity returned = reactionRepository.save(reaction);
             return returned.getId();
