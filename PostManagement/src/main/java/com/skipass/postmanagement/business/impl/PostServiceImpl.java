@@ -2,6 +2,7 @@ package com.skipass.postmanagement.business.impl;
 
 import com.skipass.postmanagement.business.PostService;
 import com.skipass.postmanagement.domain.*;
+import com.skipass.postmanagement.messaging.RabbitMQProducer;
 import com.skipass.postmanagement.persistance.PostEntity;
 import com.skipass.postmanagement.persistance.PostRepository;
 import com.skipass.postmanagement.persistance.ReactionEntity;
@@ -19,6 +20,7 @@ public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
     private final ReactionRepository reactionRepository;
+    private final RabbitMQProducer producer;
     @Override
     public List<Post> getPostsForUser(String username) {
         List<Post> posts = postRepository.getPostEntitiesByUsernameIs(username).
@@ -49,8 +51,14 @@ public class PostServiceImpl implements PostService {
     }
     @Override
     public void deletePostById(long postId) {
-        postRepository.deleteById(postId);
-        //delete all reactions
+        Optional<PostEntity> post = postRepository.findById(postId);
+        if(post.isPresent()){
+            if(post.get().getJourneyId() != 0){
+                producer.sendDeleteJourneyMessage(post.get().getJourneyId());
+            }
+            postRepository.deleteById(postId);
+            reactionRepository.deleteAllByPostIdIs(postId);
+        }
     }
     @Override
     public CreatePostResponse createPost(CreatePostRequest request) {
@@ -61,9 +69,8 @@ public class PostServiceImpl implements PostService {
     }
     @Override
     public void deletePostsForUser(String username) {
-
         postRepository.deletePostEntitiesByUsernameIs(username);
-        //delete all reactions
+        reactionRepository.deleteAllByCreatorIs(username);
     }
 
     @Override

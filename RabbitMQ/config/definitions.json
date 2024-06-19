@@ -39,7 +39,7 @@
   "policies": [],
   "queues": [
       {
-          "name": "delete-profile-posts",
+          "name": "delete-journey-for-post",
           "vhost": "/",
           "durable": true,
           "auto_delete": false,
@@ -48,7 +48,7 @@
   ],
   "exchanges": [
       {
-          "name": "delete-profile",
+          "name": "delete-journey",
           "vhost": "/",
           "type": "fanout",
           "durable": true,
@@ -59,9 +59,9 @@
   ],
   "bindings": [
       {
-          "source": "delete-profile",
+          "source": "delete-journey",
           "vhost": "example-vhost",
-          "destination": "delete-profile-posts",
+          "destination": "delete-journey-for-post",
           "destination_type": "queue",
           "routing_key": "",
           "arguments": {}

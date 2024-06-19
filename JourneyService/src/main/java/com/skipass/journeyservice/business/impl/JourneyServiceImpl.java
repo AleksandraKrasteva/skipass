@@ -1,7 +1,6 @@
 package com.skipass.journeyservice.business.impl;
 
 import com.skipass.journeyservice.business.JourneyService;
-import com.skipass.journeyservice.domain.Journey;
 import com.skipass.journeyservice.domain.JourneyType;
 import com.skipass.journeyservice.persistance.JourneyEntity;
 import com.skipass.journeyservice.persistance.JourneyRepository;
@@ -18,7 +17,6 @@ import java.util.Random;
 public class JourneyServiceImpl implements JourneyService {
 
     private final JourneyRepository journeyRepository;
-
     @Override
     public JourneyEntity createJourney(String authorUsername) {
         Random random = new Random();
@@ -29,7 +27,7 @@ public class JourneyServiceImpl implements JourneyService {
         int totalPasses;
         switch (type) {
             case FULL_DAY:
-                totalKilometers =50 + random.nextInt(150);
+                totalKilometers = 50 + random.nextInt(150);
                 totalPasses = 8 + random.nextInt(30);
                 break;
             case MORNING:
@@ -78,7 +76,10 @@ public class JourneyServiceImpl implements JourneyService {
 
     @Override
     public void deleteJourneyById(long journeyId) {
-        journeyRepository.deleteById(journeyId);
+        Optional<JourneyEntity> journey = journeyRepository.findById(journeyId);
+        if(journey.isPresent()) {
+            journeyRepository.deleteById(journeyId);
+        }
     }
 
     @Override

@@ -15,23 +15,22 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 
 @Configuration
 public class RabbitMQConfig {
-    static final String deletePostExchangeName = "delete-post";
-    static final String statisticsQueueName = "delete-post-stats";
+
+    static final String fanoutExchangeName = "delete-journey";
+    static final String postsQueueName = "delete-journey-for-post";
+    @Bean
+    public FanoutExchange deleteJourneyExchange() {
+        return new FanoutExchange(fanoutExchangeName, true, false);
+    }
+    @Bean
+    public Queue journeyQueue() {
+        return new Queue(postsQueueName, true);
+    }
 
     @Bean
-    public Queue statisticsQueue() {
-        return new Queue(statisticsQueueName);
+    public Binding postsBinding() {
+        return BindingBuilder.bind(journeyQueue()).to(deleteJourneyExchange());
     }
 
-    @Bean
-    public FanoutExchange deletePostExchange() {
-        return new FanoutExchange(deletePostExchangeName);
-    }
-
-    @Bean
-    public Binding statisticsBinding() {
-        return BindingBuilder.bind(statisticsQueue()).to(deletePostExchange());
-    }
-
-    }
+}
 

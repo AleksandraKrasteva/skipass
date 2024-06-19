@@ -7,4 +7,7 @@ import org.springframework.stereotype.Service;
 public interface ReactionService {
     void deleteReaction(long reactionId);
     long createReaction(CreateReactionRequest request);
+
+    void deleteAllReactionsForPost(long postId);
+    void deleteAllReactionsFromUser(String username);
 }

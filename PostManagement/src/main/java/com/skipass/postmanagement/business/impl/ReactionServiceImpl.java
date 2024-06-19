@@ -21,12 +21,23 @@ public class ReactionServiceImpl implements ReactionService {
     public void deleteReaction(long reactionId) {
         System.out.println(reactionId);
         reactionRepository.deleteById(reactionId);
-//        reactionRepository.deleteByIdIs(reactionId);
     }
     @Override
     public long createReaction(CreateReactionRequest request) {
         ReactionEntity reaction = ReactionEntity.builder().creator(request.getCreator()).postId(request.getPostId()).build();
         ReactionEntity returned = reactionRepository.save(reaction);
         return returned.getId();
+    }
+
+    @Override
+    public void deleteAllReactionsForPost(long postId) {
+        reactionRepository.deleteAllByPostIdIs(postId);
+
+    }
+
+    @Override
+    public void deleteAllReactionsFromUser(String username) {
+        reactionRepository.deleteAllByCreatorIs(username);
+
     }
 }
