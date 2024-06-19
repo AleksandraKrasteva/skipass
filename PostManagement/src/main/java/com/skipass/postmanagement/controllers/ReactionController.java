@@ -14,7 +14,6 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 public class ReactionController {
-
     private final ReactionService reactionService;
     @PostMapping("/create-reaction")
     public ResponseEntity createReaction(@RequestBody CreateReactionRequest request) {
@@ -27,5 +26,4 @@ public class ReactionController {
         reactionService.deleteReaction(reactionId);
         return ResponseEntity.ok().build();
     }
-
 }

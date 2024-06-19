@@ -50,14 +50,14 @@ public class PostServiceImpl implements PostService {
 
     }
     @Override
-    public void deletePostById(long postId) {
-        Optional<PostEntity> post = postRepository.findById(postId);
+    public void deletePostById(DeletePostRequest postRequest) {
+        Optional<PostEntity> post = postRepository.findById(postRequest.getPostId());
         if(post.isPresent()){
-            if(post.get().getJourneyId() != 0){
+            if(post.get().getJourneyId() != 0 & postRequest.isDeleteJourney()){
                 producer.sendDeleteJourneyMessage(post.get().getJourneyId());
             }
-            postRepository.deleteById(postId);
-            reactionRepository.deleteAllByPostIdIs(postId);
+            postRepository.deleteById(postRequest.getPostId());
+            reactionRepository.deleteAllByPostIdIs(postRequest.getPostId());
         }
     }
     @Override
@@ -68,9 +68,17 @@ public class PostServiceImpl implements PostService {
             return CreatePostResponse.builder().id(response.getId()).build();
     }
     @Override
-    public void deletePostsForUser(String username) {
-        postRepository.deletePostEntitiesByUsernameIs(username);
-        reactionRepository.deleteAllByCreatorIs(username);
+    public void deletePostsForUser(DeletePostsRequest request) {
+        if(request.isDeleteJourney()){
+            List<PostEntity> posts = postRepository.getPostEntitiesByUsernameIs(request.getUsername());
+            for(int i = 0; i<posts.size();  i++){
+                if(posts.get(i).getJourneyId() != 0) {
+                    producer.sendDeleteJourneyMessage(posts.get(i).getJourneyId());
+                }
+            }
+        }
+        postRepository.deletePostEntitiesByUsernameIs(request.getUsername());
+        reactionRepository.deleteAllByCreatorIs(request.getUsername());
     }
 
     @Override
