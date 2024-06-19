@@ -52,6 +52,9 @@ spec:
         - path:
             type: PathPrefix
             value: /get-reactions
+        - path:
+            type: PathPrefix
+            value: /delete-reactions
     - backendRefs:
         - kind: Service
           namespace: default

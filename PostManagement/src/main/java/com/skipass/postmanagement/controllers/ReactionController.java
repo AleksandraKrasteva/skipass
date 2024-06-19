@@ -22,7 +22,6 @@ public class ReactionController {
         long response = reactionService.createReaction(request);
         return ResponseEntity.ok().body(response);
     }
-
     @GetMapping("/get-reactions/{username}")
     public ResponseEntity getReactions(@PathVariable String username) {
         List<ReactionEntity> reactions = reactionService.getReactionsForUser(username);
@@ -31,6 +30,12 @@ public class ReactionController {
     @DeleteMapping("/delete-reaction/{id}")
     public ResponseEntity deleteReaction(@PathVariable(value = "id") long reactionId) {
         reactionService.deleteReaction(reactionId);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/delete-reactions/{username}")
+    public ResponseEntity deleteReactions(@PathVariable(value = "username") String username) {
+        reactionService.deleteAllReactionsFromUser(username);
         return ResponseEntity.ok().build();
     }
 }
