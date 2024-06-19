@@ -2,6 +2,7 @@ package com.skipass.postmanagement.business.impl;
 
 import com.skipass.postmanagement.business.ReactionService;
 import com.skipass.postmanagement.domain.CreateReactionRequest;
+import com.skipass.postmanagement.domain.Reaction;
 import com.skipass.postmanagement.persistance.PostEntity;
 import com.skipass.postmanagement.persistance.PostRepository;
 import com.skipass.postmanagement.persistance.ReactionEntity;
@@ -39,5 +40,10 @@ public class ReactionServiceImpl implements ReactionService {
     public void deleteAllReactionsFromUser(String username) {
         reactionRepository.deleteAllByCreatorIs(username);
 
+    }
+
+    @Override
+    public List<ReactionEntity> getReactionsForUser(String username) {
+        return reactionRepository.getReactionEntitiesByCreatorIs(username);
     }
 }

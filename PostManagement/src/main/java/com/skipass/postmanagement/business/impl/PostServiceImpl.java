@@ -100,8 +100,6 @@ public class PostServiceImpl implements PostService {
             DeletePostRequest request = DeletePostRequest.builder().deleteJourney(false).postId(post.get().getId()).build();
             deletePostById(request);
         }
-
-
-
+        
     }
 }

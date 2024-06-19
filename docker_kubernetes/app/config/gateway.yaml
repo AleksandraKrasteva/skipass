@@ -49,6 +49,9 @@ spec:
         - path:
             type: PathPrefix
             value: /delete-reaction
+        - path:
+            type: PathPrefix
+            value: /get-reactions
     - backendRefs:
         - kind: Service
           namespace: default
@@ -58,9 +61,6 @@ spec:
         - path:
             type: PathPrefix
             value: /create-journey
-        - path:
-            type: PathPrefix
-            value: /view-journey
         - path:
             type: PathPrefix
             value: /view-journeys-user
@@ -84,7 +84,7 @@ spec:
     providers:
     - name: auth0-jwt
       remoteJWKS:         
-        uri: "https://auth-domain.com/.well-known/jwks.json"
+        uri: "https://dev-hxsl4k6mw7xspicu.eu.auth0.com/.well-known/jwks.json"
   cors:
     allowOrigins:
     - "http://localhost:3000"
@@ -92,6 +92,7 @@ spec:
     - GET
     - POST 
     - DELETE 
+    - PUT
     allowHeaders:
     - "*"
     exposeHeaders:
@@ -117,6 +118,15 @@ spec:
         - path:
             type: PathPrefix
             value: /view-posts-user
+    - backendRefs:
+        - kind: Service
+          namespace: default
+          name: journey-service-service
+          port: 8080
+      matches:
+        - path:
+            type: PathPrefix
+            value: /view-journey
 ---
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: SecurityPolicy
