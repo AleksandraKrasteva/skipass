@@ -91,4 +91,17 @@ public class PostServiceImpl implements PostService {
         }
         return null;
     }
+
+    @Override
+    public void deletePostForJourney(long journeyId) {
+        Optional<PostEntity> post = postRepository.getPostEntityByJourneyIdIs(journeyId);
+
+        if(post.isPresent()){
+            DeletePostRequest request = DeletePostRequest.builder().deleteJourney(false).postId(post.get().getId()).build();
+            deletePostById(request);
+        }
+
+
+
+    }
 }

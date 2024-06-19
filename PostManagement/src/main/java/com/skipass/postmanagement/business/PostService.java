@@ -17,4 +17,6 @@ public interface PostService {
     void deletePostsForUser(DeletePostsRequest userEmail);
 
     Long updatePostById(UpdatePostRequest request);
+
+    void deletePostForJourney(long journeyId);
 }

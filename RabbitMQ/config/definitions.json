@@ -44,7 +44,14 @@
           "durable": true,
           "auto_delete": false,
           "arguments": {}
-      }
+      },
+      {
+        "name": "delete-post-for-journey",
+        "vhost": "/",
+        "durable": true,
+        "auto_delete": false,
+        "arguments": {}
+    }
   ],
   "exchanges": [
       {
@@ -55,7 +62,16 @@
           "auto_delete": false,
           "internal": false,
           "arguments": {}
-      }
+      },
+      {
+        "name": "delete-post",
+        "vhost": "/",
+        "type": "fanout",
+        "durable": true,
+        "auto_delete": false,
+        "internal": false,
+        "arguments": {}
+    }
   ],
   "bindings": [
       {
@@ -65,7 +81,15 @@
           "destination_type": "queue",
           "routing_key": "",
           "arguments": {}
-      }
+      },
+      {
+        "source": "delete-post",
+        "vhost": "example-vhost",
+        "destination": "delete-post-for-journey",
+        "destination_type": "queue",
+        "routing_key": "",
+        "arguments": {}
+    }
   ]
 }
 

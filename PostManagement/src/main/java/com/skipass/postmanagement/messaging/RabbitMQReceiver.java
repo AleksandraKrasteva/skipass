@@ -19,11 +19,10 @@ public class RabbitMQReceiver {
 
     private final PostService postService;
 
-    //THIS WONT'T BE SEND
-//    @RabbitListener(queues = "delete-profile-posts")
-//    public void receiveMessage(String userEmail) {
-//        System.out.println("RabbitMQ: Received delete posts for user: " + userId);
-//        postService.deletePostsForUser(userEmail);
-//    }
+    @RabbitListener(queues = "delete-post-for-journey")
+    public void receiveMessage(long journeyId) {
+        System.out.println("RabbitMQ: Received delete post for journey: " + journeyId);
+        postService.deletePostForJourney(journeyId);
+    }
 }
 
