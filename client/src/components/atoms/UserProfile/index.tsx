@@ -1,31 +1,24 @@
-import React, { FC } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
+import Box from '@mui/material/Box';
 
-interface User {
-  name: string;
-  picture: string;
-  email: string;
-}
-
-const Profile: FC = () => {
+const UserProfile = () => {
 	const { user, isAuthenticated, isLoading } = useAuth0();
-	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	// @ts-ignore
-	const authUser: User = user; 
 
 	if (isLoading) {
 		return <div>Loading ...</div>;
 	}
 
 	return (
-		isAuthenticated && (
-			<div>
-				<img src={authUser!.picture } alt={authUser!.name} />
-				<h2>{authUser!.name}</h2>
-				<p>{authUser!.email}</p>
-			</div>
+		isAuthenticated && user && (
+			<Box sx={{mt:10}}>
+				<img src={user!.picture} />
+				<h2>{user!.name}</h2>
+				<p>{user!.email}</p>
+				<p>{user!.nickname}</p>
+				<p>{user!.profile}</p>
+			</Box>
 		)
 	);
 };
 
-export default Profile;
+export default UserProfile;

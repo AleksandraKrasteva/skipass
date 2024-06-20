@@ -6,10 +6,17 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
-import Tooltip from '@mui/material/Tooltip';
 import { Terrain } from '@mui/icons-material';
+import LoginButton from '@/components/atoms/LogInBtn';
+import LogoutButton from '@/components/atoms/LogOutBtn';
+import { useAuth0 } from '@auth0/auth0-react';
+import Button from '@mui/material/Button';
+import { useRouter } from 'next/router';
 
 const Navigation = ()=> {
+	const { user, isAuthenticated } = useAuth0();
+	const router = useRouter();
+
 
 	return (
 		<AppBar position="fixed" sx={{bgcolor:'#0097a7'}}>
@@ -29,15 +36,22 @@ const Navigation = ()=> {
 							}}
 						>
             SkiPass
-						</Typography>	
+						</Typography>
+						{isAuthenticated && (
+							<>
+								<Button sx={{ color: 'white', fontFamily: 'monospace'}} onClick={()=>router.push('/')}>Posts</Button>
+								<Button sx={{ color: 'white', fontFamily: 'monospace'}} onClick={()=>router.push('/my-posts')}>My posts</Button>
+								<Button sx={{ color: 'white', fontFamily: 'monospace'}} onClick={()=>router.push('/journeys')}>Journeys</Button>
+								<Button sx={{ color: 'white', fontFamily: 'monospace'}} onClick={()=>router.push('/profile')}>Profile</Button>
+							</>
+						)
+						}						
 					</Box>	
-
 					<Box sx={{ display: { md: 'flex' }, mr: 1 }} >
-						<Tooltip title="Log in or sign up">
-							<IconButton  sx={{ p: 0 }}>
-								<Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-							</IconButton>
-						</Tooltip>
+						{isAuthenticated ? 	<LogoutButton/> :<LoginButton/>}					
+						<IconButton  sx={{ pd: 0 }}>
+							<Avatar alt={user?.nickname} src={user?.picture} />
+						</IconButton>
 					</Box>
 				</Toolbar>
 			</Container>
