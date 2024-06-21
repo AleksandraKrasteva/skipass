@@ -31,7 +31,10 @@ jobs:
 
       - name: Install dependencies
         working-directory: './client'
-        run: npm install
+        run: |
+          npm install 
+          npx playwright install
+          npx playwright test
 
       - name: Start Next.js app
         working-directory: './client'
