@@ -9,12 +9,12 @@ import Avatar from '@mui/material/Avatar';
 import { Terrain } from '@mui/icons-material';
 import LoginButton from '@/components/atoms/LogInBtn';
 import LogoutButton from '@/components/atoms/LogOutBtn';
-import { useAuth0 } from '@auth0/auth0-react';
 import Button from '@mui/material/Button';
 import { useRouter } from 'next/router';
+import useConditionalAuth from '@/config/conditionalAuth';
 
 const Navigation = ()=> {
-	const { user, isAuthenticated } = useAuth0();
+	const { user, isAuthenticated } = useConditionalAuth();
 	const router = useRouter();
 
 

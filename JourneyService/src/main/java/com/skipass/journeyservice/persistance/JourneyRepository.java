@@ -11,11 +11,8 @@ public interface JourneyRepository extends JpaRepository<JourneyEntity, Long> {
 
     List<JourneyEntity> getJourneyEntitiesByAuthorUsernameIs(String authorUsername);
     @Transactional
-
     void deleteAllByIdIs(long journeyId);
     @Transactional
-
-
     void deleteAllByAuthorUsernameIs(String authorUsername);
 
 }

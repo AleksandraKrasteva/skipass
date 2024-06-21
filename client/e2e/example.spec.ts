@@ -1,7 +1,5 @@
 // auth.spec.ts
 import { test, expect } from '@playwright/test';
-import '@testing-library/jest-dom/extend-expect';
-
 
 // const mockedUseAuth0 = <jest.Mock<typeof useAuth0>>useAuth0;
 {/* 

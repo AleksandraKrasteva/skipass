@@ -1,12 +1,12 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { createPost, viewJourneysForUser, viewPostsForUser } from '@/api/requests';
 import { Journey, Post } from '@/api/types';
-import { Box, TextField, Button, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent } from '@mui/material';
+import { Box, TextField, Button, FormControl, Select, MenuItem, SelectChangeEvent, InputLabel } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useAuth0 } from '@auth0/auth0-react';
 import UserPostsView from '@/components/atoms/UserPostsView';
 import Navigation from '@/components/molecultes/Navigation';
 import Footer from '@/components/atoms/Footer';
+import useConditionalAuth from '@/config/conditionalAuth';
 
 const MyPosts = () => {
 
@@ -16,7 +16,7 @@ const MyPosts = () => {
 
 	const [trigger, setTrigger] = useState<boolean>(false);
 
-	const { user, isAuthenticated, getAccessTokenSilently, loginWithRedirect } = useAuth0();
+	const { user, isAuthenticated, getAccessTokenSilently, loginWithRedirect } = useConditionalAuth();
 
 	const [selectedJourneyId, setSelectedJourneyId] = useState<string>('');
 
@@ -25,18 +25,32 @@ const MyPosts = () => {
 	};
 
 	useEffect(() => {    
+		console.log('Truggered');
 		viewPostsForLoggedInUser();
 		viewUserJourneysNotInPost();
-	}, [trigger]);
+	}, [trigger, user]);
+
+
+	// useEffect(() => {    
+	// 	console.log('Truggered');
+	// 	viewPostsForLoggedInUser();
+	// 	viewUserJourneysNotInPost();
+	// }, []);
 
 	const viewPostsForLoggedInUser = async()=>{
 		if(!isAuthenticated) return;
 		const res = await viewPostsForUser(user!.nickname!);
-		setPostsForUser(res.data.reverse());
+		if(!res.data) return;
+		if(res.data.collection){
+			setPostsForUser(res.data.collection.reverse());
+		}else{
+			setPostsForUser(res.data);
+		}
 	};
 
 	const viewUserJourneysNotInPost = async()=>{
 		if(!isAuthenticated) return;
+		console.log('Passed');
 		const token = await getAccessTokenSilently({
 			authorizationParams: {
 				audience: 'https://dev-hxsl4k6mw7xspicu.eu.auth0.com/api/v2/',
@@ -48,8 +62,15 @@ const MyPosts = () => {
 		if(!token) return;
 
 		const res = await viewJourneysForUser(user!.nickname!, token);
-		const filtered = res.data.filter((x: Journey)=> !postsForUser.map((p)=>p.journeyId).includes(x.id)); 
-		setJourneysForUser(filtered.reverse());	
+		if(!res.data) return;
+		if(res.data.collection){
+			const filtered = res.data.collection.filter((x: Journey)=> !postsForUser.map((p)=>p.journeyId).includes(x.id)); 
+			setJourneysForUser(filtered.reverse());	
+		}else{
+			const filtered = res.data.filter((x: Journey)=> !postsForUser.map((p)=>p.journeyId).includes(x.id)); 
+			setJourneysForUser(filtered.reverse());	
+
+		}
 	};
 
 	const createPostForUser = async() => {
@@ -84,21 +105,21 @@ const MyPosts = () => {
 			{isAuthenticated && (
 				<>
 					<Box sx={{mt: 10, border: 1, borderColor: 'black', px:4, py:4}}  >
-						<TextField id="outlined-basic" label="Post" variant="outlined" required
+						{journeysForUser.length > 0 && <h1>JourneysPresent</h1>}
+						<TextField label="post-text" variant="outlined" required
   	                    onChange={(e)=>setPostText(e.target.value)} />
 						 <Box sx={{ minWidth: 120 }}>
-							<FormControl fullWidth>
-								<InputLabel id="demo-simple-select-label">Journey</InputLabel>
+							<FormControl area-label="pick-journey" fullWidth>
+								<InputLabel>Journey</InputLabel>
 								<Select
-									labelId="demo-simple-select-label"
-									id="demo-simple-select"
+									placeholder='select an optional journey'
 									value={selectedJourneyId}
-									label="Age"
+									label="pick-journey"
 									onChange={handleChangeJourney}
 								>
 									{journeysForUser.map((journey)=>{
 										return(
-											<MenuItem value={journey.id}>{journey.date.toString()}- {journey.type.toLowerCase().toString()}</MenuItem>
+											<MenuItem key={journey.id} value={journey.id}>{journey.date.toString()}- {journey.type.toLowerCase().toString()}</MenuItem>
 										);
 									})}
 									
@@ -108,9 +129,10 @@ const MyPosts = () => {
   	                <Button variant="contained" onClick={()=>createPostForUser()}>Create post</Button>
   	            </Box> 
 				My Posts 
-					{postsForUser &&
-					<UserPostsView posts={postsForUser} trigger={trigger} setTrigger={setTrigger}/>
-					}
+					{postsForUser.length > 0 ?
+						<UserPostsView posts={postsForUser} trigger={trigger} setTrigger={setTrigger}/>
+						: <h1>No posts present</h1>}
+
 				</>
 			)}
 			<Footer/>

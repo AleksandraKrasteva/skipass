@@ -26,4 +26,4 @@ test('get started link', async ({ page }) => {
 // select post and click on delete icon 
 // select delete both journey and post 
 // look at the results on the page : check if post exsits, check of journey exsitis 
-// have the whole cluster runnning :_)))))))))
+// have the whole cluster runnning :_))))

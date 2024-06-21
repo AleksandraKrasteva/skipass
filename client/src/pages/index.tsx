@@ -4,23 +4,45 @@ import { Post } from '@/api/types';
 import Footer from '@/components/atoms/Footer';
 import PostsView from '@/components/atoms/PostsView';
 import Navigation from '@/components/molecultes/Navigation';
-import { useAuth0 } from '@auth0/auth0-react';
+import useConditionalAuth from '@/config/conditionalAuth';
+
+import Box from '@mui/material/Box';
 import React, {  useEffect, useState } from 'react';
 
+
 const HomePage = () => {
-	const { user, isAuthenticated } = useAuth0();
+	const { user, isAuthenticated } = useConditionalAuth();
+
+	// if(process.env.NEXT_PUBLIC_ENVIRONMENT == 'test'){
+	// 	{ user, isAuthenticated } =  useTestAuth0(); 
+	// }else{
+	// 	{ user, isAuthenticated } =  useAuth0();
+	// }
+
 	const [posts, setPosts] = useState<Post[]>([]); 
 	const [trigger, setTrigger] = useState<boolean>(false);
 
+	console.log(isAuthenticated);
 	
 	const getAllPosts=async()=>{
 		const res = await viewAllPosts();
+		if(res.data )return;
+
+		let data; 
+		if(res.data.collection){
+			data = res.data.collection;
+		}else{
+			data = res.data;
+		}
+		
 		if(isAuthenticated){
-			const filtered = res.data.filter((x: Post)=>x.username != user!.nickname); 
+
+			const filtered = data.filter((x: Post)=>x.username != user!.nickname); 
+
 			setPosts(filtered.reverse());
 
 		}else{
-			setPosts(res.data.reverse());
+			setPosts(data.reverse());
 		}
 	};
 
@@ -31,90 +53,11 @@ const HomePage = () => {
 	return (
 		<>
 			<Navigation/>
+			{isAuthenticated && <Box sx={{mt:10}}>
+				<h1>Welcome</h1> {user!.nickname}
+			</Box>}
 			<PostsView posts={posts} trigger={trigger} setTrigger={setTrigger}/>
 			<Footer/>
-
-			{/* <Profile/> */}
-
-			{/* <Box sx={{mt: 10, border: 1, borderColor: 'black'}} >
-				<TextField  label="Username" variant="outlined" required
-					onChange={(e)=>setUsername(e.target.value)} />
-				<Button variant="contained" onClick={()=>createUserProfile()}>Create user</Button>
-			</Box> */}
-			{/* <Box sx={{mt: 4, border: 1, borderColor: 'black'}} >
-				<Button variant="contained" onClick={()=>getUsers()}>View all users</Button>
-				<Select
-					label='Users list'
-					onChange={(e)=>handleUserChange(e.target.value)}
-				>				
-					{users.map((user)=>{
-						return (
-							<MenuItem value={user.id}>{user.username}</MenuItem>
-						);})}			
-				</Select>
-			</Box> */}
-			{/* <Button sx={{backgroundColor:'pink', mt:4}} variant="contained" onClick={()=>deleteUser()}>Delete selected user profile</Button> */}
-
-			{/* <Box sx={{mt: 10, border: 1, borderColor: 'black'}}  >
-				<TextField id="outlined-basic" label="Post" variant="outlined" required
-					onChange={(e)=>setPostText(e.target.value)} />
-				<Button variant="contained" onClick={()=>createPostForUser()}>Create post for selected user</Button>
-			</Box> */}
-			{/* 
-			<Box sx={{mt: 4, border: 1, borderColor: 'black'}}  >
-				{isAuthenticated && (
-					<>
-						<Button variant="contained" onClick={()=>viewPostsForLoggedIn()}>Get mine posts</Button>
-						<List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-							{postsForUser.map((post)=>{
-								return (
-									<ListItem alignItems="flex-start">
-										<ListItemText
-											primary={post.userEmail}
-											secondary={
-												<Typography
-													sx={{ display: 'inline' }}
-													component="span"
-													variant="body2"
-													color="text.primary"
-												>
-													{post.text}
-												</Typography>
-											}
-										/>
-										<Button  sx={{backgroundColor:'pink'}} size="small" variant="contained" onClick={()=>deletePostById(post.id!)}>Delete</Button>
-									</ListItem>
-								);
-							})}
-						</List>
-					</>
-				)}
-				
-				<Button variant="contained" onClick={()=>viewPostsForDefaultUser()}>Get posts for Default user</Button>
-				<List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-					{defaultPostsForUser.map((post)=>{
-						return (
-							<ListItem alignItems="flex-start">
-								<ListItemText
-									primary={post.userEmail}
-									secondary={
-										<Typography
-											sx={{ display: 'inline' }}
-											component="span"
-											variant="body2"
-											color="text.primary"
-										>
-											{post.text}
-										</Typography>
-									}
-								/>
-								<Button  sx={{backgroundColor:'pink'}} size="small" variant="contained" onClick={()=>deletePostById(post.id!)}>Delete</Button>
-							</ListItem>
-						);
-					})}
-				</List> */}
-				
-			{/* </Box> */}
 		</>
 	);
 };

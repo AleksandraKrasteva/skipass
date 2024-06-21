@@ -9,7 +9,7 @@ import { Journey } from '@/api/types';
 import { deleteJourney } from '@/api/requests';
 import { DeleteForever } from '@mui/icons-material';
 import { Box, Button, Modal } from '@mui/material';
-import { useAuth0 } from '@auth0/auth0-react';
+import useConditionalAuth from '@/config/conditionalAuth';
 
 type Props = {
     journeys:Journey[];
@@ -32,7 +32,9 @@ const style = {
 const UserJourneysView = (props:Props) => {
 	const [deleting, setDeleting] = React.useState<boolean>(false);
 
-	const { isAuthenticated, getAccessTokenSilently, loginWithRedirect } = useAuth0();
+	console.log(props.journeys);
+
+	const { isAuthenticated, getAccessTokenSilently, loginWithRedirect } = useConditionalAuth();
 
 	const deleteJourneyAndPost = async(journeyId:number)=>{
 		const token = await getAccessTokenSilently({
@@ -57,11 +59,12 @@ const UserJourneysView = (props:Props) => {
 			});
 	};
 	return (
-		<>
-			{isAuthenticated && (    
+		<Box>
+			<h1>My journeys</h1>
+			{isAuthenticated && props.journeys.length>0 &&  (    
 				props.journeys.map((journey)=>{
 					return(
-						<Card sx={{ maxWidth: 345, mt:10 }}>
+						<Card key={journey.id} sx={{ maxWidth: 345, mt:10 }} area-label='journey-card'>
 							<CardHeader
 								title={`${journey.date.toString()} - ${journey.type.toLowerCase().toString()}`}
 							/>
@@ -96,7 +99,7 @@ const UserJourneysView = (props:Props) => {
 				
 					);})
 			)}
-		</>
+		</Box>
 	);
 };
 

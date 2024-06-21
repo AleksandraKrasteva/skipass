@@ -1,0 +1,156 @@
+static_resources:
+  listeners:
+    - name: listener_http
+      address:
+        socket_address:
+          address: 0.0.0.0
+          port_value: 8080
+      filter_chains:
+        - filters:
+            - name: envoy.filters.network.http_connection_manager
+              typed_config:
+                "@type": type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
+                stat_prefix: ingress_http
+                route_config:
+                  name: local_route
+                  virtual_hosts:
+                    - name: local_service
+                      domains:
+                        - "*"
+                      routes:
+                        - match:
+                            prefix: "/create-post"
+                          route:
+                            cluster: post_service
+                        - match:
+                            prefix: "/delete-post"
+                          route:
+                            cluster: post_service
+                        - match:
+                            prefix: "/delete-all-posts"
+                          route:
+                            cluster: post_service
+                        - match:
+                            prefix: "/update-post"
+                          route:
+                            cluster: post_service
+                        - match:
+                            prefix: "/create-reaction"
+                          route:
+                            cluster: post_service
+                        - match:
+                            prefix: "/delete-reaction"
+                          route:
+                            cluster: post_service
+                        - match:
+                            prefix: "/get-reactions"
+                          route:
+                            cluster: post_service
+                        - match:
+                            prefix: "/delete-reactions"
+                          route:
+                            cluster: post_service
+                        - match:
+                            prefix: "/create-journey"
+                          route:
+                            cluster: journey_service
+                        - match:
+                            prefix: "/view-journeys-user"
+                          route:
+                            cluster: journey_service
+                        - match:
+                            prefix: "/delete-journey"
+                          route:
+                            cluster: journey_service
+                        - match:
+                            prefix: "/delete-journeys-user"
+                          route:
+                            cluster: journey_service
+                        - match:
+                            prefix: "/view-posts"
+                          route:
+                            cluster: post_service
+                        - match:
+                            prefix: "/view-posts-user"
+                          route:
+                            cluster: post_service
+                        - match:
+                            prefix: "/view-journey"
+                          route:
+                            cluster: journey_service
+                http_filters:
+                  - name: envoy.filters.http.jwt_authn
+                    typed_config:
+                      "@type": type.googleapis.com/envoy.extensions.filters.http.jwt_authn.v3.JwtAuthentication
+                      providers:
+                        auth0-jwt:
+                          issuer: "https://dev-hxsl4k6mw7xspicu.eu.auth0.com/"
+                          remote_jwks:
+                            http_uri:
+                              uri: "https://dev-hxsl4k6mw7xspicu.eu.auth0.com/.well-known/jwks.json"
+                              cluster: auth0_jwks
+                              timeout: 5s
+                          forward: true
+                          from_headers:
+                            - name: "Authorization"
+                              value_prefix: "Bearer "
+                  - name: envoy.filters.http.cors
+                    typed_config:
+                      "@type": type.googleapis.com/envoy.extensions.filters.http.cors.v3.Cors
+                      cors_policy:
+                        allow_origin_string_match:
+                          - exact: "http://localhost:3000"
+                        allow_methods: "GET,POST,DELETE,PUT"
+                        allow_headers: "content-type"
+                        expose_headers: "content-type"
+                  - name: envoy.filters.http.router
+  clusters:
+    - name: post_service
+      connect_timeout: 0.25s
+      type: STRICT_DNS
+      lb_policy: ROUND_ROBIN
+      load_assignment:
+        cluster_name: post_service
+        endpoints:
+          - lb_endpoints:
+              - endpoint:
+                  address:
+                    socket_address:
+                      address: post-service-service
+                      port_value: 8080
+    - name: journey_service
+      connect_timeout: 0.25s
+      type: STRICT_DNS
+      lb_policy: ROUND_ROBIN
+      load_assignment:
+        cluster_name: journey_service
+        endpoints:
+          - lb_endpoints:
+              - endpoint:
+                  address:
+                    socket_address:
+                      address: journey-service-service
+                      port_value: 8080
+    - name: auth0_jwks
+      connect_timeout: 5s
+      type: LOGICAL_DNS
+      lb_policy: ROUND_ROBIN
+      load_assignment:
+        cluster_name: auth0_jwks
+        endpoints:
+          - lb_endpoints:
+              - endpoint:
+                  address:
+                    socket_address:
+                      address: dev-hxsl4k6mw7xspicu.eu.auth0.com
+                      port_value: 443
+      transport_socket:
+        name: envoy.transport_sockets.tls
+        typed_config:
+          "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.UpstreamTlsContext
+admin:
+  access_log_path: /dev/null
+  address:
+    socket_address:
+      address: 0.0.0.0
+      port_value: 9901

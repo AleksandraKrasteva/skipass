@@ -14,8 +14,8 @@ import { Journey, Post } from '@/api/types';
 import { DeletePostDTO, UpdatePostDTO, deletePost, updatePost, viewJourney } from '@/api/requests';
 import { DeleteForever, Edit } from '@mui/icons-material';
 import { Box, Button, Modal } from '@mui/material';
-import { useAuth0 } from '@auth0/auth0-react';
 import { TextareaAutosize } from '@mui/base/TextareaAutosize';
+import useConditionalAuth from '@/config/conditionalAuth';
 
 type Props = {
     posts:Post[];
@@ -43,7 +43,7 @@ const UserPostsView = (props:Props) => {
 	const [journey, setJourney] = React.useState<Journey>();
 	const [selectedPost, setSelectedPost] = React.useState<Post>();
 
-	const { isAuthenticated, getAccessTokenSilently, loginWithRedirect } = useAuth0();
+	const { isAuthenticated, getAccessTokenSilently, loginWithRedirect } = useConditionalAuth();
 
 	const handleExpandClick = async (postId: number, journeyId: number ) => {
 		if(expandedId === postId){
@@ -87,6 +87,8 @@ const UserPostsView = (props:Props) => {
 				loginWithRedirect();
 			}
 		});
+		props.setTrigger(!props.trigger);
+
 	};
 
 	const editPost = async(postId:number)=>{
@@ -138,11 +140,13 @@ const UserPostsView = (props:Props) => {
 				loginWithRedirect();
 			}
 		});
+		props.setTrigger(!props.trigger);
+
 	};
 	return (
 		<>
 			{isAuthenticated && (        
-				props.posts.map((post)=>{
+				props.posts?.map((post)=>{
 					return(
 						<>
 							<Card sx={{ maxWidth: 345, mt:10 }}>
@@ -167,7 +171,7 @@ const UserPostsView = (props:Props) => {
 											<ExpandMoreIcon />
 										</IconButton>
 									)}
-									<IconButton aria-label="like" onClick={()=>{setDeleting(true); setSelectedPost(post);}}>
+									<IconButton aria-label='delete-post' onClick={()=>{setDeleting(true); setSelectedPost(post);}}>
 										<DeleteForever />
 									</IconButton>
 									<IconButton aria-label="like" onClick={()=>{setEditing(true); setSelectedPost(post);}}>

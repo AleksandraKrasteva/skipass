@@ -42,41 +42,41 @@ spec:
               secretKeyRef:
                 name: global-secret
                 key: rabbitmq-pass
-          - name: journey_DB_HOST
+          - name: JOURNEY_DB_HOST
             valueFrom:
               configMapKeyRef:
                 name: global-config
                 key:  journey-db-host   
-          - name: journey_DB_PORT
+          - name: JOURNEY_DB_PORT
             valueFrom:
               configMapKeyRef:
                 name: global-config
                 key:  journey-db-port   
-          - name: journey_DB_USER
+          - name: JOURNEY_DB_USER
             valueFrom:
               secretKeyRef:
                 name: global-secret
                 key: journey-db-user
-          - name: journey_DB_PASS
+          - name: JOURNEY_DB_PASS
             valueFrom:
               secretKeyRef:
                 name: global-secret
                 key: journey-db-pass
-          securityContext:
-            allowPrivilegeEscalation: false
-            runAsNonRoot: true
-            readOnlyRootFilesystem: true
-            runAsUser: 1000
-            capabilities:
-              drop: 
-                - ALL
-          resources:
-            limits:
-              cpu: 3040m
-              memory: "1000M"
-            requests:
-              cpu: 3040m
-              memory: "1000M"
+          # securityContext:
+          #   allowPrivilegeEscalation: false
+          #   runAsNonRoot: true
+          #   readOnlyRootFilesystem: true
+          #   runAsUser: 1000
+          #   capabilities:
+          #     drop: 
+          #       - ALL
+          # resources:
+          #   limits:
+          #     cpu: 3040m
+          #     memory: "1000M"
+          #   requests:
+          #     cpu: 3040m
+          #     memory: "1000M"
 ---
 apiVersion: v1
 kind: Service

@@ -6,7 +6,7 @@ import LikesTable from '@/components/atoms/LikesTable';
 import PostTable from '@/components/atoms/PostTable';
 import UserProfile from '@/components/atoms/UserProfile';
 import Navigation from '@/components/molecultes/Navigation';
-import { useAuth0 } from '@auth0/auth0-react';
+import useConditionalAuth from '@/config/conditionalAuth';
 import { Box, Button, ButtonGroup, Modal, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 const style = {
@@ -28,7 +28,7 @@ const Profile = () => {
 	const [posts, setPosts] = useState<Post[]>([]);
 	const [journeys, setJourneys ] = useState<Journey[]>([]);
 	const [likes, setLikes] = useState<Reaction[]>([]); 
-	const { user, isAuthenticated, getAccessTokenSilently, loginWithRedirect } = useAuth0();
+	const { user, isAuthenticated, getAccessTokenSilently, loginWithRedirect } = useConditionalAuth();
 	
 	const [delPosts, setDelPosts] = useState<boolean>(false);
 	const [delLikes,setDelLikes] = useState<boolean>(false);
