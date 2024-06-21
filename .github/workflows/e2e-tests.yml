@@ -1,4 +1,4 @@
-name: CI Pipeline
+name: E2E test
 
 on:
   push:
