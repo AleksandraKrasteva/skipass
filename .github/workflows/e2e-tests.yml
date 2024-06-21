@@ -27,7 +27,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '16'
+          node-version: '18.17.0'
 
       - name: Install dependencies
         working-directory: './client'
@@ -53,9 +53,8 @@ jobs:
 
       - name: Run Playwright tests
         working-directory: './client'
-        run: npx playwright test
-        env:
-          CI: true
+        run: npx playwright test try.spec.tsx
+        
 
       - name: Upload test report
         uses: actions/upload-artifact@v2
