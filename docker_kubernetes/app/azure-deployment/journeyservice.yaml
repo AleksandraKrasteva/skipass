@@ -62,6 +62,11 @@ spec:
               secretKeyRef:
                 name: azure-secret
                 key: journey-db-pass
+          - name: JOURNEY_DB_USER
+            valueFrom:
+              secretKeyRef:
+                name: azure-secret
+                key: journey-db-user
 ---
 apiVersion: v1
 kind: Service
