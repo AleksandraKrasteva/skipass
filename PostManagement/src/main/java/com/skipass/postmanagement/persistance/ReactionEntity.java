@@ -1,5 +1,6 @@
 package com.skipass.postmanagement.persistance;
 
+import com.skipass.postmanagement.domain.Post;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @Builder
-@Table(name = "likes")
+@Table(name = "reactions")
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReactionEntity {

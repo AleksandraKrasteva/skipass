@@ -1,6 +1,7 @@
 package com.skipass.journeyservice.controllers;
 
 import com.skipass.journeyservice.business.JourneyService;
+import com.skipass.journeyservice.domain.CreateJourneyRequest;
 import com.skipass.journeyservice.domain.Journey;
 import com.skipass.journeyservice.persistance.JourneyEntity;
 import lombok.AllArgsConstructor;
@@ -14,9 +15,12 @@ import java.util.List;
 public class JourneyController {
     private final JourneyService journeyService;
 
-    @PostMapping("/create-journey/{username}")
-    public ResponseEntity<Journey> createJourney(@PathVariable(value = "username") String username){
-        Journey journey = journeyService.createJourney(username);
+    @PostMapping("/create-journey")
+    public ResponseEntity<JourneyEntity> createJourney(@RequestBody String username){
+        System.out.println(username);
+        System.out.println(username.substring(1, username.length()-1));
+        String usernameFormed = username.substring(1, username.length()-1);
+        JourneyEntity journey = journeyService.createJourney(usernameFormed);
         return ResponseEntity.ok().body(journey);
     }
 
@@ -33,7 +37,7 @@ public class JourneyController {
     }
 
     @DeleteMapping("/delete-journey/{id}")
-    public ResponseEntity deleteJourneyById(@PathVariable(value = "id")long  id) {
+    public ResponseEntity deleteJourneyById(@PathVariable(value = "id") long id) {
         journeyService.deleteJourneyById(id);
         return ResponseEntity.ok().build();
     }
@@ -43,6 +47,4 @@ public class JourneyController {
         journeyService.deleteJourneysForAuthor(username);
         return ResponseEntity.ok().build();
     }
-
-
 }

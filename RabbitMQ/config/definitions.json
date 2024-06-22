@@ -39,33 +39,57 @@
   "policies": [],
   "queues": [
       {
-          "name": "delete-profile-posts",
+          "name": "delete-journey-for-post",
           "vhost": "/",
           "durable": true,
           "auto_delete": false,
           "arguments": {}
-      }
+      },
+      {
+        "name": "delete-post-for-journey",
+        "vhost": "/",
+        "durable": true,
+        "auto_delete": false,
+        "arguments": {}
+    }
   ],
   "exchanges": [
       {
-          "name": "delete-profile",
+          "name": "delete-journey",
           "vhost": "/",
           "type": "fanout",
           "durable": true,
           "auto_delete": false,
           "internal": false,
           "arguments": {}
-      }
+      },
+      {
+        "name": "delete-post",
+        "vhost": "/",
+        "type": "fanout",
+        "durable": true,
+        "auto_delete": false,
+        "internal": false,
+        "arguments": {}
+    }
   ],
   "bindings": [
       {
-          "source": "delete-profile",
+          "source": "delete-journey",
           "vhost": "example-vhost",
-          "destination": "delete-profile-posts",
+          "destination": "delete-journey-for-post",
           "destination_type": "queue",
           "routing_key": "",
           "arguments": {}
-      }
+      },
+      {
+        "source": "delete-post",
+        "vhost": "example-vhost",
+        "destination": "delete-post-for-journey",
+        "destination_type": "queue",
+        "routing_key": "",
+        "arguments": {}
+    }
   ]
 }
 

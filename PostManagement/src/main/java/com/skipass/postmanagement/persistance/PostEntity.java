@@ -1,6 +1,5 @@
 package com.skipass.postmanagement.persistance;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,11 +20,6 @@ public class PostEntity {
     private String text;
 
     private String username;
-
-    @Nullable
-    @JoinColumn(name="reactions", nullable = true)
-    @OneToMany()
-    private List<ReactionEntity> reactions;
 
     private long journeyId;
 

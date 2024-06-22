@@ -1,0 +1,88 @@
+volumes:
+  journey_database:
+  post_database:
+  rabbitmq:
+
+services:
+
+  rabbitmq:
+    image: ghcr.io/aleksandrakrasteva/rabbitmq:dev
+    ports:
+     - 5672:5672
+     - 15672:15672
+    volumes:
+      - ./RabbitMQ/config/definitions.json:/etc/rabbitmq/definitions.json
+      - ./RabbitMQ/config/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+    
+  postservice:
+    image: ghcr.io/aleksandrakrasteva/post-service:dev
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USER=guest
+      - RABBITMQ_PASS=guest
+
+      - POST_DB_HOST=post_db
+      - POST_DB_PORT=5432
+      - POST_DB_USER=postgres
+      - POST_DB_PASS=postgres
+    build:
+      context: ./PostManagement
+    ports:
+      - 8082:8080
+    depends_on:
+      - post_db
+      - rabbitmq
+      - gateway
+  
+  journeyservice:
+    image: ghcr.io/aleksandrakrasteva/journey-service:dev
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USER=guest
+      - RABBITMQ_PASS=guest
+      - JOURNEY_DB_HOST=journey_db
+      - JOURNEY_DB_PORT=5432
+      - JOURNEY_DB_USER=postgres
+      - JOURNEY_DB_PASS=postgres
+    build:
+      context: ./JourneyService
+    ports:
+      - 8081:8080
+    depends_on:
+      - journey_db
+      - rabbitmq
+      - gateway
+  
+  post_db:
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=posts
+    ports:
+      - '5432:5432'
+    volumes: 
+      - ./volumes/post:/data
+
+  journey_db:
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=journey
+    ports:
+      - '5433:5432'
+    volumes: 
+      - ./volumes/post:/data
+  
+  gateway:
+    image: devopsfaith/krakend
+    volumes:
+      - ./Krakend/config_dev/krakend.json:/etc/krakend.json
+    ports:
+      - "1234:1234"
+      - "8080:8080"
+      - "8090:8090"
+    command: ["run", "-d", "-c", "/etc/krakend.json"]

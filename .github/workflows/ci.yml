@@ -18,9 +18,7 @@ jobs:
       matrix:
         include: 
         - directory: ./PostManagement
-        # The other services are not currently implemented
-        # - directory: ./JourneyService
-        # - directory: ./StatisticsService
+        - directory: ./JourneyService
 
     steps:
     - uses: actions/checkout@v4    
@@ -57,21 +55,13 @@ jobs:
     strategy: 
       matrix:
         include: 
-        # - dockerfile: ./JourneyService/Dockerfile
-        #   image: ghcr.io/AleksandraKrasteva/journey-service
-        #   working-directory: ./JourneyService
+        - dockerfile: ./JourneyService/Dockerfile
+          image: ghcr.io/AleksandraKrasteva/journey-service
+          working-directory: ./JourneyService
 
         - dockerfile: ./PostManagement/Dockerfile
           image: ghcr.io/AleksandraKrasteva/post-service
           working-directory: ./PostManagement
-
-        # - dockerfile: ./StatisticsService/Dockerfile
-        #   image: ghcr.io/AleksandraKrasteva/statistics-service
-        #   working-directory: ./StatisticsService
-
-        # - dockerfile: ./Krakend/Dockerfile
-        #   image: ghcr.io/AleksandraKrasteva/krakend_test
-        #   working-directory: ./Krakend
 
         - dockerfile: ./RabbitMQ/Dockerfile
           image: ghcr.io/AleksandraKrasteva/rabbitmq

@@ -8,15 +8,20 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class RabbitMQProducer {
+
     @Autowired
+
     private RabbitTemplate rabbitTemplate;
 
     @Autowired
     private FanoutExchange deletePostExchange;
 
-//    Currently not used
-//    public void sendDeleteStatisticsAndReactionsForPostMessage(String message) {
-//        rabbitTemplate.convertAndSend(
-//                deletePostExchange.getName(), "", message);
-//    }
+    // Routing key is not set, as the exchange is fanout
+    public void sendDeleteJourneyMessage(long postId) {
+        System.out.println("In rabbitmq ");
+        System.out.println(postId);
+
+        rabbitTemplate.convertAndSend(
+                deletePostExchange.getName(), "", postId);
+    }
 }

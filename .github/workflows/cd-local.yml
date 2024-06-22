@@ -6,7 +6,6 @@ on:
   types: [completed]
   branches:
    - dev
-   - main
 
 jobs:
   deploy-locally:
@@ -45,7 +44,7 @@ jobs:
     - name: Check if deployment is running
       id: check-deployment
       run: |
-        kubectl get deployment grafana-k8s-monitoring-kube-state-metrics -n monitoring -o jsonpath='{.status.readyReplicas}'; echo "0"
+        kubectl get deployment post-service-deployment -o jsonpath='{.status.readyReplicas}'; echo "0"
       continue-on-error: true
 
     - name: Create temporary grafana values file if deployment is not running
@@ -60,8 +59,9 @@ jobs:
     - name: Deploy application if not running
       if: steps.check-deployment.outputs.status == '0'
       run: |
-        kubectl create secret generic global-secret --from-literal=post-db-user=${{ secrets.USER_DB_SECRET }} --from-literal=post-db-pass=${{ secrets.PASS_DB_SECRET }} --from-literal=rabbitmq-user=${{ secrets.RABBITMQ_USER }} --from-literal=rabbitmq-pass=${{ secrets.RABBITMQ_PASS }}
-        powershell.exe -File ${{ secrets.REPO_PATH }}/docker_kubernetes/initialize.ps1
+        cd ${{ secrets.REPO_PATH }}/docker_kubernetes
+        kubectl create secret generic global-secret --from-literal=post-db-user=${{ secrets.USER_DB_SECRET }} --from-literal=post-db-pass=${{ secrets.PASS_DB_SECRET }} --from-literal=rabbitmq-user=${{ secrets.RABBITMQ_USER }} --from-literal=rabbitmq-pass=${{ secrets.RABBITMQ_PASS }} --from-literal=journey-db-pass=${{ secrets.JOURNEY_DB_PASS }} --from-literal=journey-db-user=${{ secrets.JOURNEY_DB_USER }}
+        powershell.exe -File ./initialize.ps1
         
     - name: Update deployment 
       if: steps.check-deployment.outputs.status != '0'
