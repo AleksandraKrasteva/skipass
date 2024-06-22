@@ -16,7 +16,13 @@ const Footer = () => {
 			}}
 			showLabels
 		>
-			<BottomNavigationAction onClick={()=>{router.push('/contact');}} label="Contact & Complains & Requests"/>
+			<BottomNavigationAction sx={{
+				fontFamily: 'monospace',
+				fontSize: 20,
+				fontWeight: 250,
+				letterSpacing: '.1rem',
+				color: 'teal',
+			}} onClick={()=>{router.push('/contact');}} label="Contact & Complains & Requests"/>
 		</BottomNavigation>
 	);
 };

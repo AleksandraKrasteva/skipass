@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { DeletePostsDTO, deleteJourneysForUser, deletePostsForUser, deleteReactions, getReactionsForUser, viewJourneysForUser, viewPostsForUser } from '@/api/requests';
 import { Post, Journey, Reaction } from '@/api/types';
 import Footer from '@/components/atoms/Footer';
@@ -7,7 +8,7 @@ import PostTable from '@/components/atoms/PostTable';
 import UserProfile from '@/components/atoms/UserProfile';
 import Navigation from '@/components/molecultes/Navigation';
 import useConditionalAuth from '@/config/conditionalAuth';
-import { Box, Button, ButtonGroup, Modal, Typography } from '@mui/material';
+import { Box, Button, ButtonGroup, Modal, Paper, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 const style = {
 	position: 'absolute' as const,
@@ -36,10 +37,21 @@ const Profile = () => {
 	const [trigger, setTrigger] = useState<boolean>(false);
 
 	useEffect(()=>{
+		// @ts-ignore
+
 		if(!isAuthenticated) return;
 		setUp();
 	},[trigger]);
+	
+	useEffect(()=>{
+		// @ts-ignore
 
+		if(!isAuthenticated){
+			// @ts-ignore
+
+			loginWithRedirect(); 
+		}
+	});
 
 	const setUp=async()=>{
 		const token = await getToken(); 
@@ -50,13 +62,14 @@ const Profile = () => {
 	};
 
 	const getToken=async()=>{
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		// @ts-ignore
 		const token = await getAccessTokenSilently({
 			authorizationParams: {
 				audience: 'https://dev-hxsl4k6mw7xspicu.eu.auth0.com/api/v2/',
 				scope: 'read:current_user',
 			}}).catch(()=>{
+			// @ts-ignore
+
 			loginWithRedirect();
 		});
 		return token;
@@ -108,68 +121,78 @@ const Profile = () => {
 			<Navigation/>
 			
 			<UserProfile/>
-			<h1>Stored personal information</h1>
-			<ButtonGroup size="large" aria-label="Large button group">
-				<Button sx={{color: 'red'}} onClick={()=>{setDelPosts(true);}}>Delete all Posts</Button>
-				<Button sx={{color: 'red'}} onClick={()=>{setDelJourneys(true);}}>Delete all Journeys</Button>
-				<Button sx={{color: 'red'}} onClick={()=>{setDelLikes(true);}}>Delete all Likes</Button>
-			</ButtonGroup> 
-			<br/>
-			<ButtonGroup size="large" aria-label="Large button group">
-				<Button onClick={()=>{setViewPosts(true); setViewJourneys(false);
-					setViewLikes(false);}}>All Posts</Button>
-				<Button onClick={()=>{setViewPosts(false); setViewJourneys(true);
-					setViewLikes(false);}}>Journeys</Button>
-				<Button onClick={()=>{setViewPosts(false); setViewJourneys(false);
-					setViewLikes(true);}}>Likes</Button>
-			</ButtonGroup> 
-			<Modal
-				open={delJourneys}
-				onClose={()=>setDelJourneys(false)}
-				aria-labelledby="modal-modal-title"
-				aria-describedby="modal-modal-description"
-			>
-				<Box sx={style}>
-					<Typography sx={{color: 'red'}}id="modal-modal-title" variant="h6" component="h2">
+			<Paper style={{maxHeight: '260px', overflow: 'auto', paddingLeft:20}}>
+				<Typography
+					sx={{
+						fontFamily: 'monospace',
+						fontSize: 20,
+						fontWeight: 700,
+						letterSpacing: '.2rem',
+						color: 'teal',
+					}}>Stored personal information </Typography>
+				<ButtonGroup size="small" aria-label="Large button group" sx={{mb:2}}>
+					<Button variant="contained" sx={{fontFamily: 'monospace', bgcolor:'pink', color: 'black', mt:2 }} onClick={()=>{setDelPosts(true);}}>Delete all Posts</Button>
+					<Button variant="contained" sx={{fontFamily: 'monospace', bgcolor:'pink', color: 'black', mt:2}} onClick={()=>{setDelJourneys(true);}}>Delete all Journeys</Button>
+					<Button variant="contained" sx={{fontFamily: 'monospace', bgcolor:'pink', color: 'black', mt:2}} onClick={()=>{setDelLikes(true);}}>Delete all Likes</Button>
+				</ButtonGroup> 
+				<br/>
+				<ButtonGroup size="medium" sx={{mb:2}}>
+					<Button variant="contained" sx={{fontFamily: 'monospace', bgcolor:'teal', color: 'white'}} onClick={()=>{setViewPosts(true); setViewJourneys(false);
+						setViewLikes(false);}}>All Posts</Button>
+					<Button variant="contained" sx={{fontFamily: 'monospace', bgcolor:'teal', color: 'white'}} onClick={()=>{setViewPosts(false); setViewJourneys(true);
+						setViewLikes(false);}}>Journeys</Button>
+					<Button variant="contained" sx={{fontFamily: 'monospace', bgcolor:'teal', color: 'white'}} onClick={()=>{setViewPosts(false); setViewJourneys(false);
+						setViewLikes(true);}}>Likes</Button>
+				</ButtonGroup> 
+				<Modal
+					open={delJourneys}
+					onClose={()=>setDelJourneys(false)}
+					aria-labelledby="modal-modal-title"
+					aria-describedby="modal-modal-description"
+				>
+					<Box sx={style}>
+						<Typography sx={{color: 'red'}}id="modal-modal-title" variant="h6" component="h2">
                                 Are you sure that you want to delete all of your journeys?. This action can not be undone.
-					</Typography>
-					<Button onClick={()=>{deleteJourneys();}}>Delete</Button>
-					<Button onClick={()=>setDelJourneys(false)}>Cancel</Button>								
-				</Box>
-			</Modal>
-			<Modal
-				open={delLikes}
-				onClose={()=>setDelLikes(false)}
-				aria-labelledby="modal-modal-title"
-				aria-describedby="modal-modal-description"
-			>
-				<Box sx={style}>
-					<Typography sx={{color:'red'}}id="modal-modal-title" variant="h6" component="h2">
+						</Typography>
+						<Button onClick={()=>{deleteJourneys();}}>Delete</Button>
+						<Button onClick={()=>setDelJourneys(false)}>Cancel</Button>								
+					</Box>
+				</Modal>
+				<Modal
+					open={delLikes}
+					onClose={()=>setDelLikes(false)}
+					aria-labelledby="modal-modal-title"
+					aria-describedby="modal-modal-description"
+				>
+					<Box sx={style}>
+						<Typography sx={{color:'red'}}id="modal-modal-title" variant="h6" component="h2">
                                 Are you sure that you want to delete all of your likes? This action can not be undone. 
-					</Typography>
-					<Button onClick={()=>{deleteLikes();}}>Delete</Button>
-					<Button onClick={()=>setDelLikes(false)}>Cancel</Button>								
-				</Box>
-			</Modal>
-			<Modal
-				open={delPosts}
-				onClose={()=>setDelPosts(false)}
-				aria-labelledby="modal-modal-title"
-				aria-describedby="modal-modal-description"
-			>
-				<Box sx={style}>
-					<Typography sx={{color: 'red'}} id="modal-modal-title" variant="h6" component="h2">
+						</Typography>
+						<Button onClick={()=>{deleteLikes();}}>Delete</Button>
+						<Button onClick={()=>setDelLikes(false)}>Cancel</Button>								
+					</Box>
+				</Modal>
+				<Modal
+					open={delPosts}
+					onClose={()=>setDelPosts(false)}
+					aria-labelledby="modal-modal-title"
+					aria-describedby="modal-modal-description"
+				>
+					<Box sx={style}>
+						<Typography sx={{color: 'red'}} id="modal-modal-title" variant="h6" component="h2">
                                 Are you sure that you want to delete all of your posts? This action can not be undone. 
-					</Typography>
-					<Button onClick={()=>{deletePosts();}}>Delete</Button>
-					<Button onClick={()=>setDelPosts(false)}>Cancel</Button>								
-				</Box>
-			</Modal>		
+						</Typography>
+						<Button onClick={()=>{deletePosts();}}>Delete</Button>
+						<Button onClick={()=>setDelPosts(false)}>Cancel</Button>								
+					</Box>
+				</Modal>		
 			
-			{viewPosts && <PostTable posts={posts}/>}
-			{viewJourneys && <JourneyTable journeys={journeys}/>}
-			{viewLikes && <LikesTable likes={likes}/>}
+				{viewPosts && <PostTable posts={posts}/>}
+				{viewJourneys && <JourneyTable journeys={journeys}/>}
+				{viewLikes && <LikesTable likes={likes}/>}
+			</Paper>
 			<Footer/>
+
 		</>
 	);
 };

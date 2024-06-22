@@ -11,7 +11,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/journey/data"
+    path: "/journey-service/data"
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim

@@ -1,4 +1,5 @@
 import { useAuth0 } from '@auth0/auth0-react';
+import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 
 const UserProfile = () => {
@@ -10,12 +11,26 @@ const UserProfile = () => {
 
 	return (
 		isAuthenticated && user && (
-			<Box sx={{mt:10}}>
+			<Box sx={{mt: 10, mb:2, border: 1, width:250, borderColor: 'pink', borderRadius: '16px',  px:2, pb:2, pt:2}} >
+				<Typography
+					sx={{
+						fontFamily: 'monospace',
+						fontSize: 20,
+						fontWeight: 700,
+						letterSpacing: '.2rem',
+						color: 'teal',
+					}}>Profile:</Typography>
+			
 				<img src={user!.picture} />
-				<h2>{user!.name}</h2>
-				<p>{user!.email}</p>
-				<p>{user!.nickname}</p>
-				<p>{user!.profile}</p>
+				<Typography
+					sx={{
+						fontFamily: 'monospace',
+						fontSize: 16,
+						fontWeight: 700,
+						letterSpacing: '.2rem',
+						color: 'black',
+					}}>{user!.nickname}</Typography>
+				<p>Email: {user!.email}</p>
 			</Box>
 		)
 	);

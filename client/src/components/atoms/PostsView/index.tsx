@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import * as React from 'react';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -7,7 +8,6 @@ import Collapse from '@mui/material/Collapse';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { red } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Journey, Post } from '@/api/types';
@@ -32,7 +32,6 @@ const PostsView = (props:Props) => {
 		}
 		else{
 			setExpandedId(postId); 
-			console.log(journeyId);
 			if(journeyId !== 0){
 				const res = await viewJourney(journeyId);
 				console.log(res);
@@ -43,13 +42,18 @@ const PostsView = (props:Props) => {
 		}
 	};
 	const likePost= async(postId:number)=>{
+		// @ts-ignore
+
 		if(!isAuthenticated){loginWithRedirect();}
+		// @ts-ignore
+
 
 		const token = await getAccessTokenSilently({
 			authorizationParams: {
 				audience: 'https://dev-hxsl4k6mw7xspicu.eu.auth0.com/api/v2/',
 				scope: 'read:current_user',
 			}}).catch(()=>{
+			// @ts-ignore
 			loginWithRedirect();
 		});
 
@@ -68,6 +72,7 @@ const PostsView = (props:Props) => {
 				.catch((e)=>{
 					console.log(e);
 					if(e.response.status === 401){
+						// @ts-ignore
 						loginWithRedirect();
 					}
 				});
@@ -81,14 +86,14 @@ const PostsView = (props:Props) => {
 	};
 
 	return (
-		<Paper style={{maxHeight: '850px', overflow: 'auto', padding:20, marginTop:10}}>
+		<Paper style={{maxHeight: '525px', overflow: 'auto', paddingLeft:20}}>
 			{props.posts.map((post)=>{
 				return(
-					<Card sx={{ maxWidth: 345, mt:10 }} key={post.id}>
+					<Card sx={{ maxWidth: 345, mt:2, mb:2, ml:2 }} key={post.id}>
 						<CardHeader
 							avatar={
-								<Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                      R
+								<Avatar aria-label="recipe">
+									{post.username.substring(0,1).toUpperCase()}
 								</Avatar>
 							}
 							title={post.username}
@@ -99,13 +104,13 @@ const PostsView = (props:Props) => {
 							</Typography>
 						</CardContent>
 						<CardActions disableSpacing>
-							<IconButton aria-label="like" onClick={()=>likePost(post.id!)}>
+							<IconButton aria-label="like" sx={{color: 'black'}} onClick={()=>likePost(post.id!)}>
 								{post.reactions?.length}
-								<FavoriteIcon />
+								<FavoriteIcon sx={{color:'pink'}} />
 							</IconButton>
 							{post.journeyId !== 0  && (
-								<IconButton onClick={()=>handleExpandClick(post.id!, post!.journeyId!)}>
-									<ExpandMoreIcon />
+								<IconButton sx={{ml:30}} onClick={()=>handleExpandClick(post.id!, post!.journeyId!)}>
+									<ExpandMoreIcon sx={{color: 'black'}} />
 								</IconButton>
 							)
 							}

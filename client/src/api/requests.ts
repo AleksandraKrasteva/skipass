@@ -1,7 +1,18 @@
 import axios from 'axios';
 import { Post } from './types';
 
-const baseURL = 'http://localhost:8080';
+let baseURL = '';
+
+if(process.env.NEXT_PUBLIC_ENVIRONMENT == 'test'){
+	baseURL= 'http://localhost:8080';
+}
+else if(process.env.NEXT_PUBLIC_ENVIRONMENT == 'development'){
+	baseURL= 'http://localhost:80';
+}
+else if(process.env.NEXT_PUBLIC_ENVIRONMENT == 'prod'){ 
+	baseURL= 'http://localhost:8080';
+}
+console.log(baseURL);
 
 export const createPost = (post: Post, token: string) => {
 	const headers = {

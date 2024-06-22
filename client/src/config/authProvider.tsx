@@ -1,4 +1,4 @@
-// __mocks__/auth0.tsx
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { Auth0ContextInterface } from '@auth0/auth0-react';
 
@@ -21,7 +21,6 @@ const MockAuth0Provider = ({ children }: Auth0ProviderProps) => {
 	const [user, setUser] = useState<Auth0User>();
 
 	const loginWithRedirect = async () => {
-		console.log('isCalled');
 		setIsAuthenticated(true);
 		setUser({ name: 'Test User', email: 'test@example.com', nickname:'testuser' });
 	};
@@ -30,13 +29,9 @@ const MockAuth0Provider = ({ children }: Auth0ProviderProps) => {
 		return 'token token';
 	};
 
-	// const logout = () => {
-	// 	setIsAuthenticated(false);
-	// 	setUser(undefined);
-	// };
-
 	return (
 		<Auth0Context.Provider 
+		// @ts-ignore
 			value={{ isAuthenticated, user, loginWithRedirect, getAccessTokenSilently }}>
 			{children}
 		</Auth0Context.Provider>

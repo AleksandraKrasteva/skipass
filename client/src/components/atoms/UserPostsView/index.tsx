@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import * as React from 'react';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -7,13 +8,12 @@ import Collapse from '@mui/material/Collapse';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { red } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Journey, Post } from '@/api/types';
 import { DeletePostDTO, UpdatePostDTO, deletePost, updatePost, viewJourney } from '@/api/requests';
 import { DeleteForever, Edit } from '@mui/icons-material';
-import { Box, Button, Modal } from '@mui/material';
+import { Box, Button, ButtonGroup, Modal, Paper } from '@mui/material';
 import { TextareaAutosize } from '@mui/base/TextareaAutosize';
 import useConditionalAuth from '@/config/conditionalAuth';
 
@@ -30,7 +30,9 @@ const style = {
 	transform: 'translate(-50%, -50%)',
 	width: 400,
 	bgcolor: 'background.paper',
-	border: '2px solid #000',
+	border: 1, 
+	borderColor: 'pink', 
+	borderRadius: '16px',
 	boxShadow: 24,
 	p: 4,
 };
@@ -43,7 +45,7 @@ const UserPostsView = (props:Props) => {
 	const [journey, setJourney] = React.useState<Journey>();
 	const [selectedPost, setSelectedPost] = React.useState<Post>();
 
-	const { isAuthenticated, getAccessTokenSilently, loginWithRedirect } = useConditionalAuth();
+	const { user, getAccessTokenSilently, loginWithRedirect } = useConditionalAuth();
 
 	const handleExpandClick = async (postId: number, journeyId: number ) => {
 		if(expandedId === postId){
@@ -58,17 +60,19 @@ const UserPostsView = (props:Props) => {
 					setJourney(res.data);
 				}	
 			}
-		}
-		
+		}		
 	};
 
-
 	const deletePostById = async(id:number)=>{
+		// @ts-ignore
+
 		const token = await getAccessTokenSilently({
 			authorizationParams: {
 				audience: 'https://dev-hxsl4k6mw7xspicu.eu.auth0.com/api/v2/',
 				scope: 'read:current_user',
 			}}).catch(()=>{
+			// @ts-ignore
+
 			loginWithRedirect();
 		});
 
@@ -84,6 +88,7 @@ const UserPostsView = (props:Props) => {
 		}).catch((e)=>{
 			console.log(e);
 			if(e.response.status === 401){
+				// @ts-ignore
 				loginWithRedirect();
 			}
 		});
@@ -93,11 +98,15 @@ const UserPostsView = (props:Props) => {
 
 	const editPost = async(postId:number)=>{
 		if(newText == '') return;
+		// @ts-ignore
+
 		const token = await getAccessTokenSilently({
 			authorizationParams: {
 				audience: 'https://dev-hxsl4k6mw7xspicu.eu.auth0.com/api/v2/',
 				scope: 'read:current_user',
 			}}).catch(()=>{
+			// @ts-ignore
+
 			loginWithRedirect();
 		});
 
@@ -112,17 +121,23 @@ const UserPostsView = (props:Props) => {
 		}).catch((e)=>{
 			console.log(e);
 			if(e.response.status === 401){
+				// @ts-ignore
+
 				loginWithRedirect();
 			}
 		});
 	};
 
 	const deletePostAndJourney = async(postId:number)=>{
+		// @ts-ignore
+
 		const token = await getAccessTokenSilently({
 			authorizationParams: {
 				audience: 'https://dev-hxsl4k6mw7xspicu.eu.auth0.com/api/v2/',
 				scope: 'read:current_user',
 			}}).catch(()=>{
+			// @ts-ignore
+
 			loginWithRedirect();
 		});
 
@@ -135,8 +150,8 @@ const UserPostsView = (props:Props) => {
 		await deletePost(data, token).then(()=>{
 			props.setTrigger(!props.trigger);
 		}).catch((e)=>{
-			console.log(e);
 			if(e.response.status === 401){
+				// @ts-ignore
 				loginWithRedirect();
 			}
 		});
@@ -145,15 +160,15 @@ const UserPostsView = (props:Props) => {
 	};
 	return (
 		<>
-			{isAuthenticated && (        
-				props.posts?.map((post)=>{
+			<Paper style={{maxHeight: '250px', overflow: 'auto', paddingLeft:20}}>    
+				{props.posts?.map((post)=>{
 					return(
 						<>
-							<Card sx={{ maxWidth: 345, mt:10 }}>
+							<Card sx={{ maxWidth: 345, mt:2 }}>
 								<CardHeader
 									avatar={
-										<Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                      R
+										<Avatar aria-label="recipe">
+											{user?.nickname?.substring(0,1).toUpperCase()}
 										</Avatar>
 									}
 									title={post.username}
@@ -164,47 +179,59 @@ const UserPostsView = (props:Props) => {
 									</Typography>
 								</CardContent>
 								<CardActions disableSpacing>
-									{post.reactions?.length}
-									<FavoriteIcon />
+									<IconButton sx={{color:'black'}}>
+										{post.reactions?.length}
+										<FavoriteIcon sx={{color:'pink'}}/>
+									</IconButton>
+									
 									{post.journeyId !== 0 && (
-										<IconButton onClick={()=>handleExpandClick(post!.id!, post!.journeyId!)}>
+										<IconButton sx={{color:'black'}} onClick={()=>handleExpandClick(post!.id!, post!.journeyId!)}>
 											<ExpandMoreIcon />
 										</IconButton>
 									)}
-									<IconButton aria-label='delete-post' onClick={()=>{setDeleting(true); setSelectedPost(post);}}>
+									<IconButton sx={{color:'black', ml:20}} aria-label='delete-post' onClick={()=>{setDeleting(true); setSelectedPost(post);}}>
 										<DeleteForever />
 									</IconButton>
-									<IconButton aria-label="like" onClick={()=>{setEditing(true); setSelectedPost(post);}}>
+									<IconButton aria-label="like" sx={{color:'black'}} onClick={()=>{setEditing(true); setSelectedPost(post);}}>
 										<Edit />
 									</IconButton>
 								</CardActions>
 								<Collapse in={expandedId === post.id} timeout="auto" unmountOnExit>
 									<CardContent>
-								date: {journey?.date?.toString()}
-							fastest: { journey?.fastest}
-							slowest: {journey?.slowest}
-							totalKm: {journey?.totalKm}
-							passed: {journey?.totalPasses}
+							date: {journey?.date?.toString()} <br/>
+							fastest: { journey?.fastest}<br/>
+							slowest: {journey?.slowest} <br/>
+							totalKm: {journey?.totalKm}<br/>
+							passed: {journey?.totalPasses} <br/>
 									</CardContent>
 								</Collapse>
 							</Card>
 						</>
 				
 					);})
-			)};
+				}
+			</Paper>
+
 			<Modal
 				open={deleting}
 				onClose={()=>setDeleting(false)}
-				aria-labelledby="modal-modal-title"
-				aria-describedby="modal-modal-description"
 			>
 				<Box sx={style}>
-					<Typography id="modal-modal-title" variant="h6" component="h2">
-                                Are you sure that you want to delete this post and its related journey? 
+					<Typography
+						sx={{
+							ml:2,
+							fontFamily: 'monospace',
+							fontSize: 18,
+							fontWeight: 700,
+							letterSpacing: '.1rem',
+							color: 'teal',
+						}}>Are you sure that you want to delete this post and its related journey? 
 					</Typography>
-					<Button onClick={()=>{deletePostById(selectedPost!.id!);}}>Delete post</Button>
-					<Button onClick={()=>{deletePostAndJourney(selectedPost!.id!);}}>Delete post and journey</Button>
-					<Button onClick={()=>setDeleting(false)}>Cancel</Button>								
+					<ButtonGroup orientation="vertical" sx={{ml:11}} >
+						<Button variant="contained" sx={{fontFamily: 'monospace', bgcolor:'pink', color: 'black', mt:2}}  onClick={()=>{deletePostById(selectedPost!.id!);}}>Delete post</Button>
+						<Button variant="contained" sx={{fontFamily: 'monospace', bgcolor:'pink', color: 'black', mt:2}}  onClick={()=>{deletePostAndJourney(selectedPost!.id!);}}>Delete post and journey</Button>
+						<Button variant="contained" sx={{fontFamily: 'monospace', bgcolor:'pink', color: 'black', mt:2}}  onClick={()=>setDeleting(false)}>Cancel</Button>								
+					</ButtonGroup>
 				</Box>
 			</Modal>
 			<Modal
@@ -213,13 +240,20 @@ const UserPostsView = (props:Props) => {
 				aria-labelledby="modal-modal-title"
 				aria-describedby="modal-modal-description"
 			>
-				<Box  sx={style}>
-					<Typography id="modal-modal-title" variant="h6" component="h2">
-                                You can edit your post below:
+				<Box sx={style}>
+					<Typography
+						sx={{
+							ml:2,
+							fontFamily: 'monospace',
+							fontSize: 18,
+							fontWeight: 700,
+							letterSpacing: '.3rem',
+							color: 'teal',
+						}}>You can edit your post below: 
 					</Typography>
-					<TextareaAutosize placeholder={selectedPost?.text} onChange={(e)=>{setNewText(e.target.value);}}/>
+					<TextareaAutosize placeholder={selectedPost?.text} onChange={(e)=>{setNewText(e.target.value);}}/><br/>
 
-					<Button onClick={()=>{editPost(selectedPost!.id!);}}>Save changes</Button>								
+					<Button variant="contained" sx={{fontFamily: 'monospace', bgcolor:'pink', color: 'black', ml:16}}  onClick={()=>{editPost(selectedPost!.id!);}}>Save changes</Button>								
 				</Box> 
 			</Modal>
 		</>
