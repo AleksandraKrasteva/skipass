@@ -6,7 +6,6 @@ on:
   types: [completed]
   branches:
    - dev
-   - main
 
 jobs:
   deploy-locally:
