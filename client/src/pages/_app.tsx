@@ -10,9 +10,7 @@ export default function App(props: AppProps) {
 	const { Component, pageProps } = props;
 
 	const isTest = process.env.NEXT_PUBLIC_ENVIRONMENT === 'test';
-	console.log(process.env.ENVIRONMENT);
 	console.log(process.env.NEXT_PUBLIC_ENVIRONMENT);
-	console.log(isTest);
 	
 	return (
 		isTest ?
@@ -34,6 +32,5 @@ export default function App(props: AppProps) {
 	  >
 				<Component {...pageProps} />
 			</Auth0Provider>
-
 	);
 }

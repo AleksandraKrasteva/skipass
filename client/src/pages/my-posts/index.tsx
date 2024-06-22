@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { createPost, viewJourneysForUser, viewPostsForUser } from '@/api/requests';
 import { Journey, Post } from '@/api/types';
-import { Box, TextField, Button, FormControl, Select, MenuItem, SelectChangeEvent, InputLabel } from '@mui/material';
+import { Box, TextField, Button, FormControl, Select, MenuItem, SelectChangeEvent, InputLabel, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import UserPostsView from '@/components/atoms/UserPostsView';
 import Navigation from '@/components/molecultes/Navigation';
@@ -25,17 +26,17 @@ const MyPosts = () => {
 	};
 
 	useEffect(() => {    
-		console.log('Truggered');
 		viewPostsForLoggedInUser();
 		viewUserJourneysNotInPost();
 	}, [trigger, user]);
 
-
-	// useEffect(() => {    
-	// 	console.log('Truggered');
-	// 	viewPostsForLoggedInUser();
-	// 	viewUserJourneysNotInPost();
-	// }, []);
+	
+	useEffect(()=>{
+		if(!isAuthenticated){
+			// @ts-ignore
+			loginWithRedirect(); 
+		}
+	});
 
 	const viewPostsForLoggedInUser = async()=>{
 		if(!isAuthenticated) return;
@@ -50,12 +51,15 @@ const MyPosts = () => {
 
 	const viewUserJourneysNotInPost = async()=>{
 		if(!isAuthenticated) return;
-		console.log('Passed');
+		// @ts-ignore
+
 		const token = await getAccessTokenSilently({
 			authorizationParams: {
 				audience: 'https://dev-hxsl4k6mw7xspicu.eu.auth0.com/api/v2/',
 				scope: 'openid profile email read:current_user update:current_user_metadata',
 			}}).catch(()=>{
+			// @ts-ignore
+
 			loginWithRedirect();
 		});
 	
@@ -69,7 +73,6 @@ const MyPosts = () => {
 		}else{
 			const filtered = res.data.filter((x: Journey)=> !postsForUser.map((p)=>p.journeyId).includes(x.id)); 
 			setJourneysForUser(filtered.reverse());	
-
 		}
 	};
 
@@ -80,11 +83,15 @@ const MyPosts = () => {
 			text: postText,
 			journeyId: +selectedJourneyId,
 		};
+		// @ts-ignore
+
 		const token = await getAccessTokenSilently({
 			authorizationParams: {
 				audience: 'https://dev-hxsl4k6mw7xspicu.eu.auth0.com/api/v2/',
 				scope: 'openid profile email read:current_user update:current_user_metadata',
 			}}).catch(()=>{
+			// @ts-ignore
+
 			loginWithRedirect();
 		});
 	
@@ -92,6 +99,8 @@ const MyPosts = () => {
 
 		await createPost(post, token).catch((e)=>{
 			if(e.response.status === 401){
+				// @ts-ignore
+
 				loginWithRedirect();
 			}
 		}).then(()=>{
@@ -104,18 +113,26 @@ const MyPosts = () => {
 			<Navigation/>
 			{isAuthenticated && (
 				<>
-					<Box sx={{mt: 10, border: 1, borderColor: 'black', px:4, py:4}}  >
-						{journeysForUser.length > 0 && <h1>JourneysPresent</h1>}
+					<Box sx={{mt: 10, border: 1, borderColor: 'pink', borderRadius: '16px',  px:4, pb:4, pt:2}} >
+						<Typography
+							sx={{
+								fontFamily: 'monospace',
+								fontSize: 24,
+								fontWeight: 700,
+								letterSpacing: '.3rem',
+								color: 'teal',
+							}}>Create a post </Typography>
 						<TextField label="post-text" variant="outlined" required
-  	                    onChange={(e)=>setPostText(e.target.value)} />
+							sx={{fontFamily: 'monospace'}}onChange={(e)=>setPostText(e.target.value)} />
 						 <Box sx={{ minWidth: 120 }}>
-							<FormControl area-label="pick-journey" fullWidth>
+							<FormControl area-label="pick-journey" sx={{width: 350}}>
 								<InputLabel>Journey</InputLabel>
 								<Select
 									placeholder='select an optional journey'
 									value={selectedJourneyId}
 									label="pick-journey"
 									onChange={handleChangeJourney}
+									sx={{mt:2, fontFamily: 'monospace'}}
 								>
 									{journeysForUser.map((journey)=>{
 										return(
@@ -126,12 +143,27 @@ const MyPosts = () => {
 								</Select>
 							</FormControl>
 						</Box>
-  	                <Button variant="contained" onClick={()=>createPostForUser()}>Create post</Button>
+  	                <Button variant="contained" sx={{fontFamily: 'monospace', bgcolor:'pink', color: 'black', mt:2}} onClick={()=>createPostForUser()}>Create post</Button>
   	            </Box> 
-				My Posts 
+				  <Typography
+						sx={{
+							ml:2,
+							fontFamily: 'monospace',
+							fontSize: 24,
+							fontWeight: 700,
+							letterSpacing: '.3rem',
+							color: 'teal',
+						}}>My posts </Typography>
 					{postsForUser.length > 0 ?
 						<UserPostsView posts={postsForUser} trigger={trigger} setTrigger={setTrigger}/>
-						: <h1>No posts present</h1>}
+						: <Typography
+							sx={{
+								ml: 2,
+								fontFamily: 'monospace',
+								fontWeight: 700,
+								letterSpacing: '.3rem',
+								color: 'black',
+							}}>Currently you have not created any posts </Typography>}
 
 				</>
 			)}

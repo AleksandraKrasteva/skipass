@@ -1,6 +1,6 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import * as React from 'react';
 import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import IconButton from '@mui/material/IconButton';
@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import { Journey } from '@/api/types';
 import { deleteJourney } from '@/api/requests';
 import { DeleteForever } from '@mui/icons-material';
-import { Box, Button, Modal } from '@mui/material';
+import { Box, Button, Modal, Paper } from '@mui/material';
 import useConditionalAuth from '@/config/conditionalAuth';
 
 type Props = {
@@ -24,24 +24,29 @@ const style = {
 	transform: 'translate(-50%, -50%)',
 	width: 400,
 	bgcolor: 'background.paper',
-	border: '2px solid #000',
+	border: 1, 
+	borderColor: 'pink', 
+	borderRadius: '16px',
 	boxShadow: 24,
 	p: 4,
 };
   
 const UserJourneysView = (props:Props) => {
 	const [deleting, setDeleting] = React.useState<boolean>(false);
+	const [expandedId, setExpandedId] = React.useState<number>(0);
 
-	console.log(props.journeys);
-
-	const { isAuthenticated, getAccessTokenSilently, loginWithRedirect } = useConditionalAuth();
+	const {  getAccessTokenSilently, loginWithRedirect } = useConditionalAuth();
 
 	const deleteJourneyAndPost = async(journeyId:number)=>{
+		// @ts-ignore
+
 		const token = await getAccessTokenSilently({
 			authorizationParams: {
 				audience: 'https://dev-hxsl4k6mw7xspicu.eu.auth0.com/api/v2/',
 				scope: 'read:current_user',
 			}}).catch(()=>{
+			// @ts-ignore
+
 			loginWithRedirect();
 		});
 
@@ -52,53 +57,79 @@ const UserJourneysView = (props:Props) => {
 				props.setTrigger(!props.trigger);
 				setDeleting(false);
 			}).catch((e)=>{
-				console.log(e);
 				if(e.response.status === 401){
+					// @ts-ignore					
 					loginWithRedirect();
 				}
 			});
 	};
 	return (
 		<Box>
-			<h1>My journeys</h1>
-			{isAuthenticated && props.journeys.length>0 &&  (    
-				props.journeys.map((journey)=>{
-					return(
-						<Card key={journey.id} sx={{ maxWidth: 345, mt:10 }} area-label='journey-card'>
-							<CardHeader
-								title={`${journey.date.toString()} - ${journey.type.toLowerCase().toString()}`}
-							/>
-							<CardContent>
-								<Typography variant="body2" color="text.secondary">
-									fastest:{journey.fastest}
-                                    slowest: {journey.slowest}
-                                    totalPasses: {journey.totalPasses}
-                                    totalKm: {journey.totalKm}
+			<Typography
+				sx={{
+					ml: 2,
+					mt:2,
+					fontFamily: 'monospace',
+					fontSize: 24,
+					fontWeight: 800,
+					letterSpacing: '.1rem',
+					color: 'teal',
+				}}
+			> My journeys:
+			</Typography>
+			<Paper style={{maxHeight: '450px', overflow: 'auto', paddingLeft:20}}>    
+
+				{props.journeys.length>0 &&  (    
+					props.journeys.map((journey)=>{
+						return(
+							<Card key={journey.id} sx={{ maxWidth: 345, mt: 2 }} area-label='journey-card'>
+								<Typography sx={{ml:2,
+									fontFamily: 'monospace',
+									fontSize: 18,
+									fontWeight: 700,
+									color: 'black',}}
+								>{`${journey.date.toString()} - ${journey.type.toLowerCase().toString()}`}
 								</Typography>
-							</CardContent>
-							<CardActions disableSpacing>						
-								<IconButton aria-label="like" onClick={()=>setDeleting(true)}>
-									<DeleteForever />
-								</IconButton>								
-								<Modal
-									open={deleting}
-									onClose={()=>setDeleting(false)}
-									aria-labelledby="modal-modal-title"
-									aria-describedby="modal-modal-description"
-								>
-									<Box sx={style}>
-										<Typography id="modal-modal-title" variant="h6" component="h2">
-                                Are you sure that you want to delete this journey and its related post? 
-										</Typography>
-										<Button onClick={()=>{deleteJourneyAndPost(journey.id!);}}>Delete journey and post</Button>
-										<Button onClick={()=>setDeleting(false)}>Cancel</Button>								
-									</Box>
-								</Modal>
-							</CardActions>
-						</Card>
+								<CardContent>
+									<Typography variant="body2" color="black">
+									fastest:{journey.fastest} <br/>
+                                    slowest: {journey.slowest}<br/>
+                                    totalPasses: {journey.totalPasses}<br/>
+                                    totalKm: {journey.totalKm}<br/>
+									</Typography>
+								</CardContent>
+								<CardActions disableSpacing>						
+									<IconButton sx={{color:'teal', ml:36}}aria-label="like" onClick={()=>{setExpandedId(journey.id); setDeleting(true);}}>
+										<DeleteForever />
+									</IconButton>								
+								</CardActions>
+							</Card>
 				
-					);})
-			)}
+						);})
+				)}
+			</Paper>
+			<Modal
+				open={deleting}
+				onClose={()=>setDeleting(false)}
+				aria-labelledby="modal-modal-title"
+				aria-describedby="modal-modal-description"
+			>
+				<Box sx={style}>
+					<Typography
+						sx={{
+							ml:2,
+							fontFamily: 'monospace',
+							fontSize: 18,
+							fontWeight: 700,
+							letterSpacing: '.1rem',
+							color: 'teal',
+						}}>Are you sure that you want to delete this journey and its related post? 
+					</Typography>				
+					<Button sx={{fontFamily: 'monospace', bgcolor:'pink', color: 'black', mt:2, ml:4}} onClick={()=>{deleteJourneyAndPost(expandedId!);}}>Delete journey and post</Button>
+					<Button sx={{fontFamily: 'monospace', bgcolor:'pink', color: 'black', ml:4, mt:2}} onClick={()=>setDeleting(false)}>Cancel</Button>								
+				</Box>
+			</Modal>
+	
 		</Box>
 	);
 };
