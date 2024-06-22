@@ -55,7 +55,7 @@ spec:
           - name: JOURNEY_DB_NAME
             valueFrom:
               secretKeyRef:
-                name: azure-secret
+                name: azure-config
                 key: journey-db-name
           - name: JOURNEY_DB_PASS
             valueFrom:
