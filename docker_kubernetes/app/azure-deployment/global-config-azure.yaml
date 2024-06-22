@@ -3,8 +3,12 @@ kind: ConfigMap
 metadata:
   name: azure-config
 data:
-  post-db-host: "post-database.postgres.database.azure.com"
+  post-db-host: "post-service-db.postgres.database.azure.com"
   post-db-port: "5432"
-  post-db-database: "postgres"
+  post-db-name: "postgres"
+  journey-db-host: "journey-service-db.postgres.database.azure.com"
+  journey-db-port: "5432"
+  journey-db-name: "postgres"  
   rabbitmq-host: "rabbitmq-service"
   rabbitmq-port: "5672"
+

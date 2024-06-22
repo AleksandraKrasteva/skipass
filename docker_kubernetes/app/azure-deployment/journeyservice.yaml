@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: post-service-deployment
+  name: journey-service-deployment
   labels:
-    app: post-service
+    app: journey-service
 spec:
   replicas: 1
   revisionHistoryLimit: 0
   selector:
     matchLabels:
-      app: post-service
+      app: journey-service
   template:
     metadata:
       labels:
-        app: post-service       
+        app: journey-service       
     spec:
       containers:
-        - name: post-service
-          image: ghcr.io/aleksandrakrasteva/post-service:main
+        - name: journey-service
+          image: ghcr.io/aleksandrakrasteva/journey-service:main
           imagePullPolicy: Always
           ports: 
           - containerPort: 8080
@@ -42,54 +42,34 @@ spec:
               secretKeyRef:
                 name: azure-secret
                 key: rabbitmq-pass
-          - name: POST_DB_HOST
+          - name: JOURNEY_DB_HOST
             valueFrom:
               configMapKeyRef:
                 name: azure-config
-                key:  post-db-host
-          - name: POST_DB_NAME
+                key:  journey-db-host   
+          - name: JOURNEY_DB_PORT
             valueFrom:
               configMapKeyRef:
                 name: azure-config
-                key:  post-db-name      
-          - name: POST_DB_PORT
-            valueFrom:
-              configMapKeyRef:
-                name: azure-config
-                key:  post-db-port   
-          - name: POST_DB_USER
+                key:  journey-db-port  
+          - name: JOURNEY_DB_NAME
             valueFrom:
               secretKeyRef:
                 name: azure-secret
-                key: post-db-user
-          - name: POST_DB_PASS
+                key: journey-db-name
+          - name: JOURNEY_DB_PASS
             valueFrom:
               secretKeyRef:
                 name: azure-secret
-                key: post-db-pass
-          securityContext:
-          #   allowPrivilegeEscalation: false
-          #   runAsNonRoot: true
-          #   readOnlyRootFilesystem: true
-          #   runAsUser: 1000
-          #   capabilities:
-          #     drop: 
-          #       - ALL
-          # resources:
-            # limits:
-            #   cpu: 3040m
-            #   memory: "1000M"
-            # requests:
-            #   cpu: 3040m
-            #   memory: "1000M"
+                key: journey-db-pass
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: post-service-service
+  name: journey-service-service
 spec:
   selector:
-    app: post-service
+    app: journey-service
   ports:
     - protocol: TCP
       port: 8080

@@ -52,6 +52,11 @@ spec:
               configMapKeyRef:
                 name: global-config
                 key:  journey-db-port   
+          - name: JOURNEY_DB_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: global-config
+                key:  journey-db-name 
           - name: JOURNEY_DB_USER
             valueFrom:
               secretKeyRef:
