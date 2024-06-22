@@ -19,8 +19,6 @@ jobs:
         include: 
         - directory: ./PostManagement
         - directory: ./JourneyService
-        # The other services are not currently implemented
-        # - directory: ./StatisticsService
 
     steps:
     - uses: actions/checkout@v4    
@@ -36,20 +34,20 @@ jobs:
     - name: Setup Docker Buildx
       uses: docker/setup-buildx-action@v3
   
-    # - name: Run jacocoTestReport
-    #   working-directory: ${{matrix.directory}}
-    #   run: ./gradlew jacocoTestReport
+    - name: Run jacocoTestReport
+      working-directory: ${{matrix.directory}}
+      run: ./gradlew jacocoTestReport
 
-    # - name: Run tests for service
-    #   working-directory: ${{matrix.directory}}
-    #   run: ./gradlew test --fail-fast
+    - name: Run tests for service
+      working-directory: ${{matrix.directory}}
+      run: ./gradlew test --fail-fast
       
-    # - name: Add test report to Codacy
-    #   uses: codacy/codacy-coverage-reporter-action@v1.3.0
-    #   with:
-    #       api-token: ${{ secrets.CODACY_TOKEN }}
-    #       coverage-reports: ${{matrix.directory}}/build/reports/jacoco/test/jacocoTestReport.xml
-    #       language: java   
+    - name: Add test report to Codacy
+      uses: codacy/codacy-coverage-reporter-action@v1.3.0
+      with:
+          api-token: ${{ secrets.CODACY_TOKEN }}
+          coverage-reports: ${{matrix.directory}}/build/reports/jacoco/test/jacocoTestReport.xml
+          language: java   
 
   build:
     runs-on: ubuntu-latest
@@ -64,14 +62,6 @@ jobs:
         - dockerfile: ./PostManagement/Dockerfile
           image: ghcr.io/AleksandraKrasteva/post-service
           working-directory: ./PostManagement
-
-        # - dockerfile: ./StatisticsService/Dockerfile
-        #   image: ghcr.io/AleksandraKrasteva/statistics-service
-        #   working-directory: ./StatisticsService
-
-        # - dockerfile: ./Krakend/Dockerfile
-        #   image: ghcr.io/AleksandraKrasteva/krakend_test
-        #   working-directory: ./Krakend
 
         - dockerfile: ./RabbitMQ/Dockerfile
           image: ghcr.io/AleksandraKrasteva/rabbitmq
