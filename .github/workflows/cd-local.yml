@@ -60,7 +60,7 @@ jobs:
     - name: Deploy application if not running
       if: steps.check-deployment.outputs.status == '0'
       run: |
-        kubectl create secret generic global-secret --from-literal=post-db-user=${{ secrets.USER_DB_SECRET }} --from-literal=post-db-pass=${{ secrets.PASS_DB_SECRET }} --from-literal=rabbitmq-user=${{ secrets.RABBITMQ_USER }} --from-literal=rabbitmq-pass=${{ secrets.RABBITMQ_PASS }}
+        kubectl create secret generic global-secret --from-literal=post-db-user=${{ secrets.USER_DB_SECRET }} --from-literal=post-db-pass=${{ secrets.PASS_DB_SECRET }} --from-literal=rabbitmq-user=${{ secrets.RABBITMQ_USER }} --from-literal=rabbitmq-pass=${{ secrets.RABBITMQ_PASS }} --from-literal=journey-db-pass=${{ secrets.JOURNEY_DB_PASS }} --from-literal=journey-db-user=${{ secrets.JOURNEY_DB_USER }}
         powershell.exe -File ${{ secrets.REPO_PATH }}/docker_kubernetes/initialize.ps1
         
     - name: Update deployment 
