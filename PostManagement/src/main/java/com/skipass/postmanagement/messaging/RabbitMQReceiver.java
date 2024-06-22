@@ -16,13 +16,10 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 @Component
 public class RabbitMQReceiver {
-
     private final PostService postService;
-
     @RabbitListener(queues = "delete-post-for-journey")
     public void receiveMessage(long journeyId) {
         System.out.println("RabbitMQ: Received delete post for journey: " + journeyId);
         postService.deletePostForJourney(journeyId);
     }
 }
-

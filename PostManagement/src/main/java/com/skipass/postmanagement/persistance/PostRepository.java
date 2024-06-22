@@ -12,10 +12,7 @@ import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<PostEntity, Long> {
     List<PostEntity> getPostEntitiesByUsernameIs(String username);
-
     @Transactional
     void deletePostEntitiesByUsernameIs(String username);
-
     Optional<PostEntity> getPostEntityByJourneyIdIs(long journeyId);
-
 }

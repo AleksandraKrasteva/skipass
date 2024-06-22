@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class PostServiceImpl implements PostService {
-
     private final PostRepository postRepository;
     private final ReactionRepository reactionRepository;
     private final RabbitMQProducer producer;
@@ -27,7 +26,6 @@ public class PostServiceImpl implements PostService {
                 stream().map(this::convertToPost).collect(Collectors.toList());
         return posts;
     }
-
     private Post convertToPost(PostEntity post) {
         List<ReactionEntity> reactionEntities = reactionRepository.getReactionEntitiesByPostIdIs(post.getId());
         List<Reaction> reactions = reactionEntities.stream().map(this::convertReactions).collect(Collectors.toList());
@@ -36,7 +34,6 @@ public class PostServiceImpl implements PostService {
                 .text(post.getText()).username(post.getUsername()).reactions(reactions).build();
         return postDto;
     }
-
     private Reaction convertReactions(ReactionEntity reaction){
         return Reaction.builder().postId(reaction.getPostId())
                 .id(reaction.getId())
@@ -47,7 +44,6 @@ public class PostServiceImpl implements PostService {
         List<Post> posts = postRepository.findAll().
                 stream().map(this::convertToPost).collect(Collectors.toList());
         return posts;
-
     }
     @Override
     public void deletePostById(DeletePostRequest postRequest) {
@@ -80,7 +76,6 @@ public class PostServiceImpl implements PostService {
         postRepository.deletePostEntitiesByUsernameIs(request.getUsername());
         reactionRepository.deleteAllByCreatorIs(request.getUsername());
     }
-
     @Override
     public Long updatePostById(UpdatePostRequest request) {
         Optional<PostEntity> post = postRepository.findById(request.getPostId());
@@ -91,7 +86,6 @@ public class PostServiceImpl implements PostService {
         }
         return null;
     }
-
     @Override
     public void deletePostForJourney(long journeyId) {
         Optional<PostEntity> post = postRepository.getPostEntityByJourneyIdIs(journeyId);
@@ -100,6 +94,5 @@ public class PostServiceImpl implements PostService {
             DeletePostRequest request = DeletePostRequest.builder().deleteJourney(false).postId(post.get().getId()).build();
             deletePostById(request);
         }
-        
     }
 }

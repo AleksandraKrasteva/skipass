@@ -9,12 +9,8 @@ import java.util.List;
 @Service
 public interface JourneyService {
     JourneyEntity createJourney(String authorUsername);
-
     List<JourneyEntity> getAllForUser(String authorUsername);
-
     JourneyEntity getJourneyById(long journeyId);
-
     void deleteJourneyById(long journeyId);
-
     void deleteJourneysForAuthor(String authorUsername);
 }

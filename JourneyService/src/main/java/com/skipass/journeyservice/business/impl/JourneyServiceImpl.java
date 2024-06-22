@@ -64,7 +64,6 @@ public class JourneyServiceImpl implements JourneyService {
         List<JourneyEntity> journeys = journeyRepository.getJourneyEntitiesByAuthorUsernameIs(authorUsername);
         return journeys;
     }
-
     @Override
     public JourneyEntity getJourneyById(long journeyId) {
         Optional<JourneyEntity> journey = journeyRepository.findById(journeyId);
@@ -73,7 +72,6 @@ public class JourneyServiceImpl implements JourneyService {
         }
         return null;
     }
-
     @Override
     public void deleteJourneyById(long journeyId) {
         Optional<JourneyEntity> journey = journeyRepository.findById(journeyId);
@@ -85,6 +83,5 @@ public class JourneyServiceImpl implements JourneyService {
     @Override
     public void deleteJourneysForAuthor(String authorUsername) {
         journeyRepository.deleteAllByAuthorUsernameIs(authorUsername);
-
     }
 }

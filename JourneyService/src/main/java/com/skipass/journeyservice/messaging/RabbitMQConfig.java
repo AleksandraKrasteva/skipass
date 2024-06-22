@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitMQConfig {
-
     static final String fanoutExchangeName = "delete-post";
     static final String postsQueueName = "delete-post-for-journey";
     @Bean
@@ -24,5 +23,4 @@ public class RabbitMQConfig {
     public Binding postsBinding() {
         return BindingBuilder.bind(postQueue()).to(deletePostExchange());
     }
-
 }

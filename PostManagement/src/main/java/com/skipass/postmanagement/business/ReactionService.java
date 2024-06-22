@@ -11,9 +11,7 @@ import java.util.List;
 public interface ReactionService {
     void deleteReaction(long reactionId);
     long createReaction(CreateReactionRequest request);
-
     void deleteAllReactionsForPost(long postId);
     void deleteAllReactionsFromUser(String username);
-
     List<ReactionEntity> getReactionsForUser(String username);
 }

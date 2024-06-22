@@ -20,4 +20,3 @@ public class ReactionEntity {
     private long postId;
     private String creator;
 }
-

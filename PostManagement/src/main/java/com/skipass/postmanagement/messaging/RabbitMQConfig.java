@@ -15,7 +15,6 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 
 @Configuration
 public class RabbitMQConfig {
-
     static final String fanoutExchangeName = "delete-journey";
     static final String postsQueueName = "delete-journey-for-post";
     @Bean
@@ -26,10 +25,8 @@ public class RabbitMQConfig {
     public Queue journeyQueue() {
         return new Queue(postsQueueName, true);
     }
-
     @Bean
     public Binding postsBinding() {
         return BindingBuilder.bind(journeyQueue()).to(deleteJourneyExchange());
     }
-
 }

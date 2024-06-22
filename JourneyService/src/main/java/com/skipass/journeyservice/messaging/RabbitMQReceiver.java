@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 @Component
 @AllArgsConstructor
 public class RabbitMQReceiver {
-
     private final JourneyService journeyService;
     @RabbitListener(queues = "delete-journey-for-post")
     public void receiveMessage(int journeyId) {

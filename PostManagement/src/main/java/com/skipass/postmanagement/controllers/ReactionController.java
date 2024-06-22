@@ -32,7 +32,6 @@ public class ReactionController {
         reactionService.deleteReaction(reactionId);
         return ResponseEntity.ok().build();
     }
-
     @DeleteMapping("/delete-reactions/{username}")
     public ResponseEntity deleteReactions(@PathVariable(value = "username") String username) {
         reactionService.deleteAllReactionsFromUser(username);
