@@ -13,13 +13,11 @@ version = '0.0.1-SNAPSHOT'
 java {
     sourceCompatibility = '17'
 }
-
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
 }
-
 repositories {
     mavenCentral()
 }
@@ -43,7 +41,6 @@ dependencies {
     tasks.named('test') {
     useJUnitPlatform()
 }
-
 test {
     finalizedBy jacocoTestReport
 }
@@ -78,5 +75,4 @@ task integrationTests(type: Test) {
     }
     description 'run unit tests'
     finalizedBy jacocoTestReport
-
 }

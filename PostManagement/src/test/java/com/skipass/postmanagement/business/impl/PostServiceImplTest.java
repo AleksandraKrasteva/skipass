@@ -19,12 +19,10 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 
 class PostServiceImplTest {
-
     @Mock
     private PostRepository postRepository;
     @Mock
     private ReactionRepository reactionRepository;
-
     @InjectMocks
     PostServiceImpl postService;
     @Test
@@ -41,19 +39,6 @@ class PostServiceImplTest {
         assertEquals(3, actual.size());
         verify(postRepository, times(1)).getPostEntitiesByUsernameIs("user");
     }
-//    @Test
-//    @Tag("unit")
-//
-//    void deletePostById() {
-//        DeletePostRequest request = DeletePostRequest.builder().postId(1).deleteJourney(false).build();
-//        postService.deletePostById(request);
-//        verify(postRepository, times(1)).deleteById(1L);
-//        verify(postRepository, times(1)).deleteById(1L);
-//
-//        postRepository.deleteById(postRequest.getPostId());
-//        reactionRepository.deleteAllByPostIdIs(postRequest.getPostId());
-//    }
-
     @Test
     @Tag("unit")
 
@@ -69,13 +54,9 @@ class PostServiceImplTest {
 
         assertEquals(expected, actual);
         verify(postRepository, times(1)).save(inserted);
-
-
     }
-
     @Test
     @Tag("unit")
-
     void deletePostsForUser() {
         DeletePostsRequest request = DeletePostsRequest.builder().deleteJourney(false).username("user").build();
 

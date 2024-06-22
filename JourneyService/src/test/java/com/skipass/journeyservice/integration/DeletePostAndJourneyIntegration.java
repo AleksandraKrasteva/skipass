@@ -30,7 +30,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
 @Testcontainers()
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
@@ -42,7 +41,6 @@ public class DeletePostAndJourneyIntegration {
     @Autowired
     private JourneyService journeyService;
     public static Network network =  Network.newNetwork();
-
     static RabbitMQContainer rabbit = new RabbitMQContainer(DockerImageName
             .parse("ghcr.io/aleksandrakrasteva/rabbitmq:dev")
             .asCompatibleSubstituteFor("rabbitmq"))
@@ -54,7 +52,6 @@ public class DeletePostAndJourneyIntegration {
     static GenericContainer postService =  new GenericContainer((DockerImageName
             .parse("ghcr.io/aleksandrakrasteva/post-service:dev")))
             .withImagePullPolicy(PullPolicy.alwaysPull());
-
     @DynamicPropertySource
     static void registerProperties(DynamicPropertyRegistry registry) {
         registry.add("spring.rabbitmq.host", rabbit::getHost);
@@ -65,7 +62,6 @@ public class DeletePostAndJourneyIntegration {
         registry.add("spring.datasource.username", journeyPostgres::getUsername);
         registry.add("spring.datasource.password", journeyPostgres::getPassword);
     }
-
     @BeforeAll
     public static void setPostService(){
         postsPostgres.withNetwork(network).withNetworkAliases("postdb").start();
@@ -87,7 +83,6 @@ public class DeletePostAndJourneyIntegration {
         final String logs = postService.getLogs();
         System.out.println(logs);
     }
-
     @BeforeEach
     void insertTestData() {
         JourneyEntity journey = journeyService.createJourney("testUser");
@@ -103,21 +98,15 @@ public class DeletePostAndJourneyIntegration {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        // Create the HttpEntity
         HttpEntity<String> requestEntity = new HttpEntity<>(jsonBody, headers);
 
-        // Send the POST request
         ResponseEntity<String> response = restTemplate.exchange(
                 createPostEndpoint,
                 HttpMethod.POST,
                 requestEntity,
                 String.class
         );
-
-        System.out.println("HERE IS THE RETURN" + response);
-
     }
-
     @Test
     @Tag("integration")
     void deletePostsForUserRabbitMQListenerTest()  {
@@ -136,18 +125,13 @@ public class DeletePostAndJourneyIntegration {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        // Create the HttpEntity
         HttpEntity<String> requestEntity = new HttpEntity<>(jsonBody, headers);
 
-        // Send the POST request
         ResponseEntity<String> response = restTemplate.exchange(
                 deletePostEndpoint,
                 HttpMethod.DELETE,
                 requestEntity,
                 String.class);
-
-        final String logs = postService.getLogs();
-        System.out.println(logs);
 
         Optional<JourneyEntity> after = repository.findById(1L);
 

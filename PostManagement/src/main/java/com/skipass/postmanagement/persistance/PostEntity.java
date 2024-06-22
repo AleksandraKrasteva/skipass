@@ -12,15 +12,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
     private String text;
-
     private String username;
-
     private long journeyId;
-
 }

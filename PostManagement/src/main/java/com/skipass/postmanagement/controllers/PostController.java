@@ -15,7 +15,6 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
-
     @PostMapping("/create-post")
     public ResponseEntity createPost(@RequestBody CreatePostRequest request) {
         CreatePostResponse response = postService.createPost(request);
@@ -36,7 +35,6 @@ public class PostController {
         postService.deletePostById(postRequest);
         return ResponseEntity.ok().build();
     }
-
     @DeleteMapping("/delete-all-posts")
     public ResponseEntity deleteAllPostsForUser(@RequestBody DeletePostsRequest postsRequest) {
         postService.deletePostsForUser(postsRequest);

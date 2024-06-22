@@ -17,10 +17,8 @@ import java.util.Optional;
 public class ReactionServiceImpl implements ReactionService {
     private final ReactionRepository reactionRepository;
     private final PostRepository postRepository;
-
     @Override
     public void deleteReaction(long reactionId) {
-        System.out.println(reactionId);
         reactionRepository.deleteById(reactionId);
     }
     @Override
@@ -29,19 +27,14 @@ public class ReactionServiceImpl implements ReactionService {
         ReactionEntity returned = reactionRepository.save(reaction);
         return returned.getId();
     }
-
     @Override
     public void deleteAllReactionsForPost(long postId) {
         reactionRepository.deleteAllByPostIdIs(postId);
-
     }
-
     @Override
     public void deleteAllReactionsFromUser(String username) {
         reactionRepository.deleteAllByCreatorIs(username);
-
     }
-
     @Override
     public List<ReactionEntity> getReactionsForUser(String username) {
         return reactionRepository.getReactionEntitiesByCreatorIs(username);

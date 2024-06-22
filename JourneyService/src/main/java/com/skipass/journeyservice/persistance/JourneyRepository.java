@@ -8,7 +8,6 @@ import java.util.List;
 @Repository
 
 public interface JourneyRepository extends JpaRepository<JourneyEntity, Long> {
-
     List<JourneyEntity> getJourneyEntitiesByAuthorUsernameIs(String authorUsername);
     @Transactional
     void deleteAllByIdIs(long journeyId);
@@ -16,4 +15,3 @@ public interface JourneyRepository extends JpaRepository<JourneyEntity, Long> {
     void deleteAllByAuthorUsernameIs(String authorUsername);
 
 }
-

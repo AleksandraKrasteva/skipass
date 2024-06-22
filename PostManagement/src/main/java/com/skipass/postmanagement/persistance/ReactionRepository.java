@@ -10,9 +10,7 @@ import java.util.List;
 public interface ReactionRepository extends JpaRepository<ReactionEntity, Long> {
     List<ReactionEntity> getReactionEntitiesByPostIdIs(long postId);
     @Transactional
-
     void deleteAllByPostIdIs(long postId);
-
     @Transactional
     void deleteAllByCreatorIs(String username);
     List<ReactionEntity> getReactionEntitiesByCreatorIs(String username);
