@@ -150,7 +150,6 @@ const UserPostsView = (props:Props) => {
 		await deletePost(data, token).then(()=>{
 			props.setTrigger(!props.trigger);
 		}).catch((e)=>{
-			console.log(e);
 			if(e.response.status === 401){
 				// @ts-ignore
 				loginWithRedirect();
@@ -190,7 +189,7 @@ const UserPostsView = (props:Props) => {
 											<ExpandMoreIcon />
 										</IconButton>
 									)}
-									<IconButton sx={{color:'black', ml:24}} aria-label='delete-post' onClick={()=>{setDeleting(true); setSelectedPost(post);}}>
+									<IconButton sx={{color:'black', ml:20}} aria-label='delete-post' onClick={()=>{setDeleting(true); setSelectedPost(post);}}>
 										<DeleteForever />
 									</IconButton>
 									<IconButton aria-label="like" sx={{color:'black'}} onClick={()=>{setEditing(true); setSelectedPost(post);}}>
