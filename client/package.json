@@ -19,7 +19,7 @@
     "@mui/base": "^5.0.0-beta.40",
     "@mui/icons-material": "^5.15.11",
     "@mui/material": "^5.15.11",
-    "@tanstack/react-query": "^5.24.1",
+    "@tanstack/react-query": "^5.36.2",
     "axios": "^1.6.7",
     "cross-env": "^7.0.3",
     "next": "^14.2.3",
