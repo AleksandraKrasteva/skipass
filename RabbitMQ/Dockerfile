@@ -1,4 +1,4 @@
-FROM rabbitmq:3.13.1-management-alpine
+FROM rabbitmq:3.13.3-management-alpine
 
 # Add a user named appuser and set ownership of the RabbitMQ data directory
 RUN addgroup -S foouser && adduser -S foouser -G foouser
