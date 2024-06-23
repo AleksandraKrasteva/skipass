@@ -10,7 +10,7 @@ else if(process.env.NEXT_PUBLIC_ENVIRONMENT == 'development'){
 	baseURL= 'http://localhost:80';
 }
 else if(process.env.NEXT_PUBLIC_ENVIRONMENT == 'prod'){ 
-	baseURL= 'http://localhost:8080';
+	baseURL= 'http://4.182.131.77';
 }
 console.log(baseURL);
 
@@ -179,7 +179,7 @@ export const deleteJourneysForUser = (username:string, token: string) => {
 		Authorization: 'Bearer ' + token,
 	};
 
-	return axios.delete(`http://skipass.api/delete-journeys-user/${username}`, {headers}).then((res) => {
+	return axios.delete(`${baseURL}/delete-journeys-user/${username}`, {headers}).then((res) => {
 		return res;
 	});
 };

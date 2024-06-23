@@ -17,7 +17,9 @@ const style = {
 	transform: 'translate(-50%, -50%)',
 	width: 400,
 	bgcolor: 'background.paper',
-	border: '2px solid #000',
+	border: 1, 
+	borderColor: 'pink', 
+	borderRadius: '16px',
 	boxShadow: 24,
 	p: 4,
 };
@@ -151,11 +153,19 @@ const Profile = () => {
 					aria-describedby="modal-modal-description"
 				>
 					<Box sx={style}>
-						<Typography sx={{color: 'red'}}id="modal-modal-title" variant="h6" component="h2">
+						<Typography
+							sx={{
+								ml:2,
+								fontFamily: 'monospace',
+								fontSize: 18,
+								fontWeight: 700,
+								letterSpacing: '.1rem',
+								color: 'teal',
+							}}>
                                 Are you sure that you want to delete all of your journeys?. This action can not be undone.
 						</Typography>
-						<Button onClick={()=>{deleteJourneys();}}>Delete</Button>
-						<Button onClick={()=>setDelJourneys(false)}>Cancel</Button>								
+						<Button sx={{fontFamily: 'monospace', bgcolor:'pink', color: 'black', mt:2, ml:4}} onClick={()=>{deleteJourneys();}}>Delete</Button>
+						<Button sx={{fontFamily: 'monospace', bgcolor:'pink', color: 'black', mt:2, ml:4}} onClick={()=>setDelJourneys(false)}>Cancel</Button>								
 					</Box>
 				</Modal>
 				<Modal
@@ -165,11 +175,19 @@ const Profile = () => {
 					aria-describedby="modal-modal-description"
 				>
 					<Box sx={style}>
-						<Typography sx={{color:'red'}}id="modal-modal-title" variant="h6" component="h2">
+						<Typography
+							sx={{
+								ml:2,
+								fontFamily: 'monospace',
+								fontSize: 18,
+								fontWeight: 700,
+								letterSpacing: '.1rem',
+								color: 'teal',
+							}}>
                                 Are you sure that you want to delete all of your likes? This action can not be undone. 
 						</Typography>
-						<Button onClick={()=>{deleteLikes();}}>Delete</Button>
-						<Button onClick={()=>setDelLikes(false)}>Cancel</Button>								
+						<Button  sx={{fontFamily: 'monospace', bgcolor:'pink', color: 'black', mt:2, ml:4}} onClick={()=>{deleteLikes();}}>Delete</Button>
+						<Button  sx={{fontFamily: 'monospace', bgcolor:'pink', color: 'black', mt:2, ml:4}} onClick={()=>setDelLikes(false)}>Cancel</Button>								
 					</Box>
 				</Modal>
 				<Modal
@@ -179,11 +197,19 @@ const Profile = () => {
 					aria-describedby="modal-modal-description"
 				>
 					<Box sx={style}>
-						<Typography sx={{color: 'red'}} id="modal-modal-title" variant="h6" component="h2">
+						<Typography
+							sx={{
+								ml:2,
+								fontFamily: 'monospace',
+								fontSize: 18,
+								fontWeight: 700,
+								letterSpacing: '.1rem',
+								color: 'teal',
+							}}>
                                 Are you sure that you want to delete all of your posts? This action can not be undone. 
 						</Typography>
-						<Button onClick={()=>{deletePosts();}}>Delete</Button>
-						<Button onClick={()=>setDelPosts(false)}>Cancel</Button>								
+						<Button  sx={{fontFamily: 'monospace', bgcolor:'pink', color: 'black', mt:2, ml:4}} onClick={()=>{deletePosts();}}>Delete</Button>
+						<Button  sx={{fontFamily: 'monospace', bgcolor:'pink', color: 'black', mt:2, ml:4}} onClick={()=>setDelPosts(false)}>Cancel</Button>								
 					</Box>
 				</Modal>		
 			

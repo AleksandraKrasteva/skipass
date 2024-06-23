@@ -43,7 +43,7 @@ const HomePage = () => {
 	return (
 		<>
 			<Navigation/>
-			{isAuthenticated && <Box sx={{mt:10}}>
+			{isAuthenticated ? <Box sx={{mt:10}}>
 				<Typography
 					sx={{
 						ml: 4,
@@ -55,7 +55,8 @@ const HomePage = () => {
 					}}
 				> Welcome {user!.nickname}! 
 				</Typography>
-			</Box>}	
+			</Box>
+				:<Box sx={{mt:10}}></Box>}	
 			{posts.length == 0 ?
 				<Typography
 					sx={{

@@ -34,7 +34,6 @@ const PostsView = (props:Props) => {
 			setExpandedId(postId); 
 			if(journeyId !== 0){
 				const res = await viewJourney(journeyId);
-				console.log(res);
 				if (res.data){
 					setJourney(res.data);
 				}	
@@ -70,7 +69,6 @@ const PostsView = (props:Props) => {
 				props.setTrigger(!props.trigger);
 			})
 				.catch((e)=>{
-					console.log(e);
 					if(e.response.status === 401){
 						// @ts-ignore
 						loginWithRedirect();
@@ -80,7 +78,7 @@ const PostsView = (props:Props) => {
 			const reaction = selected[0].reactions?.filter((x)=>x.creator === user?.nickname && x.postId === postId );
 			await deleteReaction(reaction[0].id, token).then(()=>{
 				props.setTrigger(!props.trigger);
-			}).catch((e)=>{console.log(e);});
+			}).catch(()=>{});
 		}
 
 	};
