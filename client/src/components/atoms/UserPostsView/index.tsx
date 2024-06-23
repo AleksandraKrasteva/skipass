@@ -86,7 +86,6 @@ const UserPostsView = (props:Props) => {
 		await deletePost(data, token).then(()=>{
 			props.setTrigger(!props.trigger);
 		}).catch((e)=>{
-			console.log(e);
 			if(e.response.status === 401){
 				// @ts-ignore
 				loginWithRedirect();
@@ -119,7 +118,6 @@ const UserPostsView = (props:Props) => {
 			props.setTrigger(!props.trigger);
 			setEditing(false);
 		}).catch((e)=>{
-			console.log(e);
 			if(e.response.status === 401){
 				// @ts-ignore
 
