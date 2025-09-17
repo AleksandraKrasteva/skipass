@@ -20,7 +20,7 @@
     "@mui/icons-material": "^5.15.11",
     "@mui/material": "^5.15.11",
     "@tanstack/react-query": "^5.24.1",
-    "axios": "^1.6.7",
+    "axios": "^1.12.0",
     "cross-env": "^7.0.3",
     "next": "^14.2.3",
     "react": "^18",
